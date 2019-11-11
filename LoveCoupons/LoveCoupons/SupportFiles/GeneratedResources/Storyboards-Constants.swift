@@ -12,22 +12,10 @@ import UIKit
 
 // swiftlint:disable explicit_type_interface identifier_name line_length type_body_length type_name
 internal enum StoryboardScene {
-  internal enum Coupons: StoryboardType {
-    internal static let storyboardName = "Coupons"
-
-    internal static let initialScene = InitialSceneType<UIKit.UINavigationController>(storyboard: Coupons.self)
-
-    internal static let addPair = SceneType<Love_Coupons.ViewController>(storyboard: Coupons.self, identifier: "addPair")
-  }
   internal enum LaunchScreen: StoryboardType {
     internal static let storyboardName = "LaunchScreen"
 
     internal static let initialScene = InitialSceneType<UIKit.UIViewController>(storyboard: LaunchScreen.self)
-  }
-  internal enum SplashScreen: StoryboardType {
-    internal static let storyboardName = "SplashScreen"
-
-    internal static let initialScene = InitialSceneType<Love_Coupons.SplashScreenViewController>(storyboard: SplashScreen.self)
   }
 }
 // swiftlint:enable explicit_type_interface identifier_name line_length type_body_length type_name

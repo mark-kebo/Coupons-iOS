@@ -9,56 +9,39 @@
 /* Begin PBXBuildFile section */
 		0A286612236489E900773A5A /* EntitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A286611236489E900773A5A /* EntitiesManager.swift */; };
 		0A7CB772236349E30029FBD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB771236349E30029FBD3 /* AppDelegate.swift */; };
-		0A7CB776236349E30029FBD3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB775236349E30029FBD3 /* ViewController.swift */; };
 		0A7CB77B236349E90029FBD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CB77A236349E90029FBD3 /* Assets.xcassets */; };
-		0A7CB79123636B490029FBD3 /* Coupons.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CB78D23636B490029FBD3 /* Coupons.storyboard */; };
 		0A7CB79223636B490029FBD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CB78F23636B490029FBD3 /* LaunchScreen.storyboard */; };
 		0A7CB79D236379350029FBD3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CB79B236379350029FBD3 /* Localizable.strings */; };
 		0A7CB7A223637A2D0029FBD3 /* Assets-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB79F23637A2D0029FBD3 /* Assets-Constants.swift */; };
 		0A7CB7A323637A2D0029FBD3 /* Storyboards-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB7A023637A2D0029FBD3 /* Storyboards-Constants.swift */; };
 		0A7CB7A423637A2D0029FBD3 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB7A123637A2D0029FBD3 /* Strings.swift */; };
 		0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB7AD23638BA70029FBD3 /* APIManager.swift */; };
-		0A81025823672AFA002C94E2 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A81025723672AFA002C94E2 /* SplashScreen.storyboard */; };
-		0A81025A23672B25002C94E2 /* SplashScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81025923672B25002C94E2 /* SplashScreenViewController.swift */; };
-		0A81025C236732FD002C94E2 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81025B236732FD002C94E2 /* BaseViewController.swift */; };
 		0A982FD72364F72C0082E142 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A982FD62364F72C0082E142 /* Constants.swift */; };
 		0A982FD92364FB0F0082E142 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A982FD82364FB0F0082E142 /* APIError.swift */; };
 		0A982FDB2364FBDA0082E142 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A982FDA2364FBDA0082E142 /* NetworkManager.swift */; };
+		0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F0192379CD3800887BAF /* SceneDelegate.swift */; };
+		0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F01B2379CDA400887BAF /* LoginView.swift */; };
 		9DEB94F4811A72BD42B3CE00 /* Pods_LoveCoupons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0A8102672367788E002C94E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0A7CB766236349E30029FBD3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0A7CB76D236349E30029FBD3;
-			remoteInfo = RevolutTestApplication;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0A286611236489E900773A5A /* EntitiesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntitiesManager.swift; sourceTree = "<group>"; };
 		0A7CB76E236349E30029FBD3 /* Love Coupons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Love Coupons.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7CB771236349E30029FBD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0A7CB775236349E30029FBD3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0A7CB77A236349E90029FBD3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0A7CB77F236349E90029FBD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0A7CB78E23636B490029FBD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Coupons.storyboard; sourceTree = "<group>"; };
 		0A7CB79023636B490029FBD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0A7CB79C236379350029FBD3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0A7CB79F23637A2D0029FBD3 /* Assets-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Assets-Constants.swift"; sourceTree = "<group>"; };
 		0A7CB7A023637A2D0029FBD3 /* Storyboards-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboards-Constants.swift"; sourceTree = "<group>"; };
 		0A7CB7A123637A2D0029FBD3 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0A7CB7AD23638BA70029FBD3 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
-		0A81025723672AFA002C94E2 /* SplashScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SplashScreen.storyboard; sourceTree = "<group>"; };
-		0A81025923672B25002C94E2 /* SplashScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenViewController.swift; sourceTree = "<group>"; };
-		0A81025B236732FD002C94E2 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		0A8102622367788E002C94E2 /* LoveCouponsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoveCouponsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A982FD62364F72C0082E142 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0A982FD82364FB0F0082E142 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		0A982FDA2364FBDA0082E142 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		0AE5EFF62379BCA700887BAF /* Love Coupons.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Love Coupons.entitlements"; sourceTree = "<group>"; };
+		0AE5F0192379CD3800887BAF /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		0AE5F01B2379CDA400887BAF /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		0AE5F0462379D4FE00887BAF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E5F775458F874B14B6C9009 /* Pods-RevolutTestApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.release.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.release.xcconfig"; sourceTree = "<group>"; };
 		725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoveCoupons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E86B90C1526866D78D66DAC /* Pods-EmptyProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.debug.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.debug.xcconfig"; sourceTree = "<group>"; };
@@ -74,13 +57,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DEB94F4811A72BD42B3CE00 /* Pods_LoveCoupons.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A81025F2367788E002C94E2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				0A7CB76E236349E30029FBD3 /* Love Coupons.app */,
-				0A8102622367788E002C94E2 /* LoveCouponsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -122,27 +97,28 @@
 				0A7CB7AA23637F160029FBD3 /* Models */,
 				0A7CB78A236364DA0029FBD3 /* Managers */,
 				0A7CB7862363645E0029FBD3 /* UI */,
-				0A7CB785236363790029FBD3 /* Support files */,
+				0A7CB785236363790029FBD3 /* SupportFiles */,
 			);
 			path = LoveCoupons;
 			sourceTree = "<group>";
 		};
-		0A7CB785236363790029FBD3 /* Support files */ = {
+		0A7CB785236363790029FBD3 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
 				0A7CB79E23637A1B0029FBD3 /* GeneratedResources */,
 				0A7CB79B236379350029FBD3 /* Localizable.strings */,
-				0A7CB77F236349E90029FBD3 /* Info.plist */,
+				0AE5F0462379D4FE00887BAF /* Info.plist */,
+				0AE5F0192379CD3800887BAF /* SceneDelegate.swift */,
 				0A7CB771236349E30029FBD3 /* AppDelegate.swift */,
 				0A7CB77A236349E90029FBD3 /* Assets.xcassets */,
 			);
-			path = "Support files";
+			path = SupportFiles;
 			sourceTree = "<group>";
 		};
 		0A7CB7862363645E0029FBD3 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				0A7CB789236364B60029FBD3 /* ViewControllers */,
+				0A7CB789236364B60029FBD3 /* SwiftUIViews */,
 				0A7CB788236364AE0029FBD3 /* Views */,
 				0A7CB7872363647C0029FBD3 /* Storyboards */,
 			);
@@ -152,9 +128,7 @@
 		0A7CB7872363647C0029FBD3 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				0A7CB78D23636B490029FBD3 /* Coupons.storyboard */,
 				0A7CB78F23636B490029FBD3 /* LaunchScreen.storyboard */,
-				0A81025723672AFA002C94E2 /* SplashScreen.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -167,13 +141,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		0A7CB789236364B60029FBD3 /* ViewControllers */ = {
+		0A7CB789236364B60029FBD3 /* SwiftUIViews */ = {
 			isa = PBXGroup;
 			children = (
-				0A81025D236733BD002C94E2 /* Common */,
-				0A7CB775236349E30029FBD3 /* ViewController.swift */,
+				0AE5F01B2379CDA400887BAF /* LoginView.swift */,
 			);
-			path = ViewControllers;
+			path = SwiftUIViews;
 			sourceTree = "<group>";
 		};
 		0A7CB78A236364DA0029FBD3 /* Managers */ = {
@@ -209,15 +182,6 @@
 			children = (
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		0A81025D236733BD002C94E2 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				0A81025B236732FD002C94E2 /* BaseViewController.swift */,
-				0A81025923672B25002C94E2 /* SplashScreenViewController.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		6765E5898D8CFD36C251AE74 /* Pods */ = {
@@ -264,24 +228,6 @@
 			productReference = 0A7CB76E236349E30029FBD3 /* Love Coupons.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0A8102612367788E002C94E2 /* LoveCouponsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0A8102692367788E002C94E2 /* Build configuration list for PBXNativeTarget "LoveCouponsTests" */;
-			buildPhases = (
-				0A81025E2367788E002C94E2 /* Sources */,
-				0A81025F2367788E002C94E2 /* Frameworks */,
-				0A8102602367788E002C94E2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0A8102682367788E002C94E2 /* PBXTargetDependency */,
-			);
-			name = LoveCouponsTests;
-			productName = RevolutTestApplicationTests;
-			productReference = 0A8102622367788E002C94E2 /* LoveCouponsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -294,10 +240,6 @@
 				TargetAttributes = {
 					0A7CB76D236349E30029FBD3 = {
 						CreatedOnToolsVersion = 11.1;
-					};
-					0A8102612367788E002C94E2 = {
-						CreatedOnToolsVersion = 11.1;
-						TestTargetID = 0A7CB76D236349E30029FBD3;
 					};
 				};
 			};
@@ -315,7 +257,6 @@
 			projectRoot = "";
 			targets = (
 				0A7CB76D236349E30029FBD3 /* LoveCoupons */,
-				0A8102612367788E002C94E2 /* LoveCouponsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -328,15 +269,6 @@
 				0A7CB79223636B490029FBD3 /* LaunchScreen.storyboard in Resources */,
 				0A7CB79D236379350029FBD3 /* Localizable.strings in Resources */,
 				0A7CB77B236349E90029FBD3 /* Assets.xcassets in Resources */,
-				0A7CB79123636B490029FBD3 /* Coupons.storyboard in Resources */,
-				0A81025823672AFA002C94E2 /* SplashScreen.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0A8102602367788E002C94E2 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,12 +341,11 @@
 			files = (
 				0A286612236489E900773A5A /* EntitiesManager.swift in Sources */,
 				0A7CB7A323637A2D0029FBD3 /* Storyboards-Constants.swift in Sources */,
-				0A81025A23672B25002C94E2 /* SplashScreenViewController.swift in Sources */,
-				0A81025C236732FD002C94E2 /* BaseViewController.swift in Sources */,
+				0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */,
 				0A982FDB2364FBDA0082E142 /* NetworkManager.swift in Sources */,
 				0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */,
-				0A7CB776236349E30029FBD3 /* ViewController.swift in Sources */,
 				0A982FD92364FB0F0082E142 /* APIError.swift in Sources */,
+				0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */,
 				0A7CB7A223637A2D0029FBD3 /* Assets-Constants.swift in Sources */,
 				0A7CB7A423637A2D0029FBD3 /* Strings.swift in Sources */,
 				0A982FD72364F72C0082E142 /* Constants.swift in Sources */,
@@ -422,32 +353,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0A81025E2367788E002C94E2 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		0A8102682367788E002C94E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0A7CB76D236349E30029FBD3 /* LoveCoupons */;
-			targetProxy = 0A8102672367788E002C94E2 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
-		0A7CB78D23636B490029FBD3 /* Coupons.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0A7CB78E23636B490029FBD3 /* Base */,
-			);
-			name = Coupons.storyboard;
-			sourceTree = "<group>";
-		};
 		0A7CB78F23636B490029FBD3 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -590,7 +498,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = SU5CK44GUJ;
-				INFOPLIST_FILE = "LoveCoupons/Support files/Info.plist";
+				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,7 +520,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_TEAM = SU5CK44GUJ;
-				INFOPLIST_FILE = "LoveCoupons/Support files/Info.plist";
+				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -622,46 +530,6 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		0A81026A2367788E002C94E2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SU5CK44GUJ;
-				INFOPLIST_FILE = LoveCouponsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dmitry.vorozhbicki.LoveCouponsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoveCoupons.app/LoveCoupons";
-			};
-			name = Debug;
-		};
-		0A81026B2367788E002C94E2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = SU5CK44GUJ;
-				INFOPLIST_FILE = LoveCouponsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dmitry.vorozhbicki.LoveCouponsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoveCoupons.app/LoveCoupons";
 			};
 			name = Release;
 		};
@@ -682,15 +550,6 @@
 			buildConfigurations = (
 				0A7CB783236349E90029FBD3 /* Debug */,
 				0A7CB784236349E90029FBD3 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0A8102692367788E002C94E2 /* Build configuration list for PBXNativeTarget "LoveCouponsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0A81026A2367788E002C94E2 /* Debug */,
-				0A81026B2367788E002C94E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
