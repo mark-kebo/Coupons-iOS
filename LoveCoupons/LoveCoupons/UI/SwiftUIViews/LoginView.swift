@@ -10,7 +10,18 @@ import SwiftUI
 
 struct LoginView: View {
     var body: some View {
-        Text("Hello World")
+        Button(action: {
+            print("lol")
+        }){
+            Text("Login")
+                .font(.title)
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding()
+                .foregroundColor(.white)
+                .background(Color("AppRed"))
+                .cornerRadius(40)
+        }
+    .padding()
     }
 }
 
