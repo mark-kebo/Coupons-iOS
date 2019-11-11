@@ -1,7 +1,7 @@
 input_dir: LoveCoupons/
-output_dir: LoveCoupons/Support Files/GeneratedResources/
+output_dir: LoveCoupons/SupportFiles/GeneratedResources/
 xcassets:
-  inputs: Support Files/Assets.xcassets
+  inputs: SupportFiles/Assets.xcassets
   outputs:
     templateName: swift4
     output: Assets-Constants.swift
@@ -11,7 +11,7 @@ ib:
     templateName: scenes-swift4
     output: Storyboards-Constants.swift
 strings:
-  inputs: Support Files/en.lproj/Localizable.strings
+  inputs: SupportFiles/en.lproj/Localizable.strings
   outputs:
     templateName: structured-swift4
     output: Strings.swift
