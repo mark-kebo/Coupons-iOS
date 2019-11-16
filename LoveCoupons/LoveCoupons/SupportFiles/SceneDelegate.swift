@@ -22,10 +22,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let loginView = LoginView()
 
         // Use a UIHostingController as window root view controller.
-        print("HEY")
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: loginView)
+            window.tintColor = UIColor(named: "AppRed")
             self.window = window
             window.makeKeyAndVisible()
         }

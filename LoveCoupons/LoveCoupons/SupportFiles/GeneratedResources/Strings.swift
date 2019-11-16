@@ -32,6 +32,27 @@ internal enum L10n {
       internal static let title = L10n.tr("Localizable", "alert.offline.title")
     }
   }
+
+  internal enum LoginSignUp {
+    /// Email
+    internal static let email = L10n.tr("Localizable", "login&SignUp.email")
+    /// Your pair unique id
+    internal static let id = L10n.tr("Localizable", "login&SignUp.id")
+    /// Your name
+    internal static let name = L10n.tr("Localizable", "login&SignUp.name")
+    /// Password
+    internal static let password = L10n.tr("Localizable", "login&SignUp.password")
+    internal enum Button {
+      /// Create
+      internal static let create = L10n.tr("Localizable", "login&SignUp.button.create")
+      /// Login
+      internal static let login = L10n.tr("Localizable", "login&SignUp.button.login")
+      /// Restore password
+      internal static let restPassword = L10n.tr("Localizable", "login&SignUp.button.restPassword")
+      /// Sign up
+      internal static let signUp = L10n.tr("Localizable", "login&SignUp.button.signUp")
+    }
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name

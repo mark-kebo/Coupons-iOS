@@ -9,19 +9,34 @@
 import SwiftUI
 
 struct LoginView: View {
+    let stackSpacing: CGFloat = 16
+    @State var email: String = ""
+    @State var password: String = ""
+
     var body: some View {
-        Button(action: {
-            print("lol")
-        }){
-            Text("Login")
-                .font(.title)
-                .frame(minWidth: 0, maxWidth: .infinity)
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .center, spacing: stackSpacing) {
+                    Text("Hello")
+                        .padding()
+                        .font(.title)
+                    VStack {
+                        PrimaryTextField(title: L10n.LoginSignUp.email, text: $email)
+                        PrimaryTextField(title: L10n.LoginSignUp.password, isSecure: true, text: $password)
+                    }
+                    .padding(.bottom)
+                    
+                    PrimaryButton(title: L10n.LoginSignUp.Button.login, style: .fill) {
+                        print("test")
+                    }
+                    PrimaryNavigationButton(title: L10n.LoginSignUp.Button.restPassword, style: .light, destination: AnyView(SignUpView()))
+                    PrimaryNavigationButton(title: L10n.LoginSignUp.Button.signUp, style: .light, destination: AnyView(SignUpView()))
+                }
                 .padding()
-                .foregroundColor(.white)
-                .background(Color("AppRed"))
-                .cornerRadius(40)
+                Spacer()
+            }
         }
-    .padding()
+        .navigationBarHidden(true)
     }
 }
 
