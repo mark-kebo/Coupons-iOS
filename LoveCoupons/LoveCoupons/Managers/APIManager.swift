@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import Firebase
 
 protocol APIManagerProtocol {
     func sendRequest(url: String, parameters: Parameters?, method: HTTPMethod, encoding: ParameterEncoding, completion: @escaping (Any?, APIError?) -> Void)
@@ -83,18 +84,50 @@ private extension APIManager {
     }
 }
 
+//extension APIManager {
+//    func get(parameters: [String:String] = [:], completion:@escaping ([String: Any]?, APIError?) -> Void) {
+//        sendRequest(url: Constants.apiServer, parameters: parameters, method: .get, encoding: URLEncoding(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)) { (response, error) in
+//            if let error = error {
+//                completion(nil,error)
+//                return
+//            }
+//            if let data = response as? Data, let resultDictionary = try? JSONSerialization.jsonObject(with:data , options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any] {
+//                completion(resultDictionary, nil)
+//                return
+//            }
+//            completion(nil,APIError.other(L10n.apiDefaultError))
+//        }
+//    }
+//}
+
 extension APIManager {
-    func get(parameters: [String:String] = [:], completion:@escaping ([String: Any]?, APIError?) -> Void) {
-        sendRequest(url: Constants.apiServer, parameters: parameters, method: .get, encoding: URLEncoding(destination: .queryString, arrayEncoding: .noBrackets, boolEncoding: .literal)) { (response, error) in
+    func login(email: String, password: String, completion:@escaping (Error?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
             if let error = error {
-                completion(nil,error)
+                completion(error)
+                return
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    func logout(completion:@escaping (String?) -> Void) {
+        do {
+            try Auth.auth().signOut()
+            completion(nil)
+        } catch {
+            completion(L10n.apiDefaultError)
+        }
+    }
+    
+    func createUser(email: String, password: String, completion:@escaping (Error?) -> Void) {
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                completion(error)
                 return
             }
-            if let data = response as? Data, let resultDictionary = try? JSONSerialization.jsonObject(with:data , options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any] {
-                completion(resultDictionary, nil)
-                return
-            }
-            completion(nil,APIError.other(L10n.apiDefaultError))
+            print(authResult)
         }
     }
 }

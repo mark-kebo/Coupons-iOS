@@ -7,17 +7,21 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct LoginView: View {
-    let stackSpacing: CGFloat = 16
+    let apiManager = APIManager.sharedInstance
+    
     @State var email: String = ""
     @State var password: String = ""
+    @State var alertString: String = ""
+    @State var showingAlert = false
 
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .center, spacing: stackSpacing) {
-                    Text("Hello")
+                VStack(alignment: .center, spacing: Constants.stackSpacing) {
+                    Text(L10n.LoginSignUp.title)
                         .padding()
                         .font(.title)
                     VStack {
@@ -27,9 +31,22 @@ struct LoginView: View {
                     .padding(.bottom)
                     
                     PrimaryButton(title: L10n.LoginSignUp.Button.login, style: .fill) {
-                        print("test")
+                        self.apiManager.login(email: self.email, password: self.password) { error in
+                            if let error = error?.localizedDescription {
+                                self.alertString = error
+                                self.showingAlert = true
+                            } else {
+                                let scene = UIApplication.shared.connectedScenes.first
+                                if let sd : SceneDelegate = (scene?.delegate as? SceneDelegate) {
+                                    sd.setupRootVC()
+                                }
+                            }
+                        }
                     }
-                    PrimaryNavigationButton(title: L10n.LoginSignUp.Button.restPassword, style: .light, destination: AnyView(SignUpView()))
+                    .alert(isPresented: $showingAlert) { () -> Alert in
+                        Alert(title: Text(L10n.error), message: Text(alertString))
+                    }
+                    PrimaryNavigationButton(title: L10n.LoginSignUp.Button.restPassword, style: .light, destination: AnyView(ResetPasswordView()))
                     PrimaryNavigationButton(title: L10n.LoginSignUp.Button.signUp, style: .light, destination: AnyView(SignUpView()))
                 }
                 .padding()

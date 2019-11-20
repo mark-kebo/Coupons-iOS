@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>818611060254-p9alkq9ta3hgmcagp6bpohcudj55gqkj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.818611060254-p9alkq9ta3hgmcagp6bpohcudj55gqkj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>818611060254-8m5a1oai9etk8dn2s8375v3ts32r6o4s.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDVdrnn-uNZzgbbuHLMQyuQQ5pizk3tOCo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>818611060254</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.dmitry.vorozhbicki.LoveCoupons</string>
+	<key>PROJECT_ID</key>
+	<string>coupons-love</string>
+	<key>STORAGE_BUCKET</key>
+	<string>coupons-love.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:818611060254:ios:63837ebfae6e154645380f</string>
+	<key>DATABASE_URL</key>
+	<string>https://coupons-love.firebaseio.com</string>
+</dict>
+</plist>

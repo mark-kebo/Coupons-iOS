@@ -13,6 +13,8 @@ import Foundation
 internal enum L10n {
   /// An error has occurred; try again later
   internal static let apiDefaultError = L10n.tr("Localizable", "api default error")
+  /// Error
+  internal static let error = L10n.tr("Localizable", "error")
 
   internal enum Alert {
     /// No Internet connection
@@ -42,6 +44,8 @@ internal enum L10n {
     internal static let name = L10n.tr("Localizable", "login&SignUp.name")
     /// Password
     internal static let password = L10n.tr("Localizable", "login&SignUp.password")
+    /// Love Coupon
+    internal static let title = L10n.tr("Localizable", "login&SignUp.title")
     internal enum Button {
       /// Create
       internal static let create = L10n.tr("Localizable", "login&SignUp.button.create")

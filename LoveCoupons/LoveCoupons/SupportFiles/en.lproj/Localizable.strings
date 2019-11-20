@@ -6,9 +6,10 @@
 "alert.button.cancel" = "Cancel";
 
 "api default error" = "An error has occurred; try again later";
-
+"error" = "Error";
 //UI
 
+"login&SignUp.title" = "Love Coupon";
 "login&SignUp.email" = "Email";
 "login&SignUp.name" = "Your name";
 "login&SignUp.id" = "Your pair unique id";

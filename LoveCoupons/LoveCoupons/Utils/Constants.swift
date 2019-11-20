@@ -5,9 +5,10 @@
 //  Copyright © 2019 Dmitry Vorozhbicki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 enum Constants {
-    static let apiServer = "https://test"
-    
+    static let authKey = "Auth"
+    static let stackSpacing: CGFloat = 16
+
 }

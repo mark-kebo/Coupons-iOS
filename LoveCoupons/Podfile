@@ -15,5 +15,9 @@ target 'LoveCoupons' do
   #
   pod 'Reusable'
   pod 'SwiftGen'
+  pod 'Firebase/Storage'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Database'
+  pod 'Firebase/Auth'
 
 end
