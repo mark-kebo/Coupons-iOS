@@ -11,6 +11,7 @@ import SwiftUI
 struct PrimaryTextField: View {
     var title: String
     var isSecure: Bool = false
+    var keyType = UIKeyboardType.default
     @Binding var text: String
 
     var body: some View {
@@ -21,6 +22,7 @@ struct PrimaryTextField: View {
                         .padding(.horizontal)
                         .padding(.top)
                         .accentColor(Color.gray.opacity(0.7))
+                        .keyboardType(keyType)
                     Divider()
                 }
             } else {
@@ -29,6 +31,7 @@ struct PrimaryTextField: View {
                         .padding(.horizontal)
                         .padding(.top)
                         .accentColor(Color.gray.opacity(0.7))
+                        .keyboardType(keyType)
                     Divider()
                 }
             }

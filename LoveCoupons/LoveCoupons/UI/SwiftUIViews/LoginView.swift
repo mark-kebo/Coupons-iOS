@@ -25,7 +25,7 @@ struct LoginView: View {
                         .padding()
                         .font(.title)
                     VStack {
-                        PrimaryTextField(title: L10n.LoginSignUp.email, text: $email)
+                        PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
                         PrimaryTextField(title: L10n.LoginSignUp.password, isSecure: true, text: $password)
                     }
                     .padding(.bottom)
