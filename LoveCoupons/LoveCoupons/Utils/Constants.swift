@@ -9,6 +9,8 @@ import UIKit
 
 enum Constants {
     static let authKey = "Auth"
+    static let rootDirectory = "coupons-love"
+    static let userInfoDirectory = "userInfo"
     static let stackSpacing: CGFloat = 16
 
 }

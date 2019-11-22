@@ -5,11 +5,14 @@
 "alert.info.offline.message" = "Cannot detect your internet connection. Please makes sure you have a valid connection and try again";
 "alert.button.cancel" = "Cancel";
 
+"alert.success.title" = "Success";
+"alert.resetPassword" = "A password reset link has been sent to your email address";
+
 "api default error" = "An error has occurred; try again later";
 "error" = "Error";
 //UI
 
-"login&SignUp.title" = "Love Coupon";
+"login&SignUp.title" = "Love Coupons";
 "login&SignUp.email" = "Email";
 "login&SignUp.name" = "Your name";
 "login&SignUp.id" = "Your pair unique id";
@@ -18,3 +21,10 @@
 "login&SignUp.button.signUp" = "Sign up";
 "login&SignUp.button.restPassword" = "Restore password";
 "login&SignUp.button.create" = "Create";
+
+"login&SignUp.button.send" = "Send";
+
+
+"settings.tab" = "Settings";
+"settings.logout" = "Logout";
+"settings.submit" = "Submit";

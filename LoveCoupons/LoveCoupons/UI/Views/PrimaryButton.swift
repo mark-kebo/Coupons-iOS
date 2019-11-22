@@ -19,6 +19,7 @@ struct PrimaryButton: View {
 
     var title: String
     var style: Style
+    var maxWidth: CGFloat? = .infinity
     var tapped: (() -> Void)?
 
     var body: some View {
@@ -27,7 +28,7 @@ struct PrimaryButton: View {
         }){
             Text(title)
                 .font(style == Style.fill ? .body : .callout)
-                .frame(minWidth: 0, maxWidth: .infinity)
+                .frame(minWidth: 0, maxWidth: maxWidth)
                 .padding(style == Style.fill ? spacing : 0)
                 .foregroundColor(style == Style.fill ? .white : color)
                 .background(style == Style.fill ? color : color.opacity(0))

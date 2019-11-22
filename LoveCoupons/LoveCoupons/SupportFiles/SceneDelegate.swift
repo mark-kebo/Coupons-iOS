@@ -64,7 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
     func setupRootVC() {
         if Auth.auth().currentUser != nil {
-            window?.rootViewController = UIHostingController(rootView: CouponsView())
+            window?.rootViewController = UIHostingController(rootView: TabRootView())
         } else {
             window?.rootViewController = UIHostingController(rootView: LoginView())
         }

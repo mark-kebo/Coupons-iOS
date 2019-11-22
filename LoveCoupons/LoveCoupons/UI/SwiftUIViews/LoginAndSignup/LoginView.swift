@@ -10,12 +10,12 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
-    let apiManager = APIManager.sharedInstance
+    private let apiManager = APIManager.sharedInstance
     
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var alertString: String = ""
-    @State var showingAlert = false
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var alertString: String = ""
+    @State private var showingAlert = false
 
     var body: some View {
         NavigationView {
@@ -34,7 +34,7 @@ struct LoginView: View {
                         self.apiManager.login(email: self.email, password: self.password) { error in
                             if let error = error?.localizedDescription {
                                 self.alertString = error
-                                self.showingAlert = true
+                                self.showingAlert.toggle()
                             } else {
                                 let scene = UIApplication.shared.connectedScenes.first
                                 if let sd : SceneDelegate = (scene?.delegate as? SceneDelegate) {

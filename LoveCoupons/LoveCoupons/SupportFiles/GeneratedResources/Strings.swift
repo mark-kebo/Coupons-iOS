@@ -19,6 +19,8 @@ internal enum L10n {
   internal enum Alert {
     /// No Internet connection
     internal static let noInternetConnection = L10n.tr("Localizable", "alert.noInternetConnection")
+    /// A password reset link has been sent to your email address
+    internal static let resetPassword = L10n.tr("Localizable", "alert.resetPassword")
     internal enum Button {
       /// Cancel
       internal static let cancel = L10n.tr("Localizable", "alert.button.cancel")
@@ -33,6 +35,10 @@ internal enum L10n {
       /// Offline
       internal static let title = L10n.tr("Localizable", "alert.offline.title")
     }
+    internal enum Success {
+      /// Success
+      internal static let title = L10n.tr("Localizable", "alert.success.title")
+    }
   }
 
   internal enum LoginSignUp {
@@ -44,7 +50,7 @@ internal enum L10n {
     internal static let name = L10n.tr("Localizable", "login&SignUp.name")
     /// Password
     internal static let password = L10n.tr("Localizable", "login&SignUp.password")
-    /// Love Coupon
+    /// Love Coupons
     internal static let title = L10n.tr("Localizable", "login&SignUp.title")
     internal enum Button {
       /// Create
@@ -53,9 +59,20 @@ internal enum L10n {
       internal static let login = L10n.tr("Localizable", "login&SignUp.button.login")
       /// Restore password
       internal static let restPassword = L10n.tr("Localizable", "login&SignUp.button.restPassword")
+      /// Send
+      internal static let send = L10n.tr("Localizable", "login&SignUp.button.send")
       /// Sign up
       internal static let signUp = L10n.tr("Localizable", "login&SignUp.button.signUp")
     }
+  }
+
+  internal enum Settings {
+    /// Logout
+    internal static let logout = L10n.tr("Localizable", "settings.logout")
+    /// Submit
+    internal static let submit = L10n.tr("Localizable", "settings.submit")
+    /// Settings
+    internal static let tab = L10n.tr("Localizable", "settings.tab")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
