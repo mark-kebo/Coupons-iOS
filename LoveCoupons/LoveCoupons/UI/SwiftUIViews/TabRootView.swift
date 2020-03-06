@@ -15,12 +15,12 @@ struct TabRootView: View {
     
     var body: some View {
         TabView(selection: $selection) {
-            CouponsView(couponstType: .pairCoupons)
+            PairCouponsView()
                 .tabItem {
                     Image(systemName: "person.2.square.stack")
                     Text(L10n.PairCoupons.title)
                 }.tag(0)
-            CouponsView(couponstType: .myCoupons)
+            MyCouponsView()
                 .tabItem {
                     Image(systemName: "person.crop.rectangle")
                     Text(L10n.MyCoupons.title)

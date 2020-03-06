@@ -1,5 +1,5 @@
 //
-//  CouponsView.swift
+//  MyCouponsView.swift
 //  LoveCoupons
 //
 //  Created by Dmitry Vorozhbicki on 04/03/2020.
@@ -8,26 +8,18 @@
 
 import SwiftUI
 
-enum CouponsType {
-    case myCoupons
-    case pairCoupons
-}
-
-struct CouponsView: View {
-    var couponstType: CouponsType
+struct MyCouponsView: View {
     var data: [String] = ["String1", "String2", "String3", "String4", "String5"]
     
     var body: some View {
         VStack(alignment: .center, spacing: Constants.stackSpacing) {
             HStack {
-                Text(couponstType == .myCoupons ? L10n.MyCoupons.title : L10n.PairCoupons.title)
+                Text(L10n.MyCoupons.title)
                     .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, alignment: .leading)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
                 Spacer()
-                if couponstType == .myCoupons {
-                    PrimaryButton(title: L10n.Button.add, style: .fill, maxWidth: .none) {
+                PrimaryButton(title: L10n.Button.add, style: .fill, maxWidth: .none) {
                         
-                    }
                 }
             }
             .padding()
@@ -43,6 +35,6 @@ struct CouponsView: View {
 
 struct MyCouponsView_Previews: PreviewProvider {
     static var previews: some View {
-        CouponsView(couponstType: .myCoupons)
+        MyCouponsView()
     }
 }
