@@ -19,34 +19,31 @@ struct SettingsView: View {
     @State private var showingAlert = false
 
     var body: some View {
-        ScrollView {
-            Spacer()
-            VStack(alignment: .center, spacing: Constants.stackSpacing) {
-                HStack {
-                    Text(L10n.Settings.tab)
-                        .font(.title)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
-                        self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
-                            if let error = error?.localizedDescription {
-                                self.alertTitle = L10n.error
-                                self.alertString = error
-                                self.showingAlert.toggle()
-                            } else {
-                                self.alertTitle = L10n.Alert.Success.title
-                                self.alertString = ""
-                                self.showingAlert.toggle()
-                            }
+        VStack(alignment: .center, spacing: Constants.stackSpacing) {
+            HStack {
+                Text(L10n.Settings.tab)
+                    .font(.title)
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
+                Spacer()
+                PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
+                    self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
+                        if let error = error?.localizedDescription {
+                            self.alertTitle = L10n.error
+                            self.alertString = error
+                            self.showingAlert.toggle()
+                        } else {
+                            self.alertTitle = L10n.Alert.Success.title
+                            self.alertString = ""
+                            self.showingAlert.toggle()
                         }
                     }
                 }
+            }
+            ScrollView {
                 VStack {
                     PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
                     PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)
                 }
-                .padding(.bottom)
-                Spacer()
                 PrimaryButton(title: L10n.Settings.logout, style: .light) {
                     self.apiManager.logout { error in
                         if let error = error {
@@ -60,13 +57,13 @@ struct SettingsView: View {
                         }
                     }
                 }
+                .padding(.top, 32)
             }
             .alert(isPresented: $showingAlert) { () -> Alert in
                 Alert(title: Text(alertTitle), message: Text(alertString))
             }
-            .padding()
-            Spacer()
         }
+        .padding()
         .onAppear {
             self.setTextFields()
         }

@@ -41,6 +41,11 @@ internal enum L10n {
     }
   }
 
+  internal enum Button {
+    /// Add
+    internal static let add = L10n.tr("Localizable", "button.add")
+  }
+
   internal enum LoginSignUp {
     /// Email
     internal static let email = L10n.tr("Localizable", "login&SignUp.email")
@@ -64,6 +69,16 @@ internal enum L10n {
       /// Sign up
       internal static let signUp = L10n.tr("Localizable", "login&SignUp.button.signUp")
     }
+  }
+
+  internal enum MyCoupons {
+    /// My Coupons
+    internal static let title = L10n.tr("Localizable", "myCoupons.title")
+  }
+
+  internal enum PairCoupons {
+    /// Pair Coupons
+    internal static let title = L10n.tr("Localizable", "pairCoupons.title")
   }
 
   internal enum Settings {

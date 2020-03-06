@@ -29,8 +29,24 @@
 		0ABD2FEE2388590F00E04254 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD2FED2388590F00E04254 /* SettingsView.swift */; };
 		0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F0192379CD3800887BAF /* SceneDelegate.swift */; };
 		0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F01B2379CDA400887BAF /* LoginView.swift */; };
-		9DEB94F4811A72BD42B3CE00 /* Pods_LoveCoupons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */; };
+		96583C70240D199600A23351 /* Pods_LoveCoupons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		96583C71240D199600A23351 /* Pods_LoveCoupons.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		96583C74240FEA0700A23351 /* CouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C73240FEA0700A23351 /* CouponsView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		96583C72240D199600A23351 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				96583C71240D199600A23351 /* Pods_LoveCoupons.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0A11A722237AE41E00C2E1B9 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
@@ -61,6 +77,7 @@
 		0E5F775458F874B14B6C9009 /* Pods-RevolutTestApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.release.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.release.xcconfig"; sourceTree = "<group>"; };
 		725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoveCoupons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E86B90C1526866D78D66DAC /* Pods-EmptyProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.debug.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.debug.xcconfig"; sourceTree = "<group>"; };
+		96583C73240FEA0700A23351 /* CouponsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponsView.swift; sourceTree = "<group>"; };
 		96A583AD99643BD083C1D8B9 /* Pods-EmptyProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.release.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.release.xcconfig"; sourceTree = "<group>"; };
 		A0A1C3DCA9E017CF1E594503 /* Pods-LoveCoupons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.release.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.release.xcconfig"; sourceTree = "<group>"; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
@@ -72,7 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DEB94F4811A72BD42B3CE00 /* Pods_LoveCoupons.framework in Frameworks */,
+				96583C70240D199600A23351 /* Pods_LoveCoupons.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +183,7 @@
 				0ABD2FE82387FA8B00E04254 /* LoginAndSignup */,
 				0A2F4D45238578B0005E865F /* TabRootView.swift */,
 				0ABD2FED2388590F00E04254 /* SettingsView.swift */,
+				96583C73240FEA0700A23351 /* CouponsView.swift */,
 			);
 			path = SwiftUIViews;
 			sourceTree = "<group>";
@@ -242,6 +260,7 @@
 				0A7CB76B236349E30029FBD3 /* Frameworks */,
 				0A7CB76C236349E30029FBD3 /* Resources */,
 				CEFA662E08A64986103CFD84 /* [CP] Embed Pods Frameworks */,
+				96583C72240D199600A23351 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -367,6 +386,7 @@
 				0A7CB7A323637A2D0029FBD3 /* Storyboards-Constants.swift in Sources */,
 				0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */,
 				0A982FDB2364FBDA0082E142 /* NetworkManager.swift in Sources */,
+				96583C74240FEA0700A23351 /* CouponsView.swift in Sources */,
 				0A11A723237AE41E00C2E1B9 /* PrimaryButton.swift in Sources */,
 				0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */,
 				0A3647D023806B1E00F3393D /* PrimaryNavigationButton.swift in Sources */,
@@ -529,7 +549,7 @@
 				CODE_SIGN_ENTITLEMENTS = "LoveCoupons/Love Coupons.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
-				DEVELOPMENT_TEAM = SU5CK44GUJ;
+				DEVELOPMENT_TEAM = Z43G5H86KV;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -551,7 +571,7 @@
 				CODE_SIGN_ENTITLEMENTS = "LoveCoupons/Love Coupons.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
-				DEVELOPMENT_TEAM = SU5CK44GUJ;
+				DEVELOPMENT_TEAM = Z43G5H86KV;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

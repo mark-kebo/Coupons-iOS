@@ -16,25 +16,27 @@ struct PrimaryTextField: View {
 
     var body: some View {
         Group {
-            if isSecure {
-                VStack {
+            VStack {
+                Text(!text.isEmpty ? title : " ")
+                    .fontWeight(Font.Weight.light)
+                    .accentColor(Color.gray.opacity(0.7))
+                    .font(.system(size: 11))
+                    .frame(minWidth: CGFloat(0), maxWidth: .infinity, alignment: .leading)
+                if isSecure {
                     SecureField(title, text: $text)
                         .padding(.horizontal)
-                        .padding(.top)
                         .accentColor(Color.gray.opacity(0.7))
                         .keyboardType(keyType)
-                    Divider()
-                }
-            } else {
-                VStack {
+                } else {
                     TextField(title, text: $text)
                         .padding(.horizontal)
-                        .padding(.top)
                         .accentColor(Color.gray.opacity(0.7))
                         .keyboardType(keyType)
-                    Divider()
                 }
+                Divider()
             }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
+            .padding(.top)
         }
     }
 }
