@@ -34,6 +34,8 @@
 		96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C73240FEA0700A23351 /* MyCouponsView.swift */; };
 		96583C76241292AD00A23351 /* PairCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C75241292AD00A23351 /* PairCouponsView.swift */; };
 		969232912420E11600C2D85E /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969232902420E11600C2D85E /* SelectableText.swift */; };
+		969232982421004800C2D85E /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969232972421004800C2D85E /* Coupon.swift */; };
+		9692329A242111F200C2D85E /* CouponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96923299242111F200C2D85E /* CouponView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -82,6 +84,8 @@
 		96583C73240FEA0700A23351 /* MyCouponsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCouponsView.swift; sourceTree = "<group>"; };
 		96583C75241292AD00A23351 /* PairCouponsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsView.swift; sourceTree = "<group>"; };
 		969232902420E11600C2D85E /* SelectableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableText.swift; sourceTree = "<group>"; };
+		969232972421004800C2D85E /* Coupon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
+		96923299242111F200C2D85E /* CouponView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponView.swift; sourceTree = "<group>"; };
 		96A583AD99643BD083C1D8B9 /* Pods-EmptyProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.release.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.release.xcconfig"; sourceTree = "<group>"; };
 		A0A1C3DCA9E017CF1E594503 /* Pods-LoveCoupons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.release.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.release.xcconfig"; sourceTree = "<group>"; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 				0A11A724237AE99300C2E1B9 /* PrimaryTextField.swift */,
 				0A3647CF23806B1E00F3393D /* PrimaryNavigationButton.swift */,
 				969232902420E11600C2D85E /* SelectableText.swift */,
+				96923299242111F200C2D85E /* CouponView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				0ABD2FEB238843EB00E04254 /* UserInfo.swift */,
+				969232972421004800C2D85E /* Coupon.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -394,6 +400,7 @@
 				0A982FDB2364FBDA0082E142 /* NetworkManager.swift in Sources */,
 				96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */,
 				0A11A723237AE41E00C2E1B9 /* PrimaryButton.swift in Sources */,
+				969232982421004800C2D85E /* Coupon.swift in Sources */,
 				0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */,
 				0A3647D023806B1E00F3393D /* PrimaryNavigationButton.swift in Sources */,
 				0ABD2FEC238843EB00E04254 /* UserInfo.swift in Sources */,
@@ -407,6 +414,7 @@
 				0A982FD72364F72C0082E142 /* Constants.swift in Sources */,
 				0A2F4D46238578B0005E865F /* TabRootView.swift in Sources */,
 				0A7CB772236349E30029FBD3 /* AppDelegate.swift in Sources */,
+				9692329A242111F200C2D85E /* CouponView.swift in Sources */,
 				0A2F4D4823857D85005E865F /* ResetPasswordView.swift in Sources */,
 				96583C76241292AD00A23351 /* PairCouponsView.swift in Sources */,
 				0ABD2FEE2388590F00E04254 /* SettingsView.swift in Sources */,

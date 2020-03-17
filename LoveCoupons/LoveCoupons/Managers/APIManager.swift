@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 import Firebase
 
 class APIManager {
@@ -85,6 +84,64 @@ extension APIManager {
         }) { error in
             completion(nil, error)
         }
+    }
+    
+    func getMyCoupons(completion:@escaping ([Coupon]?, Error?) -> Void) {
+        guard let uid = userUid else { return }
+        database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+            if let dict = snapshot.value as? [String : AnyObject] {
+                var coupons: [Coupon] = []
+                dict.forEach {
+                    if let coupon = $0.value as? [String : AnyObject] {
+                        coupons.append(Coupon(data: coupon))
+                    }
+                }
+                completion(coupons, nil)
+            }
+        }) { error in
+            completion(nil, error)
+        }
+    }
+    
+    func getPairCoupons(completion:@escaping ([Coupon]?, Error?) -> Void) {
+        getUserInfo { [weak self] userInfo, error in
+            if let error = error {
+                completion(nil, error)
+            } else if let id = userInfo?.pairUniqId {
+                self?.database.child(id).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+                    if let dict = snapshot.value as? [String : AnyObject] {
+                        var coupons: [Coupon] = []
+                        dict.forEach {
+                            if let coupon = $0.value as? [String : AnyObject] {
+                                coupons.append(Coupon(data: coupon))
+                            }
+                        }
+                        completion(coupons, nil)
+                    }
+                }) { error in
+                    completion(nil, error)
+                }
+            }
+        }
+    }
+}
 
+extension APIManager {
+    func getImage(by url: String?, completion:@escaping (UIImage?, Error?) -> Void) {
+        if let url = URL(string: url ?? "") {
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard
+                    let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                    let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                    let data = data, error == nil,
+                    let image = UIImage(data: data)
+                    else {
+                        completion(nil, error)
+                        return }
+                DispatchQueue.main.async() {
+                    completion(image, nil)
+                }
+            }.resume()
+        }
     }
 }

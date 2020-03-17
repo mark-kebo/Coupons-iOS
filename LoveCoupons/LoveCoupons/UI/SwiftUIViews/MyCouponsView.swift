@@ -9,7 +9,12 @@
 import SwiftUI
 
 struct MyCouponsView: View {
-    var data: [String] = ["String1", "String2", "String3", "String4", "String5"]
+    private let apiManager = APIManager.sharedInstance
+    
+    @State private var alertString: String = ""
+    @State private var alertTitle: String = ""
+    @State private var showingAlert = false
+    @State private var coupons: [Coupon] = []
     
     var body: some View {
         VStack(alignment: .center, spacing: Constants.stackSpacing) {
@@ -23,10 +28,25 @@ struct MyCouponsView: View {
                 }
             }
             .padding()
-
-            List {
-                ForEach(data, id: \.self) {
-                    Text($0)
+            
+            List(coupons) { coupon in
+                CouponView(coupon: coupon)
+            }
+        }
+        .alert(isPresented: $showingAlert) { () -> Alert in
+            Alert(title: Text(alertTitle), message: Text(alertString))
+        }
+        .onAppear(perform: setList)
+    }
+            
+    private func setList() {
+        apiManager.getMyCoupons { coupons, error in
+            if let error = error?.localizedDescription {
+                self.alertString = error
+                self.showingAlert = true
+            } else if let coupons = coupons {
+                self.coupons = coupons.sorted { coupon1, coupon2 -> Bool in
+                    coupon1.description ?? "" < coupon2.description ?? ""
                 }
             }
         }
