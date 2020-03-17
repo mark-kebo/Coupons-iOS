@@ -28,6 +28,7 @@
 "settings.tab" = "Settings";
 "settings.logout" = "Logout";
 "settings.submit" = "Submit";
+"settings.yourId" = "Your unique id:";
 
 "myCoupons.title" = "My Coupons";
 "pairCoupons.title" = "Pair Coupons";

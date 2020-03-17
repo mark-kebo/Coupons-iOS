@@ -11,7 +11,6 @@ import SwiftUI
 struct SettingsView: View {
     
     private let apiManager = APIManager.sharedInstance
-    
     @State private var name: String = ""
     @State private var id: String = ""
     @State private var alertString: String = ""
@@ -43,6 +42,14 @@ struct SettingsView: View {
                 VStack {
                     PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
                     PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)
+                    HStack {
+                        Text(verbatim: L10n.Settings.yourId)
+                            .font(.caption)
+                        SelectableText(apiManager.userUid ?? "", selectable: true, fontSize: 12, color: UIColor(asset: Asset.appRed))
+                            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
+                    }
+                    .padding(.top, 16)
+                    .padding(.bottom, 16)
                 }
                 PrimaryButton(title: L10n.Settings.logout, style: .light) {
                     self.apiManager.logout { error in
@@ -57,16 +64,14 @@ struct SettingsView: View {
                         }
                     }
                 }
-                .padding(.top, 32)
+                .frame(minWidth: 0, maxWidth: 60, minHeight: 64, alignment: .center)
             }
             .alert(isPresented: $showingAlert) { () -> Alert in
                 Alert(title: Text(alertTitle), message: Text(alertString))
             }
         }
         .padding()
-        .onAppear {
-            self.setTextFields()
-        }
+        .onAppear(perform: setTextFields)
     }
     
     private func setTextFields() {

@@ -88,6 +88,8 @@ internal enum L10n {
     internal static let submit = L10n.tr("Localizable", "settings.submit")
     /// Settings
     internal static let tab = L10n.tr("Localizable", "settings.tab")
+    /// Your unique id:
+    internal static let yourId = L10n.tr("Localizable", "settings.yourId")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

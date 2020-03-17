@@ -12,6 +12,11 @@ import Firebase
 class APIManager {
     static let sharedInstance = APIManager()
     private let database = Database.database().reference()
+    var userUid: String? {
+        get {
+            return Auth.auth().currentUser?.uid
+        }
+    }
 
     func login(email: String, password: String, completion:@escaping (Error?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
@@ -61,7 +66,7 @@ class APIManager {
 
 extension APIManager {
     func set(userInfo: UserInfo, completion:@escaping (Error?) -> Void) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = userUid else { return }
         self.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { (error, ref) in
             if let error = error {
                 completion(error)
@@ -72,7 +77,7 @@ extension APIManager {
     }
     
     func getUserInfo(completion:@escaping (UserInfo?, Error?) -> Void) {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
+        guard let uid = userUid else { return }
         database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
             if let postDict = snapshot.value as? [String : AnyObject] {
                 completion(UserInfo(data: postDict), nil)
