@@ -44,6 +44,15 @@ internal enum L10n {
   internal enum Button {
     /// Add
     internal static let add = L10n.tr("Localizable", "button.add")
+    /// Delete
+    internal static let delete = L10n.tr("Localizable", "button.delete")
+    /// Edit
+    internal static let edit = L10n.tr("Localizable", "button.edit")
+  }
+
+  internal enum Coupon {
+    /// Use coupon
+    internal static let use = L10n.tr("Localizable", "coupon.use")
   }
 
   internal enum LoginSignUp {

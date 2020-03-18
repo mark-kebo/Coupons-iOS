@@ -15,31 +15,47 @@ struct MyCouponsView: View {
     @State private var alertTitle: String = ""
     @State private var showingAlert = false
     @State private var coupons: [Coupon] = []
-    
+
     var body: some View {
-        VStack(alignment: .center, spacing: Constants.stackSpacing) {
-            HStack {
-                Text(L10n.MyCoupons.title)
-                    .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
-                Spacer()
-                PrimaryButton(title: L10n.Button.add, style: .fill, maxWidth: .none) {
-                        
+        NavigationView {
+            List {
+                ForEach(coupons) { coupon in
+                    CouponView(coupon: coupon)
+                    .contextMenu {
+                        NavigationLink(destination: CouponView(coupon: coupon)) {
+                            Text(L10n.Button.edit)
+                            Image(systemName: "chevron.right.2")
+                                .foregroundColor(.red)
+                        }
+                        Button(action: {
+                            self.coupons = self.coupons.filter { $0.id != coupon.id }
+                        }){
+                            Text(L10n.Button.delete)
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
                 }
+                .onDelete(perform: deleteItems)
             }
-            .padding()
-            
-            List(coupons) { coupon in
-                CouponView(coupon: coupon)
-            }
+            .navigationBarItems(leading: Text(L10n.MyCoupons.title).font(.title),
+                            trailing: PrimaryButton(title: L10n.Button.add, style: .fill, maxWidth: .none) {
+                
+            })
         }
+        .padding(.top, 16)
         .alert(isPresented: $showingAlert) { () -> Alert in
             Alert(title: Text(alertTitle), message: Text(alertString))
         }
         .onAppear(perform: setList)
     }
+    
+    private func deleteItems(at offsets: IndexSet) {
+        coupons.remove(atOffsets: offsets)
+    }
             
     private func setList() {
+        UITableView.appearance().separatorColor = .clear
         apiManager.getMyCoupons { coupons, error in
             if let error = error?.localizedDescription {
                 self.alertString = error

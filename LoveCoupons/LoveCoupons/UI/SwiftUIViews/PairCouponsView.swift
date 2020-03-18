@@ -17,25 +17,21 @@ struct PairCouponsView: View {
     @State private var coupons: [Coupon] = []
 
     var body: some View {
-        VStack(alignment: .center, spacing: Constants.stackSpacing) {
-            HStack {
-                Text(L10n.PairCoupons.title)
-                    .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
-            }
-            .padding()
-
+        NavigationView {
             List(coupons) { coupon in
                 CouponView(coupon: coupon)
             }
+            .navigationBarItems(leading: Text(L10n.PairCoupons.title).font(.title))
         }
-            .alert(isPresented: $showingAlert) { () -> Alert in
-                Alert(title: Text(alertTitle), message: Text(alertString))
-            }
-            .onAppear(perform: setList)
+        .padding(.top, 16)
+        .alert(isPresented: $showingAlert) { () -> Alert in
+            Alert(title: Text(alertTitle), message: Text(alertString))
+        }
+        .onAppear(perform: setList)
     }
     
     private func setList() {
+        UITableView.appearance().separatorColor = .clear
         apiManager.getPairCoupons { coupons, error in
             if let error = error?.localizedDescription {
                 self.alertString = error

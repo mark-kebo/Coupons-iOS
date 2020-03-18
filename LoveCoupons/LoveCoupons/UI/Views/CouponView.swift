@@ -11,19 +11,28 @@ import SwiftUI
 struct CouponView: View {
     private let apiManager = APIManager.sharedInstance
     @State private var image: UIImage = UIImage(asset: Asset.spinner)
+    @State private var color: Color = Color("AppRed")
 
     var coupon: Coupon
     
     var body: some View {
         HStack {
-            Text(coupon.description ?? "")
-            Spacer()
             Image(uiImage: image)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 150, height: 150)
+                .cornerRadius(20)
+                .frame(height: 150)
+            Spacer()
+            Text(coupon.description ?? "")
+                .font(.subheadline).italic()
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .trailing)
         }
-        .onAppear(perform: setImage)
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 150, alignment: .leading)
+            .padding()
+            .background(Color.white)
+            .cornerRadius(20)
+            .shadow(radius: 5)
+            .onAppear(perform: setImage)
     }
     
     private func setImage() {
@@ -39,6 +48,6 @@ struct CouponView: View {
 
 struct CouponView_Previews: PreviewProvider {
     static var previews: some View {
-        CouponView(coupon: Coupon(description: "Test", image: "https://firebasestorage.googleapis.com/v0/b/coupons-love.appspot.com/o/img%2Fc5edae4e-c68e-4582-b44a-b8a87c5f5eb1.jpg?alt=media&token=1a54d913-f41b-429e-b23a-2d7e8b37672f"))
+        CouponView(coupon: Coupon(description: "Test Test Test Test  Test Test Test Test", image: "https://firebasestorage.googleapis.com/v0/b/coupons-love.appspot.com/o/img%2Fc5edae4e-c68e-4582-b44a-b8a87c5f5eb1.jpg?alt=media&token=1a54d913-f41b-429e-b23a-2d7e8b37672f"))
     }
 }

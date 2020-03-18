@@ -34,3 +34,6 @@
 "pairCoupons.title" = "Pair Coupons";
 
 "button.add" = "Add";
+"coupon.use" = "Use coupon";
+"button.delete" = "Delete";
+"button.edit" = "Edit";

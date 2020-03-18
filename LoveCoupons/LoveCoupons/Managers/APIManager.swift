@@ -16,13 +16,25 @@ class APIManager {
             return Auth.auth().currentUser?.uid
         }
     }
+    private var cache: CacheProtocol
+    private let serialQueue: DispatchQueue
+    private let session = URLSession(configuration: URLSessionConfiguration.default)
+    
+    init() {
+        cache = CacheImages()
+        serialQueue = DispatchQueue(label: "queue")
+    }
 
     func login(email: String, password: String, completion:@escaping (Error?) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                completion(error)
-            } else {
-                completion(nil)
+        serialQueue.async {
+            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        completion(error)
+                    } else {
+                        completion(nil)
+                    }
+                }
             }
         }
     }
@@ -37,15 +49,21 @@ class APIManager {
     }
     
     func createUser(userInfo: UserInfo, email: String, password: String, completion:@escaping (Error?) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                completion(error)
-            } else {
-                self.set(userInfo: userInfo) { error in
-                    if let error = error {
+        serialQueue.async {
+            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+                if let error = error {
+                    DispatchQueue.main.async {
                         completion(error)
-                    } else {
-                        completion(nil)
+                    }
+                } else {
+                    self.set(userInfo: userInfo) { error in
+                        DispatchQueue.main.async {
+                            if let error = error {
+                                completion(error)
+                            } else {
+                                completion(nil)
+                            }
+                        }
                     }
                 }
             }
@@ -53,11 +71,17 @@ class APIManager {
     }
     
     func resetPassword(email: String,completion:@escaping (Error?) -> Void) {
-        Auth.auth().sendPasswordReset(withEmail: email) { error in
-            if let error = error {
-                completion(error)
-            } else {
-                completion(nil)
+        serialQueue.async {
+            Auth.auth().sendPasswordReset(withEmail: email) { error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(error)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                }
             }
         }
     }
@@ -66,60 +90,86 @@ class APIManager {
 extension APIManager {
     func set(userInfo: UserInfo, completion:@escaping (Error?) -> Void) {
         guard let uid = userUid else { return }
-        self.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { (error, ref) in
-            if let error = error {
-                completion(error)
-            } else {
-                completion(nil)
+        serialQueue.async {
+            self.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { (error, ref) in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(error)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
+                }
             }
         }
     }
     
     func getUserInfo(completion:@escaping (UserInfo?, Error?) -> Void) {
         guard let uid = userUid else { return }
-        database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
-            if let postDict = snapshot.value as? [String : AnyObject] {
-                completion(UserInfo(data: postDict), nil)
+        serialQueue.async {
+            self.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
+                if let postDict = snapshot.value as? [String : AnyObject] {
+                    DispatchQueue.main.async {
+                        completion(UserInfo(data: postDict), nil)
+                    }
+                }
+            }) { error in
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
             }
-        }) { error in
-            completion(nil, error)
         }
     }
     
     func getMyCoupons(completion:@escaping ([Coupon]?, Error?) -> Void) {
         guard let uid = userUid else { return }
-        database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
-            if let dict = snapshot.value as? [String : AnyObject] {
-                var coupons: [Coupon] = []
-                dict.forEach {
-                    if let coupon = $0.value as? [String : AnyObject] {
-                        coupons.append(Coupon(data: coupon))
+        serialQueue.async {
+            self.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+                if let dict = snapshot.value as? [String : AnyObject] {
+                    var coupons: [Coupon] = []
+                    dict.forEach {
+                        if let coupon = $0.value as? [String : AnyObject] {
+                            coupons.append(Coupon(data: coupon))
+                        }
+                    }
+                    DispatchQueue.main.async {
+                        completion(coupons, nil)
                     }
                 }
-                completion(coupons, nil)
+            }) { error in
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
             }
-        }) { error in
-            completion(nil, error)
         }
     }
     
     func getPairCoupons(completion:@escaping ([Coupon]?, Error?) -> Void) {
-        getUserInfo { [weak self] userInfo, error in
-            if let error = error {
-                completion(nil, error)
-            } else if let id = userInfo?.pairUniqId {
-                self?.database.child(id).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
-                    if let dict = snapshot.value as? [String : AnyObject] {
-                        var coupons: [Coupon] = []
-                        dict.forEach {
-                            if let coupon = $0.value as? [String : AnyObject] {
-                                coupons.append(Coupon(data: coupon))
+        serialQueue.async {
+            self.getUserInfo { [weak self] userInfo, error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(nil, error)
+                    }
+                } else if let id = userInfo?.pairUniqId {
+                    self?.database.child(id).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+                        if let dict = snapshot.value as? [String : AnyObject] {
+                            var coupons: [Coupon] = []
+                            dict.forEach {
+                                if let coupon = $0.value as? [String : AnyObject] {
+                                    coupons.append(Coupon(data: coupon))
+                                }
+                            }
+                            DispatchQueue.main.async {
+                                completion(coupons, nil)
                             }
                         }
-                        completion(coupons, nil)
+                    }) { error in
+                        DispatchQueue.main.async {
+                            completion(nil, error)
+                        }
                     }
-                }) { error in
-                    completion(nil, error)
                 }
             }
         }
@@ -128,20 +178,30 @@ extension APIManager {
 
 extension APIManager {
     func getImage(by url: String?, completion:@escaping (UIImage?, Error?) -> Void) {
-        if let url = URL(string: url ?? "") {
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                guard
-                    let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                    let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-                    let data = data, error == nil,
-                    let image = UIImage(data: data)
-                    else {
-                        completion(nil, error)
-                        return }
-                DispatchQueue.main.async() {
+        guard let urlString = url else {
+            completion(nil, nil)
+            return
+        }
+        serialQueue.async {
+            if let image = self.cache.check(imageInCacheBy: urlString as NSString) {
+                DispatchQueue.main.async {
                     completion(image, nil)
                 }
-            }.resume()
+            } else {
+                if let url: URL = URL(string: urlString) {
+                    URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                        guard let data = data , error == nil, let img = UIImage(data: data) else {
+                            completion(nil, error)
+                            return }
+                        self?.serialQueue.async {
+                            self?.cache.add(imageToCacheBy: urlString as NSString, and: img)
+                            DispatchQueue.main.async {
+                                completion(img, nil)
+                            }
+                        }
+                    }.resume()
+                }
+            }
         }
     }
 }

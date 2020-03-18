@@ -18,26 +18,7 @@ struct SettingsView: View {
     @State private var showingAlert = false
 
     var body: some View {
-        VStack(alignment: .center, spacing: Constants.stackSpacing) {
-            HStack {
-                Text(L10n.Settings.tab)
-                    .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
-                Spacer()
-                PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
-                    self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
-                        if let error = error?.localizedDescription {
-                            self.alertTitle = L10n.error
-                            self.alertString = error
-                            self.showingAlert.toggle()
-                        } else {
-                            self.alertTitle = L10n.Alert.Success.title
-                            self.alertString = ""
-                            self.showingAlert.toggle()
-                        }
-                    }
-                }
-            }
+        NavigationView {
             ScrollView {
                 VStack {
                     PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
@@ -65,12 +46,28 @@ struct SettingsView: View {
                     }
                 }
                 .frame(minWidth: 0, maxWidth: 60, minHeight: 64, alignment: .center)
+                .navigationBarItems(leading: Text(L10n.Settings.tab).font(.title),
+                                    trailing: PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
+                    self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
+                        if let error = error?.localizedDescription {
+                            self.alertTitle = L10n.error
+                            self.alertString = error
+                            self.showingAlert.toggle()
+                        } else {
+                            self.alertTitle = L10n.Alert.Success.title
+                            self.alertString = ""
+                            self.showingAlert.toggle()
+                        }
+                    }
+                })
             }
+            .padding(.leading, 16)
+            .padding(.trailing, 16)
             .alert(isPresented: $showingAlert) { () -> Alert in
                 Alert(title: Text(alertTitle), message: Text(alertString))
             }
         }
-        .padding()
+        .padding(.top, 16)
         .onAppear(perform: setTextFields)
     }
     
