@@ -8,11 +8,16 @@
 
 import Foundation
 
-struct Coupon: Identifiable {
+struct Coupon: Identifiable, Hashable {
     var id = UUID()
     
     let description: String?
     let image: String?
+    
+    init() {
+        description = ""
+        image = ""
+    }
     
     init(data: [String : AnyObject]) {
         description = data["description"] as? String

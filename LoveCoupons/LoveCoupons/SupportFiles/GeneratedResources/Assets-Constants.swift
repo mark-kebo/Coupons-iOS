@@ -20,6 +20,7 @@
 internal enum Asset {
   internal static let appGray = ColorAsset(name: "AppGray")
   internal static let appRed = ColorAsset(name: "AppRed")
+  internal static let addImage = ImageAsset(name: "addImage")
   internal static let logo = ImageAsset(name: "logo")
   internal static let spinner = ImageAsset(name: "spinner")
 }

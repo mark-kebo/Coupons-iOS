@@ -51,6 +51,10 @@ internal enum L10n {
   }
 
   internal enum Coupon {
+    /// New Coupon
+    internal static let add = L10n.tr("Localizable", "coupon.add")
+    /// Coupon
+    internal static let title = L10n.tr("Localizable", "coupon.title")
     /// Use coupon
     internal static let use = L10n.tr("Localizable", "coupon.use")
   }

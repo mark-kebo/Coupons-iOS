@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PrimaryNavigationButton: View {
     @State private var color: Color = Color("AppRed")
-    @State private var spacing: CGFloat = 16
+    @State private var spacing: CGFloat = 10
 
     var title: String
     var style: Style

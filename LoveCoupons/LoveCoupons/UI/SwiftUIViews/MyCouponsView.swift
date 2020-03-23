@@ -19,29 +19,15 @@ struct MyCouponsView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(coupons) { coupon in
-                    CouponView(coupon: coupon)
-                    .contextMenu {
-                        NavigationLink(destination: CouponView(coupon: coupon)) {
-                            Text(L10n.Button.edit)
-                            Image(systemName: "chevron.right.2")
-                                .foregroundColor(.red)
-                        }
-                        Button(action: {
-                            self.coupons = self.coupons.filter { $0.id != coupon.id }
-                        }){
-                            Text(L10n.Button.delete)
-                            Image(systemName: "trash")
-                                .foregroundColor(.red)
-                        }
+                ForEach(Array(coupons.enumerated()), id: \.offset) { index, coupon in
+                    NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
+                        CouponView(coupon: coupon, id: index + 1)
                     }
                 }
                 .onDelete(perform: deleteItems)
             }
             .navigationBarItems(leading: Text(L10n.MyCoupons.title).font(.title),
-                            trailing: PrimaryButton(title: L10n.Button.add, style: .fill, maxWidth: .none) {
-                
-            })
+                            trailing: PrimaryNavigationButton(title: L10n.Button.add, style: .fill, destination: AnyView(CouponEditView(coupon: Coupon(), id: 0, state: .add))))
         }
         .padding(.top, 16)
         .alert(isPresented: $showingAlert) { () -> Alert in
@@ -55,6 +41,7 @@ struct MyCouponsView: View {
     }
             
     private func setList() {
+        coupons.removeAll()
         UITableView.appearance().separatorColor = .clear
         apiManager.getMyCoupons { coupons, error in
             if let error = error?.localizedDescription {

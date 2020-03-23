@@ -37,3 +37,6 @@
 "coupon.use" = "Use coupon";
 "button.delete" = "Delete";
 "button.edit" = "Edit";
+
+"coupon.title" = "Coupon";
+"coupon.add" = "New Coupon";

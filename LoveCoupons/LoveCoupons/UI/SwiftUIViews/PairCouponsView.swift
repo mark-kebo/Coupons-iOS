@@ -18,8 +18,8 @@ struct PairCouponsView: View {
 
     var body: some View {
         NavigationView {
-            List(coupons) { coupon in
-                CouponView(coupon: coupon)
+            List(Array(coupons.enumerated()), id: \.offset) { index, coupon in
+                CouponView(coupon: coupon, id: index + 1)
             }
             .navigationBarItems(leading: Text(L10n.PairCoupons.title).font(.title))
         }
@@ -31,6 +31,7 @@ struct PairCouponsView: View {
     }
     
     private func setList() {
+        coupons.removeAll()
         UITableView.appearance().separatorColor = .clear
         apiManager.getPairCoupons { coupons, error in
             if let error = error?.localizedDescription {
