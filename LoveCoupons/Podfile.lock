@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (4.9.0)
   - Firebase/Analytics (6.13.0):
     - Firebase/Core
   - Firebase/Auth (6.13.0):
@@ -100,7 +99,6 @@ PODS:
   - SwiftGen (6.1.0)
 
 DEPENDENCIES:
-  - Alamofire (~> 4.0)
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Database
@@ -111,7 +109,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Alamofire
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -134,7 +131,6 @@ SPEC REPOS:
     - SwiftGen
 
 SPEC CHECKSUMS:
-  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   Firebase: 458d109512200d1aca2e1b9b6cf7d68a869a4a46
   FirebaseAnalytics: 45f36d9c429fc91d206283900ab75390cd05ee8a
   FirebaseAuth: 7d0f84873926f6648bbd1391a318dfb1a26b5e4f
@@ -156,6 +152,6 @@ SPEC CHECKSUMS:
   Reusable: 82be188f29d96dc5eff0db7b2393bcc08d2cdd5b
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
 
-PODFILE CHECKSUM: 2a46375a5209ab59b0b9c69b98a131f6f8a325ff
+PODFILE CHECKSUM: 3640de68df9c1ac045c9849bbae18705d2d3d914
 
 COCOAPODS: 1.8.3
