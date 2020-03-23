@@ -1,4 +1,4 @@
-framework module Pods_LoveCoupons {
+module Pods_LoveCoupons {
   umbrella header "Pods-LoveCoupons-umbrella.h"
 
   export *

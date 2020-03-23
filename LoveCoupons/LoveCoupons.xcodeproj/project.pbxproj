@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,8 +27,7 @@
 		0ABD2FEE2388590F00E04254 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD2FED2388590F00E04254 /* SettingsView.swift */; };
 		0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F0192379CD3800887BAF /* SceneDelegate.swift */; };
 		0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F01B2379CDA400887BAF /* LoginView.swift */; };
-		96583C70240D199600A23351 /* Pods_LoveCoupons.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		96583C71240D199600A23351 /* Pods_LoveCoupons.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		81EDAB89622ED7988D14A400 /* libPods-LoveCoupons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */; };
 		96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C73240FEA0700A23351 /* MyCouponsView.swift */; };
 		96583C76241292AD00A23351 /* PairCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C75241292AD00A23351 /* PairCouponsView.swift */; };
 		969232912420E11600C2D85E /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969232902420E11600C2D85E /* SelectableText.swift */; };
@@ -44,7 +43,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				96583C71240D199600A23351 /* Pods_LoveCoupons.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +84,7 @@
 		9692329E24221ECE00C2D85E /* CacheImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImages.swift; sourceTree = "<group>"; };
 		96A583AD99643BD083C1D8B9 /* Pods-EmptyProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.release.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.release.xcconfig"; sourceTree = "<group>"; };
 		A0A1C3DCA9E017CF1E594503 /* Pods-LoveCoupons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.release.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.release.xcconfig"; sourceTree = "<group>"; };
+		AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoveCoupons.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F74DF1D969E88C22542BC8 /* Pods-RevolutTestApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.debug.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,7 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96583C70240D199600A23351 /* Pods_LoveCoupons.framework in Frameworks */,
+				81EDAB89622ED7988D14A400 /* libPods-LoveCoupons.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +116,7 @@
 				0A7CB76F236349E30029FBD3 /* Products */,
 				6765E5898D8CFD36C251AE74 /* Pods */,
 				E0B5F5AF26C395070E14CFA3 /* Frameworks */,
+				0AF2A9CB2429036E00E0049E /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -235,6 +235,14 @@
 			path = LoginAndSignup;
 			sourceTree = "<group>";
 		};
+		0AF2A9CB2429036E00E0049E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		6765E5898D8CFD36C251AE74 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -251,7 +259,7 @@
 		E0B5F5AF26C395070E14CFA3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */,
+				AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -268,7 +276,6 @@
 				0A7CB76A236349E30029FBD3 /* Sources */,
 				0A7CB76B236349E30029FBD3 /* Frameworks */,
 				0A7CB76C236349E30029FBD3 /* Resources */,
-				CEFA662E08A64986103CFD84 /* [CP] Embed Pods Frameworks */,
 				96583C72240D199600A23351 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -366,23 +373,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CEFA662E08A64986103CFD84 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -559,19 +549,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "LoveCoupons/Love Coupons.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z43G5H86KV;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dmitry.vorozhbicki.LoveCoupons;
 				PRODUCT_NAME = "Love Coupons";
-				SUPPORTS_MACCATALYST = YES;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -581,19 +576,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "LoveCoupons/Love Coupons.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = Z43G5H86KV;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dmitry.vorozhbicki.LoveCoupons;
 				PRODUCT_NAME = "Love Coupons";
-				SUPPORTS_MACCATALYST = YES;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -5,7 +5,7 @@
 //  Copyright © 2019 Dmitry Vorozhbicki. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Firebase
 
 class APIManager {
