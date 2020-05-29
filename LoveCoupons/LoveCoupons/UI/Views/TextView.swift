@@ -26,6 +26,8 @@ struct TextView: UIViewRepresentable {
         myTextView.isUserInteractionEnabled = true
         myTextView.backgroundColor = UIColor(white: 0.0, alpha: 0.05)
 
+        myTextView.returnKeyType = .done
+        
         return myTextView
     }
 
@@ -46,8 +48,11 @@ struct TextView: UIViewRepresentable {
         }
 
         func textViewDidChange(_ textView: UITextView) {
-            print("text now: \(String(describing: textView.text!))")
-            self.parent.text = textView.text
+            if textView.text == "\n" {
+                textView.resignFirstResponder()
+            } else {
+                self.parent.text = textView.text
+            }
         }
     }
 }

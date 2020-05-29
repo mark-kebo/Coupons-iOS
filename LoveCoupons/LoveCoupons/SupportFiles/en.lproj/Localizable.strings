@@ -9,6 +9,7 @@
 "alert.resetPassword" = "A password reset link has been sent to your email address";
 
 "api default error" = "An error has occurred; try again later";
+"error fields" = "Fill in all the fields";
 "error" = "Error";
 //UI
 
@@ -23,7 +24,6 @@
 "login&SignUp.button.create" = "Create";
 
 "login&SignUp.button.send" = "Send";
-
 
 "settings.tab" = "Settings";
 "settings.logout" = "Logout";

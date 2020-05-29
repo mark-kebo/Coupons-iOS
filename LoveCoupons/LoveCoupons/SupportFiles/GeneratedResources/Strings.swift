@@ -15,6 +15,8 @@ internal enum L10n {
   internal static let apiDefaultError = L10n.tr("Localizable", "api default error")
   /// Error
   internal static let error = L10n.tr("Localizable", "error")
+  /// Fill in all the fields
+  internal static let errorFields = L10n.tr("Localizable", "error fields")
 
   internal enum Alert {
     /// No Internet connection

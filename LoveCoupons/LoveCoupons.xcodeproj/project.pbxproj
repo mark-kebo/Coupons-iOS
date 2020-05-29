@@ -29,6 +29,8 @@
 		0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F01B2379CDA400887BAF /* LoginView.swift */; };
 		0AF2A9D424290D7B00E0049E /* CouponEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9D324290D7B00E0049E /* CouponEditView.swift */; };
 		0AF2A9D6242942AD00E0049E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9D5242942AD00E0049E /* TextView.swift */; };
+		0AF2A9D8242A3EAE00E0049E /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */; };
+		0AF2A9DC242AA21300E0049E /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9DB242AA21300E0049E /* ActivityIndicator.swift */; };
 		81EDAB89622ED7988D14A400 /* libPods-LoveCoupons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */; };
 		96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C73240FEA0700A23351 /* MyCouponsView.swift */; };
 		96583C76241292AD00A23351 /* PairCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C75241292AD00A23351 /* PairCouponsView.swift */; };
@@ -77,6 +79,8 @@
 		0AE5F0462379D4FE00887BAF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0AF2A9D324290D7B00E0049E /* CouponEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditView.swift; sourceTree = "<group>"; };
 		0AF2A9D5242942AD00E0049E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
+		0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
+		0AF2A9DB242AA21300E0049E /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		0E5F775458F874B14B6C9009 /* Pods-RevolutTestApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.release.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.release.xcconfig"; sourceTree = "<group>"; };
 		725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoveCoupons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E86B90C1526866D78D66DAC /* Pods-EmptyProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.debug.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.debug.xcconfig"; sourceTree = "<group>"; };
@@ -186,6 +190,8 @@
 				969232902420E11600C2D85E /* SelectableText.swift */,
 				96923299242111F200C2D85E /* CouponView.swift */,
 				0AF2A9D5242942AD00E0049E /* TextView.swift */,
+				0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */,
+				0AF2A9DB242AA21300E0049E /* ActivityIndicator.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -402,6 +408,8 @@
 				0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */,
 				0A7CB7A223637A2D0029FBD3 /* Assets-Constants.swift in Sources */,
 				0A3647CE2380647600F3393D /* SignUpView.swift in Sources */,
+				0AF2A9D8242A3EAE00E0049E /* CaptureImageView.swift in Sources */,
+				0AF2A9DC242AA21300E0049E /* ActivityIndicator.swift in Sources */,
 				9692329F24221ECE00C2D85E /* CacheImages.swift in Sources */,
 				969232912420E11600C2D85E /* SelectableText.swift in Sources */,
 				0A7CB7A423637A2D0029FBD3 /* Strings.swift in Sources */,

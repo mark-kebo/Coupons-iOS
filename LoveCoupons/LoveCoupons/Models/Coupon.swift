@@ -10,9 +10,9 @@ import Foundation
 
 struct Coupon: Identifiable, Hashable {
     var id = UUID()
-    
-    let description: String?
-    let image: String?
+    var key: String?
+    var description: String?
+    var image: String?
     
     init() {
         description = ""

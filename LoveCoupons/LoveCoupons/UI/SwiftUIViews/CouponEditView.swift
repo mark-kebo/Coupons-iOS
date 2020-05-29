@@ -16,32 +16,67 @@ enum CouponEditState {
 struct CouponEditView: View {
     private let apiManager = APIManager.sharedInstance
     @State private var color: Color = Color("AppRed")
-    @State private var image: UIImage = UIImage(asset: Asset.addImage)
+    @State private var image: UIImage? = UIImage(asset: Asset.addImage)
     @State private var text: String = ""
-
-    var coupon: Coupon
+    @State var coupon: Coupon
     var id: Int
     var state: CouponEditState
-
+    @State private var alertString: String = ""
+    @State private var alertTitle: String = ""
+    @State private var showingAlert = false
+    @State private var showCaptureImageView = false
+    @State private var isShowLoading = false
+    @State private var isNewImageSet = false
+    @Environment(\.presentationMode) private var presentationMode
+    
     var body: some View {
-        VStack {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
-                .cornerRadius(20)
-                .padding(16)
-            Spacer()
-            TextView(text: $text)
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
+        LoadingView(isShowing: $isShowLoading) {
+            ZStack {
+                VStack {
+                    Image(uiImage: self.image ?? UIImage())
+                        .resizable()
+                        .scaledToFit()
+                        .cornerRadius(20)
+                        .padding(16)
+                        .onTapGesture {
+                            self.showCaptureImageView.toggle()
+                        }
+                    Spacer()
+                    TextView(text: self.$text)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(10)
+                }
+                .onAppear(perform: self.onAppear)
+                .alert(isPresented: self.$showingAlert) { () -> Alert in
+                    Alert(title: Text(self.alertTitle), message: Text(self.alertString))
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .navigationBarHidden(false)
+                .navigationBarTitle(Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)" : L10n.Coupon.add).font(.title), displayMode: .inline)
+                .navigationBarItems(trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
+                    self.isShowLoading.toggle()
+                    if self.text != self.coupon.description && !self.text.isEmpty && self.state == .edit {
+                        self.coupon.description = self.text
+                    } else {
+                        self.coupon = Coupon(description: self.text, image: "")
+                    }
+                    self.apiManager.updateCoupon(self.coupon, data: self.isNewImageSet ? self.image?.jpegData(compressionQuality: 0.5) : nil) { error in
+                        self.isShowLoading.toggle()
+                        if let error = error?.localizedDescription {
+                            self.alertString = error
+                            self.showingAlert = true
+                        } else {
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                })
+                if (self.showCaptureImageView) {
+                    CaptureImageView(isShown: self.$showCaptureImageView, isReturnImage: self.$isNewImageSet, image: self.$image)
+                    .navigationBarHidden(true)
+                }
+            }
         }
-        .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .onAppear(perform: onAppear)
-        .navigationBarTitle(Text(state == .edit ? "\(L10n.Coupon.title) #\(id)" : L10n.Coupon.add).font(.title), displayMode: .inline)
-        .navigationBarItems(trailing: PrimaryButton(title: state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
-
-        })
     }
     
     private func onAppear() {

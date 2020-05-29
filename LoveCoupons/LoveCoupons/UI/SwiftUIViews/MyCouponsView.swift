@@ -19,7 +19,7 @@ struct MyCouponsView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(Array(coupons.enumerated()), id: \.offset) { index, coupon in
+                ForEach(Array(coupons.enumerated()), id: \.element) { index, coupon in
                     NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
                         CouponView(coupon: coupon, id: index + 1)
                     }
@@ -37,7 +37,13 @@ struct MyCouponsView: View {
     }
     
     private func deleteItems(at offsets: IndexSet) {
-        coupons.remove(atOffsets: offsets)
+        guard let first = offsets.first else { return }
+        apiManager.deleteCoupon(coupons[first]) { error in
+            if let error = error?.localizedDescription {
+                self.alertString = error
+                self.showingAlert = true
+            }
+        }
     }
             
     private func setList() {

@@ -11,9 +11,11 @@ import UIKit
 protocol CacheProtocol {
     func add(imageToCacheBy key: NSString, and object: UIImage)
     func check(imageInCacheBy key: NSString) -> UIImage?
+    func delete(imageBy key: NSString)
 }
 
 class CacheImages: CacheProtocol {
+    
     var dictionaryCache = [NSString: UIImage]()
     
     func add(imageToCacheBy key: NSString, and object: UIImage) {
@@ -22,5 +24,9 @@ class CacheImages: CacheProtocol {
     
     func check(imageInCacheBy key: NSString) -> UIImage? {
         return dictionaryCache[key]
+    }
+    
+    func delete(imageBy key: NSString) {
+        dictionaryCache.removeValue(forKey: key)
     }
 }
