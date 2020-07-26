@@ -25,13 +25,14 @@ struct SettingsView: View {
                     PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)
                     HStack {
                         Text(verbatim: L10n.Settings.yourId)
-                            .font(.caption)
-                        SelectableText(apiManager.userUid ?? "", selectable: true, fontSize: 12, color: UIColor(asset: Asset.appRed))
+                            .font(.custom("DRAguScript-Book", size: 14))
+                        SelectableText(apiManager.userUid ?? "", selectable: true, fontSize: 14, color: UIColor(asset: Asset.appRed))
                             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
                     }
                     .padding(.top, 16)
                     .padding(.bottom, 16)
                 }
+                .padding(.top, 16)
                 PrimaryButton(title: L10n.Settings.logout, style: .light) {
                     self.apiManager.logout { error in
                         if let error = error {
@@ -46,8 +47,8 @@ struct SettingsView: View {
                     }
                 }
                 .frame(minWidth: 0, maxWidth: 60, minHeight: 64, alignment: .center)
-                .navigationBarItems(leading: Text(L10n.Settings.tab).font(.title),
-                                    trailing: PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
+                .navigationBarTitle(Text(""),displayMode: .inline)
+                .navigationBarItems(leading: Text(L10n.Settings.tab.uppercased()).font(.custom("3dumb", size: 28)), trailing: PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
                     self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
                         if let error = error?.localizedDescription {
                             self.alertTitle = L10n.error
@@ -67,7 +68,6 @@ struct SettingsView: View {
                 Alert(title: Text(alertTitle), message: Text(alertString))
             }
         }
-        .padding(.top, 16)
         .onAppear(perform: setTextFields)
     }
     

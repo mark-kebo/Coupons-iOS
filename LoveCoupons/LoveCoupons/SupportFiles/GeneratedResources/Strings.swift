@@ -17,6 +17,8 @@ internal enum L10n {
   internal static let error = L10n.tr("Localizable", "error")
   /// Fill in all the fields
   internal static let errorFields = L10n.tr("Localizable", "error fields")
+  /// No internet connection.\nPlease connect and try again
+  internal static let noInternetConnection = L10n.tr("Localizable", "noInternetConnection")
 
   internal enum Alert {
     /// No Internet connection
@@ -50,6 +52,8 @@ internal enum L10n {
     internal static let delete = L10n.tr("Localizable", "button.delete")
     /// Edit
     internal static let edit = L10n.tr("Localizable", "button.edit")
+    /// Reload app
+    internal static let refresh = L10n.tr("Localizable", "button.refresh")
   }
 
   internal enum Coupon {

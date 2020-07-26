@@ -37,6 +37,9 @@
 "coupon.use" = "Use coupon";
 "button.delete" = "Delete";
 "button.edit" = "Edit";
+"button.refresh" = "Reload app";
 
 "coupon.title" = "Coupon";
 "coupon.add" = "New Coupon";
+
+"noInternetConnection" = "No internet connection.\nPlease connect and try again";

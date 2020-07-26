@@ -21,9 +21,9 @@ struct LoginView: View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .center, spacing: Constants.stackSpacing) {
-                    Text(L10n.LoginSignUp.title)
+                    Text(L10n.LoginSignUp.title.uppercased())
                         .padding()
-                        .font(.title)
+                        .font(.custom("3dumb", size: 33))
                     VStack {
                         PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
                         PrimaryTextField(title: L10n.LoginSignUp.password, isSecure: true, text: $password)

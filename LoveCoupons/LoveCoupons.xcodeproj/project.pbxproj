@@ -22,6 +22,11 @@
 		0A7CB7A323637A2D0029FBD3 /* Storyboards-Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB7A023637A2D0029FBD3 /* Storyboards-Constants.swift */; };
 		0A7CB7A423637A2D0029FBD3 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB7A123637A2D0029FBD3 /* Strings.swift */; };
 		0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB7AD23638BA70029FBD3 /* APIManager.swift */; };
+		0A80C6F724CAFB5100105ACF /* 3dumb.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A80C6F524CAFB5000105ACF /* 3dumb.ttf */; };
+		0A80C6F824CAFB5100105ACF /* DRAguScript-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A80C6F624CAFB5100105ACF /* DRAguScript-Book.ttf */; };
+		0A80C6FD24CB3C6100105ACF /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A80C6FC24CB3C6100105ACF /* UIApplication.swift */; };
+		0A80C6FF24CC6BF700105ACF /* NoInternetConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A80C6FE24CC6BF700105ACF /* NoInternetConnectionView.swift */; };
+		0A80C70124CC734B00105ACF /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A80C70024CC734B00105ACF /* Reachability.swift */; };
 		0A982FD72364F72C0082E142 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A982FD62364F72C0082E142 /* Constants.swift */; };
 		0ABD2FEC238843EB00E04254 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD2FEB238843EB00E04254 /* UserInfo.swift */; };
 		0ABD2FEE2388590F00E04254 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABD2FED2388590F00E04254 /* SettingsView.swift */; };
@@ -70,13 +75,18 @@
 		0A7CB7A023637A2D0029FBD3 /* Storyboards-Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Storyboards-Constants.swift"; sourceTree = "<group>"; };
 		0A7CB7A123637A2D0029FBD3 /* Strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		0A7CB7AD23638BA70029FBD3 /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		0A80C6F524CAFB5000105ACF /* 3dumb.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = 3dumb.ttf; sourceTree = "<group>"; };
+		0A80C6F624CAFB5100105ACF /* DRAguScript-Book.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DRAguScript-Book.ttf"; sourceTree = "<group>"; };
+		0A80C6FC24CB3C6100105ACF /* UIApplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplication.swift; sourceTree = "<group>"; };
+		0A80C6FE24CC6BF700105ACF /* NoInternetConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInternetConnectionView.swift; sourceTree = "<group>"; };
+		0A80C70024CC734B00105ACF /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		0A982FD62364F72C0082E142 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0ABD2FEB238843EB00E04254 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		0ABD2FED2388590F00E04254 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0AE5EFF62379BCA700887BAF /* Love Coupons.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Love Coupons.entitlements"; sourceTree = "<group>"; };
 		0AE5F0192379CD3800887BAF /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		0AE5F01B2379CDA400887BAF /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		0AE5F0462379D4FE00887BAF /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0AE5F0462379D4FE00887BAF /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		0AF2A9D324290D7B00E0049E /* CouponEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditView.swift; sourceTree = "<group>"; };
 		0AF2A9D5242942AD00E0049E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
@@ -140,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				0AE5EFF62379BCA700887BAF /* Love Coupons.entitlements */,
+				0A80C6FB24CB3C2700105ACF /* Extensions */,
 				0A28660E23644F0700773A5A /* Utils */,
 				0A7CB7AA23637F160029FBD3 /* Models */,
 				0A7CB78A236364DA0029FBD3 /* Managers */,
@@ -152,10 +163,11 @@
 		0A7CB785236363790029FBD3 /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
+				0A80C6F424CAFB3700105ACF /* Fonts */,
 				0A7CB79E23637A1B0029FBD3 /* GeneratedResources */,
 				0A7CB79B236379350029FBD3 /* Localizable.strings */,
 				0A2F4D43238565BB005E865F /* GoogleService-Info.plist */,
-				0AE5F0462379D4FE00887BAF /* Info.plist */,
+				0AE5F0462379D4FE00887BAF /* info.plist */,
 				0AE5F0192379CD3800887BAF /* SceneDelegate.swift */,
 				0A7CB771236349E30029FBD3 /* AppDelegate.swift */,
 				0A7CB77A236349E90029FBD3 /* Assets.xcassets */,
@@ -205,6 +217,7 @@
 				96583C73240FEA0700A23351 /* MyCouponsView.swift */,
 				96583C75241292AD00A23351 /* PairCouponsView.swift */,
 				0AF2A9D324290D7B00E0049E /* CouponEditView.swift */,
+				0A80C6FE24CC6BF700105ACF /* NoInternetConnectionView.swift */,
 			);
 			path = SwiftUIViews;
 			sourceTree = "<group>";
@@ -214,6 +227,7 @@
 			children = (
 				0A7CB7AD23638BA70029FBD3 /* APIManager.swift */,
 				9692329E24221ECE00C2D85E /* CacheImages.swift */,
+				0A80C70024CC734B00105ACF /* Reachability.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -235,6 +249,23 @@
 				969232972421004800C2D85E /* Coupon.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		0A80C6F424CAFB3700105ACF /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				0A80C6F524CAFB5000105ACF /* 3dumb.ttf */,
+				0A80C6F624CAFB5100105ACF /* DRAguScript-Book.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		0A80C6FB24CB3C2700105ACF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0A80C6FC24CB3C6100105ACF /* UIApplication.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		0ABD2FE82387FA8B00E04254 /* LoginAndSignup */ = {
@@ -337,10 +368,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A80C6F724CAFB5100105ACF /* 3dumb.ttf in Resources */,
 				0A7CB79223636B490029FBD3 /* LaunchScreen.storyboard in Resources */,
 				0A2F4D44238565BB005E865F /* GoogleService-Info.plist in Resources */,
 				0A7CB79D236379350029FBD3 /* Localizable.strings in Resources */,
 				0A7CB77B236349E90029FBD3 /* Assets.xcassets in Resources */,
+				0A80C6F824CAFB5100105ACF /* DRAguScript-Book.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -394,11 +427,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A80C6FD24CB3C6100105ACF /* UIApplication.swift in Sources */,
 				0A7CB7A323637A2D0029FBD3 /* Storyboards-Constants.swift in Sources */,
+				0A80C6FF24CC6BF700105ACF /* NoInternetConnectionView.swift in Sources */,
 				0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */,
 				96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */,
 				0A11A723237AE41E00C2E1B9 /* PrimaryButton.swift in Sources */,
 				969232982421004800C2D85E /* Coupon.swift in Sources */,
+				0A80C70124CC734B00105ACF /* Reachability.swift in Sources */,
 				0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */,
 				0AF2A9D424290D7B00E0049E /* CouponEditView.swift in Sources */,
 				0A3647D023806B1E00F3393D /* PrimaryNavigationButton.swift in Sources */,
@@ -495,7 +531,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -549,7 +585,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -569,14 +605,14 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = Z43G5H86KV;
+				DEVELOPMENT_TEAM = AJXYUW5YRR;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dmitry.vorozhbicki.LoveCoupons;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dmitry.vorozhbicki.Love-Coupons";
 				PRODUCT_NAME = "Love Coupons";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -596,14 +632,14 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = Z43G5H86KV;
+				DEVELOPMENT_TEAM = AJXYUW5YRR;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dmitry.vorozhbicki.LoveCoupons;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dmitry.vorozhbicki.Love-Coupons";
 				PRODUCT_NAME = "Love Coupons";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";

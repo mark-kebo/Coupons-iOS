@@ -39,6 +39,7 @@ struct CouponEditView: View {
                         .cornerRadius(20)
                         .padding(16)
                         .onTapGesture {
+                            UIApplication.shared.endEditing()
                             self.showCaptureImageView.toggle()
                         }
                     Spacer()
@@ -53,8 +54,8 @@ struct CouponEditView: View {
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .navigationBarHidden(false)
-                .navigationBarTitle(Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)" : L10n.Coupon.add).font(.title), displayMode: .inline)
-                .navigationBarItems(trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
+                .navigationBarTitle(Text(""),displayMode: .inline)
+                .navigationBarItems(leading: Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)".uppercased() : L10n.Coupon.add.uppercased()).font(.custom("3dumb", size: 28)), trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
                     self.isShowLoading.toggle()
                     if self.text != self.coupon.description && !self.text.isEmpty && self.state == .edit {
                         self.coupon.description = self.text
@@ -71,6 +72,8 @@ struct CouponEditView: View {
                         }
                     }
                 })
+                .navigationBarBackButtonHidden(false)
+
                 if (self.showCaptureImageView) {
                     CaptureImageView(isShown: self.$showCaptureImageView, isReturnImage: self.$isNewImageSet, image: self.$image)
                     .navigationBarHidden(true)
@@ -93,6 +96,6 @@ struct CouponEditView: View {
 
 struct CouponEditView_Previews: PreviewProvider {
     static var previews: some View {
-        CouponEditView(coupon: Coupon(description: "Test", image: "https"), id: 1, state: .edit)
+        CouponEditView(coupon: Coupon(description: "Test", image: "https"), id: 1, state: .add)
     }
 }

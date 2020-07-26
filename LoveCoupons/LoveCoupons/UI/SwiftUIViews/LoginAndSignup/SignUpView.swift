@@ -21,8 +21,8 @@ struct SignUpView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: Constants.stackSpacing) {
-                Text(L10n.LoginSignUp.Button.signUp)
-                    .font(.title)
+                Text(L10n.LoginSignUp.Button.signUp.uppercased())
+                    .font(.custom("3dumb", size: 33))
                 VStack {
                     PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
                     PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)

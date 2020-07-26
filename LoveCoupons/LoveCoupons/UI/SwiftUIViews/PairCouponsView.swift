@@ -21,18 +21,20 @@ struct PairCouponsView: View {
             List(Array(coupons.enumerated()), id: \.offset) { index, coupon in
                 CouponView(coupon: coupon, id: index + 1)
             }
-            .navigationBarItems(leading: Text(L10n.PairCoupons.title).font(.title))
+            .environment(\.defaultMinListRowHeight, 200)
+            .navigationBarTitle(Text(""),displayMode: .inline)
+            .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom("3dumb", size: 28)))
         }
-        .padding(.top, 16)
         .alert(isPresented: $showingAlert) { () -> Alert in
             Alert(title: Text(alertTitle), message: Text(alertString))
         }
-        .onAppear(perform: setList)
+        .onAppear(perform: onAppear)
     }
     
-    private func setList() {
+    private func onAppear() {
         coupons.removeAll()
-        UITableView.appearance().separatorColor = .clear
+        UITableViewCell.appearance().selectionStyle = .none
+        UITableView.appearance().separatorStyle = .none
         apiManager.getPairCoupons { coupons, error in
             if let error = error?.localizedDescription {
                 self.alertString = error

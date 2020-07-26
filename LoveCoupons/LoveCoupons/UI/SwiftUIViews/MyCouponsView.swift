@@ -15,38 +15,44 @@ struct MyCouponsView: View {
     @State private var alertTitle: String = ""
     @State private var showingAlert = false
     @State private var coupons: [Coupon] = []
+    @State private var isShowLoading = false
 
     var body: some View {
-        NavigationView {
-            List {
-                ForEach(Array(coupons.enumerated()), id: \.element) { index, coupon in
-                    NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
-                        CouponView(coupon: coupon, id: index + 1)
+        LoadingView(isShowing: $isShowLoading) {
+            NavigationView {
+                List {
+                    ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
+                        NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
+                            CouponView(coupon: coupon, id: index + 1)
+                        }
                     }
+                    .onDelete(perform: self.deleteItems)
                 }
-                .onDelete(perform: deleteItems)
+                .environment(\.defaultMinListRowHeight, 200)
+                .navigationBarTitle(Text(""),displayMode: .inline)
+                .navigationBarItems(leading: Text(L10n.MyCoupons.title.uppercased()).font(.custom("3dumb", size: 28)), trailing: PrimaryNavigationButton(title: L10n.Button.add, style: .fill, destination: CouponEditView(coupon: Coupon(), id: 0, state: .add)))
             }
-            .navigationBarItems(leading: Text(L10n.MyCoupons.title).font(.title),
-                            trailing: PrimaryNavigationButton(title: L10n.Button.add, style: .fill, destination: AnyView(CouponEditView(coupon: Coupon(), id: 0, state: .add))))
+            .alert(isPresented: self.$showingAlert) { () -> Alert in
+                Alert(title: Text(self.alertTitle), message: Text(self.alertString))
+            }
+            .onAppear(perform: self.onAppear)
         }
-        .padding(.top, 16)
-        .alert(isPresented: $showingAlert) { () -> Alert in
-            Alert(title: Text(alertTitle), message: Text(alertString))
-        }
-        .onAppear(perform: setList)
     }
     
     private func deleteItems(at offsets: IndexSet) {
+        self.isShowLoading = true
         guard let first = offsets.first else { return }
         apiManager.deleteCoupon(coupons[first]) { error in
             if let error = error?.localizedDescription {
                 self.alertString = error
                 self.showingAlert = true
             }
+            self.isShowLoading = false
         }
     }
             
-    private func setList() {
+    private func onAppear() {
+        self.isShowLoading = true
         coupons.removeAll()
         UITableView.appearance().separatorColor = .clear
         apiManager.getMyCoupons { coupons, error in
@@ -58,6 +64,7 @@ struct MyCouponsView: View {
                     coupon1.description ?? "" < coupon2.description ?? ""
                 }
             }
+            self.isShowLoading = false
         }
     }
 }

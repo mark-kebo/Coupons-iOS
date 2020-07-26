@@ -16,7 +16,7 @@ struct SelectableText: UIViewRepresentable {
     private var fontSize: CGFloat
     private var color: UIColor
 
-    init(_ text: String, selectable: Bool = true, fontSize: CGFloat = 16, color: UIColor = .black) {
+    init(_ text: String, selectable: Bool = true, fontSize: CGFloat = 20, color: UIColor = .black) {
         self.text = text
         self.fontSize = fontSize
         self.color = color
@@ -28,7 +28,7 @@ struct SelectableText: UIViewRepresentable {
         textField.delegate = textField
         textField.text = self.text
         textField.textColor = self.color
-        textField.font = UIFont.systemFont(ofSize: fontSize)
+        textField.font = UIFont(name: "DRAguScript-Book", size: fontSize)
         textField.setContentHuggingPriority(.defaultHigh, for: .vertical)
         textField.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return textField
@@ -97,4 +97,10 @@ class CustomUITextField: UITextField, UITextFieldDelegate {
         return self._isEditable
     }
 
+}
+
+struct SelectableText_Previews: PreviewProvider {
+    static var previews: some View {
+        SelectableText("test")
+    }
 }

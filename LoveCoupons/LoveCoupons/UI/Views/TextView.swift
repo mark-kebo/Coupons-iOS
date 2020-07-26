@@ -20,7 +20,7 @@ struct TextView: UIViewRepresentable {
         let myTextView = UITextView()
         myTextView.delegate = context.coordinator
 
-        myTextView.font = UIFont(name: "HelveticaNeue", size: 15)
+        myTextView.font = UIFont(name: "DRAguScript-Book", size: 20)
         myTextView.isScrollEnabled = true
         myTextView.isEditable = true
         myTextView.isUserInteractionEnabled = true
@@ -54,5 +54,11 @@ struct TextView: UIViewRepresentable {
                 self.parent.text = textView.text
             }
         }
+    }
+}
+
+struct TextView_Previews: PreviewProvider {
+    static var previews: some View {
+        TextView(text: .constant("Test"))
     }
 }
