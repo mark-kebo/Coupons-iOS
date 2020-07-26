@@ -13,6 +13,10 @@ struct TabRootView: View {
     
     @State private var selection = 0
     
+    init() {
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.init(name: "DRAguScript-Book", size: 14) ?? UIFont.systemFont(ofSize: 14)], for: .normal)
+    }
+    
     var body: some View {
         TabView(selection: $selection) {
             PairCouponsView()

@@ -8,17 +8,18 @@
 
 import SwiftUI
 
-struct PrimaryNavigationButton: View {
+struct PrimaryNavigationButton <Content: View>: View {
     @State private var color: Color = Color("AppRed")
-    @State private var spacing: CGFloat = 16
+    @State private var spacing: CGFloat = 8
 
     var title: String
     var style: Style
-    var destination: AnyView
+    var destination: Content?
 
     var body: some View {
         NavigationLink(destination: destination) {
             Text(title)
+                .font(.custom("DRAguScript-Book", size: 20))
                 .font(style == Style.fill ? .body : .callout)
                 .frame(minWidth: 0, maxWidth: .infinity)
                 .padding(style == Style.fill ? spacing : 0)
@@ -26,5 +27,11 @@ struct PrimaryNavigationButton: View {
                 .background(style == Style.fill ? color : color.opacity(0))
                 .cornerRadius(.infinity)
         }
+    }
+}
+
+struct PrimaryNavigationButton_Previews: PreviewProvider {
+    static var previews: some View {
+        PrimaryNavigationButton<AnyView>(title: "Test", style: .fill, destination: nil)
     }
 }

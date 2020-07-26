@@ -11,6 +11,7 @@ enum Constants {
     static let authKey = "Auth"
     static let rootDirectory = "coupons-love"
     static let userInfoDirectory = "userInfo"
+    static let couponsDirectory = "coupons"
     static let stackSpacing: CGFloat = 16
 
 }

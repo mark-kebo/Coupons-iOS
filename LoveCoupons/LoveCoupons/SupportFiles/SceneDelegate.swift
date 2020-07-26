@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             setupRootVC()
             window.makeKeyAndVisible()
         }
+        Reachability.sharedInstance.startMonitor()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -68,5 +69,9 @@ extension SceneDelegate {
         } else {
             window?.rootViewController = UIHostingController(rootView: LoginView())
         }
+    }
+    
+    func noInternetVC() {
+        window?.rootViewController = UIHostingController(rootView: NoInternetConnectionView())
     }
 }

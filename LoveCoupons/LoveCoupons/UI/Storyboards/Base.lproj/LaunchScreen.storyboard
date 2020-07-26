@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,17 +16,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="sKP-o8-Sxe">
-                                <rect key="frame" x="110" y="234" width="100" height="100"/>
+                                <rect key="frame" x="80" y="164" width="160" height="160"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="1DI-SN-suf"/>
-                                    <constraint firstAttribute="height" constant="100" id="pvP-wn-ZeQ"/>
+                                    <constraint firstAttribute="width" constant="160" id="1DI-SN-suf"/>
+                                    <constraint firstAttribute="height" constant="160" id="pvP-wn-ZeQ"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="spinner" translatesAutoresizingMaskIntoConstraints="NO" id="2zy-yk-2j0">
+                                <rect key="frame" x="85" y="340" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="PSJ-R8-iST"/>
+                                    <constraint firstAttribute="width" constant="150" id="uVn-cj-cqZ"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="2zy-yk-2j0" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="FVb-2x-bDk"/>
+                            <constraint firstItem="2zy-yk-2j0" firstAttribute="top" secondItem="sKP-o8-Sxe" secondAttribute="bottom" constant="16" id="p58-YS-SfD"/>
                             <constraint firstItem="sKP-o8-Sxe" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="xW8-m0-6KQ"/>
-                            <constraint firstItem="sKP-o8-Sxe" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="yhn-Cs-eCe"/>
+                            <constraint firstItem="sKP-o8-Sxe" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="-40" id="yhn-Cs-eCe"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -37,6 +46,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="logo" width="512" height="512"/>
+        <image name="logo" width="1024" height="1024"/>
+        <image name="spinner" width="200" height="200"/>
     </resources>
 </document>

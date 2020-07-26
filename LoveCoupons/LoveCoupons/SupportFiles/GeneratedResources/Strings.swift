@@ -15,6 +15,10 @@ internal enum L10n {
   internal static let apiDefaultError = L10n.tr("Localizable", "api default error")
   /// Error
   internal static let error = L10n.tr("Localizable", "error")
+  /// Fill in all the fields
+  internal static let errorFields = L10n.tr("Localizable", "error fields")
+  /// No internet connection.\nPlease connect and try again
+  internal static let noInternetConnection = L10n.tr("Localizable", "noInternetConnection")
 
   internal enum Alert {
     /// No Internet connection
@@ -44,6 +48,21 @@ internal enum L10n {
   internal enum Button {
     /// Add
     internal static let add = L10n.tr("Localizable", "button.add")
+    /// Delete
+    internal static let delete = L10n.tr("Localizable", "button.delete")
+    /// Edit
+    internal static let edit = L10n.tr("Localizable", "button.edit")
+    /// Reload app
+    internal static let refresh = L10n.tr("Localizable", "button.refresh")
+  }
+
+  internal enum Coupon {
+    /// New Coupon
+    internal static let add = L10n.tr("Localizable", "coupon.add")
+    /// Coupon
+    internal static let title = L10n.tr("Localizable", "coupon.title")
+    /// Use coupon
+    internal static let use = L10n.tr("Localizable", "coupon.use")
   }
 
   internal enum LoginSignUp {

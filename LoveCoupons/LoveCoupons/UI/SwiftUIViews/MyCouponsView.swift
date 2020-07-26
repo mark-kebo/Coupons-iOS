@@ -9,26 +9,62 @@
 import SwiftUI
 
 struct MyCouponsView: View {
-    var data: [String] = ["String1", "String2", "String3", "String4", "String5"]
+    private let apiManager = APIManager.sharedInstance
     
-    var body: some View {
-        VStack(alignment: .center, spacing: Constants.stackSpacing) {
-            HStack {
-                Text(L10n.MyCoupons.title)
-                    .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
-                Spacer()
-                PrimaryButton(title: L10n.Button.add, style: .fill, maxWidth: .none) {
-                        
-                }
-            }
-            .padding()
+    @State private var alertString: String = ""
+    @State private var alertTitle: String = ""
+    @State private var showingAlert = false
+    @State private var coupons: [Coupon] = []
+    @State private var isShowLoading = false
 
-            List {
-                ForEach(data, id: \.self) {
-                    Text($0)
+    var body: some View {
+        LoadingView(isShowing: $isShowLoading) {
+            NavigationView {
+                List {
+                    ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
+                        NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
+                            CouponView(coupon: coupon, id: index + 1)
+                        }
+                    }
+                    .onDelete(perform: self.deleteItems)
+                }
+                .environment(\.defaultMinListRowHeight, 200)
+                .navigationBarTitle(Text(""),displayMode: .inline)
+                .navigationBarItems(leading: Text(L10n.MyCoupons.title.uppercased()).font(.custom("3dumb", size: 28)), trailing: PrimaryNavigationButton(title: L10n.Button.add, style: .fill, destination: CouponEditView(coupon: Coupon(), id: 0, state: .add)))
+            }
+            .alert(isPresented: self.$showingAlert) { () -> Alert in
+                Alert(title: Text(self.alertTitle), message: Text(self.alertString))
+            }
+            .onAppear(perform: self.onAppear)
+        }
+    }
+    
+    private func deleteItems(at offsets: IndexSet) {
+        self.isShowLoading = true
+        guard let first = offsets.first else { return }
+        apiManager.deleteCoupon(coupons[first]) { error in
+            if let error = error?.localizedDescription {
+                self.alertString = error
+                self.showingAlert = true
+            }
+            self.isShowLoading = false
+        }
+    }
+            
+    private func onAppear() {
+        self.isShowLoading = true
+        coupons.removeAll()
+        UITableView.appearance().separatorColor = .clear
+        apiManager.getMyCoupons { coupons, error in
+            if let error = error?.localizedDescription {
+                self.alertString = error
+                self.showingAlert = true
+            } else if let coupons = coupons {
+                self.coupons = coupons.sorted { coupon1, coupon2 -> Bool in
+                    coupon1.description ?? "" < coupon2.description ?? ""
                 }
             }
+            self.isShowLoading = false
         }
     }
 }

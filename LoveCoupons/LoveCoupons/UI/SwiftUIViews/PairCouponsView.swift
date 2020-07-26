@@ -9,20 +9,39 @@
 import SwiftUI
 
 struct PairCouponsView: View {
-    var data: [String] = ["String1222", "String2222", "String3222", "String4222", "String5222"]
+    private let apiManager = APIManager.sharedInstance
+    
+    @State private var alertString: String = ""
+    @State private var alertTitle: String = ""
+    @State private var showingAlert = false
+    @State private var coupons: [Coupon] = []
 
     var body: some View {
-        VStack(alignment: .center, spacing: Constants.stackSpacing) {
-            HStack {
-                Text(L10n.PairCoupons.title)
-                    .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
+        NavigationView {
+            List(Array(coupons.enumerated()), id: \.offset) { index, coupon in
+                CouponView(coupon: coupon, id: index + 1)
             }
-            .padding()
-
-            List {
-                ForEach(data, id: \.self) {
-                    Text($0)
+            .environment(\.defaultMinListRowHeight, 200)
+            .navigationBarTitle(Text(""),displayMode: .inline)
+            .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom("3dumb", size: 28)))
+        }
+        .alert(isPresented: $showingAlert) { () -> Alert in
+            Alert(title: Text(alertTitle), message: Text(alertString))
+        }
+        .onAppear(perform: onAppear)
+    }
+    
+    private func onAppear() {
+        coupons.removeAll()
+        UITableViewCell.appearance().selectionStyle = .none
+        UITableView.appearance().separatorStyle = .none
+        apiManager.getPairCoupons { coupons, error in
+            if let error = error?.localizedDescription {
+                self.alertString = error
+                self.showingAlert = true
+            } else if let coupons = coupons {
+                self.coupons = coupons.sorted { coupon1, coupon2 -> Bool in
+                    coupon1.description ?? "" < coupon2.description ?? ""
                 }
             }
         }

@@ -9,6 +9,7 @@
 "alert.resetPassword" = "A password reset link has been sent to your email address";
 
 "api default error" = "An error has occurred; try again later";
+"error fields" = "Fill in all the fields";
 "error" = "Error";
 //UI
 
@@ -24,7 +25,6 @@
 
 "login&SignUp.button.send" = "Send";
 
-
 "settings.tab" = "Settings";
 "settings.logout" = "Logout";
 "settings.submit" = "Submit";
@@ -34,3 +34,12 @@
 "pairCoupons.title" = "Pair Coupons";
 
 "button.add" = "Add";
+"coupon.use" = "Use coupon";
+"button.delete" = "Delete";
+"button.edit" = "Edit";
+"button.refresh" = "Reload app";
+
+"coupon.title" = "Coupon";
+"coupon.add" = "New Coupon";
+
+"noInternetConnection" = "No internet connection.\nPlease connect and try again";
