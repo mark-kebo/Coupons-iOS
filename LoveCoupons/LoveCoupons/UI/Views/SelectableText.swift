@@ -28,6 +28,7 @@ struct SelectableText: UIViewRepresentable {
         textField.delegate = textField
         textField.text = self.text
         textField.textColor = self.color
+        textField.returnKeyType = .done
         textField.font = UIFont(name: Constants.textFont, size: fontSize)
         textField.setContentHuggingPriority(.defaultHigh, for: .vertical)
         textField.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -95,6 +96,11 @@ class CustomUITextField: UITextField, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // Allow changing the text depending on `self._isEditable`
         return self._isEditable
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true;
     }
 
 }

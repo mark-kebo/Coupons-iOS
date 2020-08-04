@@ -62,11 +62,11 @@ struct CouponEditView: View {
                 .navigationBarHidden(false)
                 .navigationBarTitle(Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)".uppercased() : L10n.Coupon.add.uppercased()), displayMode: .inline)
                 .navigationBarItems(trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
-                    self.isShowLoading.toggle()
+                    self.isShowLoading = true
                     self.coupon.description = self.text
 
                     self.apiManager.updateCoupon(self.coupon, data: self.image != UIImage(asset: Asset.addImage) ? self.image?.jpegData(compressionQuality: 0.5) : nil) { error in
-                            self.isShowLoading.toggle()
+                            self.isShowLoading = false
                             if let error = error?.localizedDescription {
                                 self.alertString = error
                                 self.showingAlert = true
@@ -87,7 +87,9 @@ struct CouponEditView: View {
     
     private func onAppear() {
         text = coupon.description
+        self.isShowLoading = true
         apiManager.getImage(by: coupon.image) { (image, error) in
+            self.isShowLoading = false
             if error != nil {
                 self.image = UIImage(asset: Asset.addImage)
             } else if let image = image {

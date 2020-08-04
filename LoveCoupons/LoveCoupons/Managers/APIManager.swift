@@ -362,7 +362,6 @@ extension APIManager {
     
     private func deleteImage(_ coupon: Coupon, completion:@escaping (Error?) -> Void) {
         if coupon.image.isEmpty {
-            completion(error)
             return
         }
 
