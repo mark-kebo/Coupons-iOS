@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct PairCouponsView: View {
-    private let apiManager = APIManager.sharedInstance
-    
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+
     @State private var alertString: String = ""
     @State private var alertTitle: String = ""
     @State private var showingAlert = false
@@ -25,7 +25,7 @@ struct PairCouponsView: View {
                 }
                 .environment(\.defaultMinListRowHeight, 200)
                 .navigationBarTitle(Text(""),displayMode: .inline)
-                .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom("3dumb", size: 28)))
+                .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)))
             }
             .alert(isPresented: self.$showingAlert) { () -> Alert in
                 Alert(title: Text(self.alertTitle), message: Text(self.alertString))

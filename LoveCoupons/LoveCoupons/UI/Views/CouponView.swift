@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct CouponView: View {
-    private let apiManager = APIManager.sharedInstance
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
     @State private var image: UIImage = UIImage(asset: Asset.spinner)
-    @State private var color: Color = Color("AppRed")
+    @State private var color: Color = Color(Constants.redColor)
 
     var coupon: Coupon
     var id: Int
@@ -25,12 +25,12 @@ struct CouponView: View {
                 .clipped()
             VStack {
                 Text("\(L10n.Coupon.title) #\(id)".uppercased())
-                    .font(.custom("3dumb", size: 28))
+                    .font(.custom(Constants.titleFont, size: 28))
                     .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 56, alignment: .topLeading)
                     .padding(.bottom, 4)
                     .foregroundColor(color)
                 Text(coupon.description)
-                    .font(.custom("DRAguScript-Book", size: 20))
+                    .font(.custom(Constants.textFont, size: 20))
                     .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 80, alignment: .topLeading)
                     .foregroundColor(.gray)
             }

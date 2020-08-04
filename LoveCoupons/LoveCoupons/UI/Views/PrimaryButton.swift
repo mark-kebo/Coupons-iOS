@@ -14,7 +14,7 @@ enum Style {
 }
 
 struct PrimaryButton: View {
-    @State private var color: Color = Color("AppRed")
+    @State private var color: Color = Color(Constants.redColor)
     @State private var spacing: CGFloat = 8
 
     var title: String
@@ -27,7 +27,7 @@ struct PrimaryButton: View {
             self.tapped?()
         }){
             Text(title)
-                .font(.custom("DRAguScript-Book", size: 20))
+                .font(.custom(Constants.textFont, size: 20))
                 .frame(minWidth: 0, maxWidth: maxWidth)
                 .padding(style == Style.fill ? spacing : 0)
                 .foregroundColor(style == Style.fill ? .white : color)

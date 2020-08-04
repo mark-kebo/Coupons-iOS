@@ -14,8 +14,8 @@ enum CouponEditState {
 }
 
 struct CouponEditView: View {
-    private let apiManager = APIManager.sharedInstance
-    @State private var color: Color = Color("AppRed")
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+    @State private var color: Color = Color(Constants.redColor)
     @State private var image: UIImage? = UIImage(asset: Asset.addImage)
     @State private var text: String = ""
     @State var coupon: Coupon
@@ -29,7 +29,7 @@ struct CouponEditView: View {
     @Environment(\.presentationMode) private var presentationMode
     
     init(coupon: Coupon, id: Int, state: CouponEditState) {
-        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "3dumb", size: 28)!]
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: Constants.titleFont, size: 28)!]
         self._coupon = State(initialValue: coupon)
         self.id = id
         self.state = state

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    private let apiManager = APIManager.sharedInstance
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
     @State private var name: String = ""
     @State private var id: String = ""
     @State private var alertString: String = ""
@@ -27,7 +27,7 @@ struct SettingsView: View {
                         PrimaryTextField(title: L10n.LoginSignUp.id, text: self.$id)
                         HStack {
                             Text(verbatim: L10n.Settings.yourId)
-                                .font(.custom("DRAguScript-Book", size: 14))
+                                .font(.custom(Constants.textFont, size: 14))
                             SelectableText(self.apiManager.userUid ?? "", selectable: true, fontSize: 14, color: UIColor(asset: Asset.appRed))
                                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: 64, alignment: .leading)
                         }
@@ -52,7 +52,7 @@ struct SettingsView: View {
                     }
                     .frame(minWidth: 0, maxWidth: 60, minHeight: 64, alignment: .center)
                     .navigationBarTitle(Text(""),displayMode: .inline)
-                    .navigationBarItems(leading: Text(L10n.Settings.tab.uppercased()).font(.custom("3dumb", size: 28)), trailing: PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
+                    .navigationBarItems(leading: Text(L10n.Settings.tab.uppercased()).font(.custom(Constants.titleFont, size: 28)), trailing: PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
                         self.isShowLoading = true
                         self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
                             if let error = error?.localizedDescription {

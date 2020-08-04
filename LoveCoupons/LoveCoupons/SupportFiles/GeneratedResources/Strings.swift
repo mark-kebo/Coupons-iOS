@@ -21,6 +21,8 @@ internal enum L10n {
   internal static let noInternetConnection = L10n.tr("Localizable", "noInternetConnection")
 
   internal enum Alert {
+    /// Coupons not found
+    internal static let coupons = L10n.tr("Localizable", "alert.coupons")
     /// No Internet connection
     internal static let noInternetConnection = L10n.tr("Localizable", "alert.noInternetConnection")
     /// A password reset link has been sent to your email address

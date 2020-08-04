@@ -10,8 +10,8 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
-    private let apiManager = APIManager.sharedInstance
-    
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var alertString: String = ""
@@ -23,7 +23,7 @@ struct LoginView: View {
                 VStack(alignment: .center, spacing: Constants.stackSpacing) {
                     Text(L10n.LoginSignUp.title.uppercased())
                         .padding()
-                        .font(.custom("3dumb", size: 33))
+                        .font(.custom(Constants.titleFont, size: 33))
                     VStack {
                         PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
                         PrimaryTextField(title: L10n.LoginSignUp.password, isSecure: true, text: $password)

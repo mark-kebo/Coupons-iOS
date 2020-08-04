@@ -7,6 +7,7 @@
 
 "alert.success.title" = "Success";
 "alert.resetPassword" = "A password reset link has been sent to your email address";
+"alert.coupons" = "Coupons not found";
 
 "api default error" = "An error has occurred; try again later";
 "error fields" = "Fill in all the fields";

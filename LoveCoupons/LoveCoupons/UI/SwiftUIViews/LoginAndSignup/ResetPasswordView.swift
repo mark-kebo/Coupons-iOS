@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ResetPasswordView: View {
-    private let apiManager = APIManager.sharedInstance
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
 
     @State private var email: String = ""
     @State private var alertTitle: String = ""
@@ -24,7 +24,7 @@ struct ResetPasswordView: View {
                 Text(L10n.LoginSignUp.Button.restPassword.uppercased())
                     .multilineTextAlignment(.center)
                     .padding()
-                    .font(.custom("3dumb", size: 33))
+                    .font(.custom(Constants.titleFont, size: 33))
                 PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
                 .padding(.bottom)
                 
