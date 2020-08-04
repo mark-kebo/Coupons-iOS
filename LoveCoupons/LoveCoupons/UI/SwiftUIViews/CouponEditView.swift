@@ -26,8 +26,14 @@ struct CouponEditView: View {
     @State private var showingAlert = false
     @State private var showCaptureImageView = false
     @State private var isShowLoading = false
-    @State private var isNewImageSet = false
     @Environment(\.presentationMode) private var presentationMode
+    
+    init(coupon: Coupon, id: Int, state: CouponEditState) {
+        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: "3dumb", size: 28)!]
+        self._coupon = State(initialValue: coupon)
+        self.id = id
+        self.state = state
+    }
     
     var body: some View {
         LoadingView(isShowing: $isShowLoading) {
@@ -54,28 +60,25 @@ struct CouponEditView: View {
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .navigationBarHidden(false)
-                .navigationBarTitle(Text(""),displayMode: .inline)
-                .navigationBarItems(leading: Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)".uppercased() : L10n.Coupon.add.uppercased()).font(.custom("3dumb", size: 28)), trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
+                .navigationBarTitle(Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)".uppercased() : L10n.Coupon.add.uppercased()), displayMode: .inline)
+                .navigationBarItems(trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
                     self.isShowLoading.toggle()
-                    if self.text != self.coupon.description && !self.text.isEmpty && self.state == .edit {
-                        self.coupon.description = self.text
-                    } else {
-                        self.coupon = Coupon(description: self.text, image: "")
-                    }
-                    self.apiManager.updateCoupon(self.coupon, data: self.isNewImageSet ? self.image?.jpegData(compressionQuality: 0.5) : nil) { error in
-                        self.isShowLoading.toggle()
-                        if let error = error?.localizedDescription {
-                            self.alertString = error
-                            self.showingAlert = true
-                        } else {
-                            self.presentationMode.wrappedValue.dismiss()
+                    self.coupon.description = self.text
+
+                    self.apiManager.updateCoupon(self.coupon, data: self.image != UIImage(asset: Asset.addImage) ? self.image?.jpegData(compressionQuality: 0.5) : nil) { error in
+                            self.isShowLoading.toggle()
+                            if let error = error?.localizedDescription {
+                                self.alertString = error
+                                self.showingAlert = true
+                            } else {
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
                         }
-                    }
-                })
+                    })
                 .navigationBarBackButtonHidden(false)
 
                 if (self.showCaptureImageView) {
-                    CaptureImageView(isShown: self.$showCaptureImageView, isReturnImage: self.$isNewImageSet, image: self.$image)
+                    CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
                     .navigationBarHidden(true)
                 }
             }
@@ -83,7 +86,7 @@ struct CouponEditView: View {
     }
     
     private func onAppear() {
-        text = coupon.description ?? ""
+        text = coupon.description
         apiManager.getImage(by: coupon.image) { (image, error) in
             if error != nil {
                 self.image = UIImage(asset: Asset.addImage)

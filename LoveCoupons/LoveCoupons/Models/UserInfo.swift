@@ -12,9 +12,9 @@ struct UserInfo {
     let name: String?
     let pairUniqId: String?
     
-    init(data: [String : AnyObject]) {
-        name = data["name"] as? String
-        pairUniqId = data["pairUniqId"] as? String
+    init(data: [String : String]) {
+        name = data["name"]
+        pairUniqId = data["pairUniqId"]
     }
     
     init(name: String?, pairUniqId: String?) {

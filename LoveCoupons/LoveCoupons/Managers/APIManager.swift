@@ -118,7 +118,7 @@ extension APIManager {
         }
         serialQueue.async {
             self.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
-                if let postDict = snapshot.value as? [String : AnyObject] {
+                if let postDict = snapshot.value as? [String : String] {
                     DispatchQueue.main.async {
                         completion(UserInfo(data: postDict), nil)
                     }
@@ -141,7 +141,7 @@ extension APIManager {
                 if let dict = snapshot.value as? [String : AnyObject] {
                     var coupons: [Coupon] = []
                     dict.forEach {
-                        if let coupon = $0.value as? [String : AnyObject] {
+                        if let coupon = $0.value as? [String : String] {
                             var newCoupon = Coupon(data: coupon)
                             newCoupon.key = $0.key
                             coupons.append(newCoupon)
@@ -171,7 +171,7 @@ extension APIManager {
                         if let dict = snapshot.value as? [String : AnyObject] {
                             var coupons: [Coupon] = []
                             dict.forEach {
-                                if let coupon = $0.value as? [String : AnyObject] {
+                                if let coupon = $0.value as? [String : String] {
                                     var newCoupon = Coupon(data: coupon)
                                     newCoupon.key = $0.key
                                     coupons.append(Coupon(data: coupon))
@@ -198,13 +198,13 @@ extension APIManager {
             completion(error)
             return
         }
-        if data == nil, let desc = coupon.description, !desc.isEmpty, let image = coupon.image, !image.isEmpty {
+        if data == nil, !coupon.description.isEmpty, !coupon.image.isEmpty {
             self.newDatabaseCoupon(coupon) { error in
                 completion(error)
             }
             return
         }
-        guard let data = data, let desc = coupon.description, !desc.isEmpty else {
+        guard !coupon.description.isEmpty, let data = data else {
             completion(errorFields)
             return
         }
@@ -217,6 +217,9 @@ extension APIManager {
                         completion(error)
                     }
                     if let downloadURL = url {
+                        self.deleteImage(coupon) { error in
+                            completion(error)
+                        }
                         coupon.image = downloadURL.absoluteString
                         self.newDatabaseCoupon(coupon) { error in
                             completion(error)
@@ -271,16 +274,13 @@ extension APIManager {
     }
     
     private func deleteImage(_ coupon: Coupon, completion:@escaping (Error?) -> Void) {
-        guard let image = coupon.image else {
+        if coupon.image.isEmpty {
             completion(error)
             return
         }
-        if image.isEmpty {
-            return
-        }
 
-        let storageRef = storage.reference(forURL: image)
-        self.cache.delete(imageBy: image as NSString)
+        let storageRef = storage.reference(forURL: coupon.image)
+        self.cache.delete(imageBy: coupon.image as NSString)
         serialQueue.async {
             storageRef.delete { error in
                 if let error = error {

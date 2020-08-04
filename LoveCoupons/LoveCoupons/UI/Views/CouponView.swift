@@ -29,7 +29,7 @@ struct CouponView: View {
                     .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 56, alignment: .topLeading)
                     .padding(.bottom, 4)
                     .foregroundColor(color)
-                Text(coupon.description ?? "")
+                Text(coupon.description)
                     .font(.custom("DRAguScript-Book", size: 20))
                     .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 80, alignment: .topLeading)
                     .foregroundColor(.gray)

@@ -11,11 +11,10 @@ import SwiftUI
 
 struct CaptureImageView {
     @Binding var isShown: Bool
-    @Binding var isReturnImage: Bool
     @Binding var image: UIImage?
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(isShown: $isShown, isReturnImage: $isReturnImage, image: $image)
+        return Coordinator(isShown: $isShown, image: $image)
     }
 }
 
@@ -34,12 +33,10 @@ extension CaptureImageView: UIViewControllerRepresentable {
 
 class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     @Binding var isCoordinatorShown: Bool
-    @Binding var isReturnImageInCoordinator: Bool
     @Binding var imageInCoordinator: UIImage?
     
-    init(isShown: Binding<Bool>, isReturnImage: Binding<Bool>, image: Binding<UIImage?>) {
+    init(isShown: Binding<Bool>, image: Binding<UIImage?>) {
         _isCoordinatorShown = isShown
-        _isReturnImageInCoordinator = isReturnImage
         _imageInCoordinator = image
     }
     
@@ -47,12 +44,16 @@ class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerContro
                 didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let unwrapImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         imageInCoordinator = unwrapImage
-        isReturnImageInCoordinator = true
         isCoordinatorShown = false
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        isReturnImageInCoordinator = false
         isCoordinatorShown = false
+    }
+}
+
+struct CaptureImageView_Previews: PreviewProvider {
+    static var previews: some View {
+        CaptureImageView(isShown: .constant(true), image: .constant(UIImage(asset: ImageAsset(name: "logo"))))
     }
 }

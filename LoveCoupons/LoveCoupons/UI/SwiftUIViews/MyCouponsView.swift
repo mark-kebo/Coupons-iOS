@@ -61,7 +61,7 @@ struct MyCouponsView: View {
                 self.showingAlert = true
             } else if let coupons = coupons {
                 self.coupons = coupons.sorted { coupon1, coupon2 -> Bool in
-                    coupon1.description ?? "" < coupon2.description ?? ""
+                    coupon1.description < coupon2.description
                 }
             }
             self.isShowLoading = false
