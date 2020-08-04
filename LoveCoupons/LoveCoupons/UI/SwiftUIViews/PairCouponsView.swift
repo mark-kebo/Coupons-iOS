@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import MessageUI
 
 struct PairCouponsView: View {
     private let apiManager: APIManagerProtocol = APIManager.sharedInstance
@@ -16,12 +17,35 @@ struct PairCouponsView: View {
     @State private var showingAlert = false
     @State private var coupons: [Coupon] = []
     @State private var isShowLoading = false
+    @State private var result: Result<MFMailComposeResult, Error>? = nil
+    @State private var isShowingMailView = false
+    @State private var emailMessage: String = ""
+    @State private var bodyMessage: String = ""
 
     var body: some View {
         LoadingView(isShowing: $isShowLoading) {
             NavigationView {
                 List(Array(self.coupons.enumerated()), id: \.offset) { index, coupon in
                     CouponView(coupon: coupon, id: index + 1)
+                        .onTapGesture {
+                            if MFMailComposeViewController.canSendMail() {
+                                self.isShowLoading = true
+                                self.apiManager.getPairEmail { (email, error) in
+                                    self.isShowLoading = false
+                                    if let error = error?.localizedDescription {
+                                        self.alertString = error
+                                        self.showingAlert = true
+                                    } else if let email = email {
+                                        self.emailMessage = email
+                                    }
+                                    self.bodyMessage = coupon.description
+                                    self.isShowingMailView.toggle()
+                                }
+                            } else {
+                                self.alertString = L10n.Alert.mail
+                                self.showingAlert = true
+                            }
+                        }
                 }
                 .environment(\.defaultMinListRowHeight, 200)
                 .navigationBarTitle(Text(""),displayMode: .inline)
@@ -29,6 +53,9 @@ struct PairCouponsView: View {
             }
             .alert(isPresented: self.$showingAlert) { () -> Alert in
                 Alert(title: Text(self.alertTitle), message: Text(self.alertString))
+            }
+            .sheet(isPresented: self.$isShowingMailView) {
+                MailView(result: self.$result, email: self.$emailMessage, body: self.$bodyMessage)
             }
             .onAppear(perform: self.onAppear)
         }

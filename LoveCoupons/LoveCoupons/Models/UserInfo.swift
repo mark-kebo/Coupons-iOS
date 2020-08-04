@@ -10,21 +10,25 @@ import Foundation
 
 struct UserInfo {
     let name: String?
+    let email: String?
     let pairUniqId: String?
     
     init(data: [String : String]) {
         name = data["name"]
+        email = data["email"]
         pairUniqId = data["pairUniqId"]
     }
     
-    init(name: String?, pairUniqId: String?) {
+    init(name: String?, email: String?, pairUniqId: String?) {
         self.name = name
+        self.email = email
         self.pairUniqId = pairUniqId
     }
     
     func toAnyObject() -> Any? {
         return [
             "name": name ?? "",
+            "email": email ?? "",
             "pairUniqId": pairUniqId ?? ""
         ]
     }

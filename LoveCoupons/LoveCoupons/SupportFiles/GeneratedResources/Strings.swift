@@ -17,12 +17,16 @@ internal enum L10n {
   internal static let error = L10n.tr("Localizable", "error")
   /// Fill in all the fields
   internal static let errorFields = L10n.tr("Localizable", "error fields")
+  /// Loading...
+  internal static let indicator = L10n.tr("Localizable", "indicator")
   /// No internet connection.\nPlease connect and try again
   internal static let noInternetConnection = L10n.tr("Localizable", "noInternetConnection")
 
   internal enum Alert {
     /// Coupons not found
     internal static let coupons = L10n.tr("Localizable", "alert.coupons")
+    /// Can't send emails from this device
+    internal static let mail = L10n.tr("Localizable", "alert.mail")
     /// No Internet connection
     internal static let noInternetConnection = L10n.tr("Localizable", "alert.noInternetConnection")
     /// A password reset link has been sent to your email address
@@ -90,6 +94,11 @@ internal enum L10n {
       /// Sign up
       internal static let signUp = L10n.tr("Localizable", "login&SignUp.button.signUp")
     }
+  }
+
+  internal enum Mail {
+    /// Coupon Request ❤️
+    internal static let subject = L10n.tr("Localizable", "mail.subject")
   }
 
   internal enum MyCoupons {

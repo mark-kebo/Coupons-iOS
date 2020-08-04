@@ -12,6 +12,7 @@ struct SettingsView: View {
     
     private let apiManager: APIManagerProtocol = APIManager.sharedInstance
     @State private var name: String = ""
+    @State private var email: String = ""
     @State private var id: String = ""
     @State private var alertString: String = ""
     @State private var alertTitle: String = ""
@@ -24,6 +25,7 @@ struct SettingsView: View {
                 ScrollView {
                     VStack {
                         PrimaryTextField(title: L10n.LoginSignUp.name, text: self.$name)
+                        PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: self.$email)
                         PrimaryTextField(title: L10n.LoginSignUp.id, text: self.$id)
                         HStack {
                             Text(verbatim: L10n.Settings.yourId)
@@ -54,7 +56,7 @@ struct SettingsView: View {
                     .navigationBarTitle(Text(""),displayMode: .inline)
                     .navigationBarItems(leading: Text(L10n.Settings.tab.uppercased()).font(.custom(Constants.titleFont, size: 28)), trailing: PrimaryButton(title: L10n.Settings.submit, style: .fill, maxWidth: .none) {
                         self.isShowLoading = true
-                        self.apiManager.set(userInfo: UserInfo(name: self.name, pairUniqId: self.id)) { error in
+                        self.apiManager.set(userInfo: UserInfo(name: self.name, email: self.email, pairUniqId: self.id)) { error in
                             if let error = error?.localizedDescription {
                                 self.alertTitle = L10n.error
                                 self.alertString = error
@@ -84,9 +86,10 @@ struct SettingsView: View {
             if let error = error?.localizedDescription {
                 self.alertString = error
                 self.showingAlert = true
-            } else if let name = userInfo?.name, let id = userInfo?.pairUniqId {
-                self.name = name
-                self.id = id
+            } else {
+                self.name = userInfo?.name ?? ""
+                self.id = userInfo?.pairUniqId ?? ""
+                self.email = userInfo?.email ?? ""
             }
             self.isShowLoading = false
         }

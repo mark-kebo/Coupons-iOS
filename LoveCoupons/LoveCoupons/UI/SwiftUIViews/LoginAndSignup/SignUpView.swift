@@ -32,7 +32,7 @@ struct SignUpView: View {
                 .padding(.bottom)
                 
                 PrimaryButton(title: L10n.LoginSignUp.Button.create, style: .fill) {
-                    self.apiManager.createUser(userInfo: UserInfo(name: self.name, pairUniqId: self.id), email: self.email, password: self.password) { error in
+                    self.apiManager.createUser(userInfo: UserInfo(name: self.name, email: self.email, pairUniqId: self.id), email: self.email, password: self.password) { error in
                         if let error = error?.localizedDescription {
                             self.alertString = error
                             self.showingAlert.toggle()

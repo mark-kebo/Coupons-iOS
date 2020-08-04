@@ -23,6 +23,7 @@ protocol APIManagerProtocol {
     func updateCoupon(_ coupon: Coupon, data: Data?, completion:@escaping (Error?) -> Void)
     func deleteCoupon(_ coupon: Coupon, completion:@escaping (Error?) -> Void)
     func getImage(by url: String?, completion:@escaping (UIImage?, Error?) -> Void)
+    func getPairEmail(completion:@escaping (String?, Error?) -> Void)
 }
 
 class APIManager: APIManagerProtocol {
@@ -47,6 +48,34 @@ class APIManager: APIManagerProtocol {
         serialQueue = DispatchQueue(label: "queue")
     }
 
+    func getPairEmail(completion:@escaping (String?, Error?) -> Void) {
+        serialQueue.async {
+            self.getUserInfo { [weak self] userInfo, error in
+                if let id = userInfo?.pairUniqId {
+                    self?.database.child(id).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
+                        if let postDict = snapshot.value as? [String : String] {
+                            DispatchQueue.main.async {
+                                completion(UserInfo(data: postDict).email, nil)
+                            }
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(nil, self?.error)
+                            }
+                        }
+                    }) { error in
+                        DispatchQueue.main.async {
+                            completion(nil, error)
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil, error)
+                    }
+                }
+            }
+        }
+    }
+    
     func login(email: String, password: String, completion:@escaping (Error?) -> Void) {
         serialQueue.async {
             Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
