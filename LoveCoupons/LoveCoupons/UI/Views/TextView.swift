@@ -17,18 +17,18 @@ struct TextView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> UITextView {
 
-        let myTextView = UITextView()
-        myTextView.delegate = context.coordinator
+        let textView = UITextView()
+        textView.delegate = context.coordinator
+        textView.returnKeyType = .done
+        textView.font = UIFont(name: Constants.textFont, size: 20)
+        textView.isScrollEnabled = true
+        textView.isEditable = true
+        textView.isUserInteractionEnabled = true
+        textView.backgroundColor = UIColor(white: 0.0, alpha: 0.05)
 
-        myTextView.font = UIFont(name: "DRAguScript-Book", size: 20)
-        myTextView.isScrollEnabled = true
-        myTextView.isEditable = true
-        myTextView.isUserInteractionEnabled = true
-        myTextView.backgroundColor = UIColor(white: 0.0, alpha: 0.05)
-
-        myTextView.returnKeyType = .done
+        textView.returnKeyType = .done
         
-        return myTextView
+        return textView
     }
 
     func updateUIView(_ uiView: UITextView, context: Context) {
@@ -44,15 +44,14 @@ struct TextView: UIViewRepresentable {
         }
 
         func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+            if (text == "\n") {
+                textView.resignFirstResponder()
+            }
             return true
         }
 
         func textViewDidChange(_ textView: UITextView) {
-            if textView.text == "\n" {
-                textView.resignFirstResponder()
-            } else {
-                self.parent.text = textView.text
-            }
+            self.parent.text = textView.text
         }
     }
 }

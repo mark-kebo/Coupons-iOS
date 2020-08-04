@@ -20,20 +20,20 @@ struct PrimaryTextField: View {
                 Text(!text.isEmpty ? title : " ")
                     .fontWeight(Font.Weight.light)
                     .accentColor(Color.gray.opacity(0.7))
-                    .font(.custom("DRAguScript-Book", size: 14))
+                    .font(.custom(Constants.textFont, size: 14))
                     .frame(minWidth: CGFloat(0), maxWidth: .infinity, alignment: .leading)
                 if isSecure {
                     SecureField(title, text: $text)
                         .padding(.horizontal)
                         .accentColor(Color.gray.opacity(0.7))
                         .keyboardType(keyType)
-                        .font(.custom("DRAguScript-Book", size: 18))
+                        .font(.custom(Constants.textFont, size: 18))
                 } else {
                     TextField(title, text: $text)
                         .padding(.horizontal)
                         .accentColor(Color.gray.opacity(0.7))
                         .keyboardType(keyType)
-                        .font(.custom("DRAguScript-Book", size: 20))
+                        .font(.custom(Constants.textFont, size: 20))
                 }
                 Divider()
             }

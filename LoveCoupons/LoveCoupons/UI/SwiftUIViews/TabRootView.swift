@@ -14,24 +14,24 @@ struct TabRootView: View {
     @State private var selection = 0
     
     init() {
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.init(name: "DRAguScript-Book", size: 14) ?? UIFont.systemFont(ofSize: 14)], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont.init(name: Constants.textFont, size: 14) ?? UIFont.systemFont(ofSize: 14)], for: .normal)
     }
     
     var body: some View {
         TabView(selection: $selection) {
             PairCouponsView()
                 .tabItem {
-                    Image(systemName: "person.2.square.stack")
+                    Image(systemName: Constants.pairCouponsImage)
                     Text(L10n.PairCoupons.title)
                 }.tag(0)
             MyCouponsView()
                 .tabItem {
-                    Image(systemName: "person.crop.rectangle")
+                    Image(systemName: Constants.myCouponsImage)
                     Text(L10n.MyCoupons.title)
                 }.tag(1)
             SettingsView()
                 .tabItem {
-                    Image(systemName: "gear")
+                    Image(systemName: Constants.settingsImage)
                     Text(L10n.Settings.tab)
                 }.tag(2)
         }

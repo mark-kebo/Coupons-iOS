@@ -35,9 +35,12 @@ struct LoadingView<Content>: View where Content: View {
                     .blur(radius: self.isShowing ? 3 : 0)
 
                 VStack {
-                    Text("Loading...")
-                    ActivityIndicator(isAnimating: .constant(true), style: .large)
-                }
+                    Text(L10n.indicator)
+                        .font(.custom(Constants.textFont, size: 24))
+                    Image(uiImage: UIImage(asset: Asset.spinner))
+                        .aspectRatio(contentMode: ContentMode.fill)
+                        .frame(width: 50, height: 50)
+                        .clipped()                }
                 .frame(width: geometry.size.width / 2,
                        height: geometry.size.height / 5)
                 .background(Color.secondary.colorInvert())

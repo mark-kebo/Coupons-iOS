@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PrimaryNavigationButton <Content: View>: View {
-    @State private var color: Color = Color("AppRed")
+    @State private var color: Color = Color(Constants.redColor)
     @State private var spacing: CGFloat = 8
 
     var title: String
@@ -19,7 +19,7 @@ struct PrimaryNavigationButton <Content: View>: View {
     var body: some View {
         NavigationLink(destination: destination) {
             Text(title)
-                .font(.custom("DRAguScript-Book", size: 20))
+                .font(.custom(Constants.textFont, size: 20))
                 .font(style == Style.fill ? .body : .callout)
                 .frame(minWidth: 0, maxWidth: .infinity)
                 .padding(style == Style.fill ? spacing : 0)

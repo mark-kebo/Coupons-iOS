@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct SignUpView: View {
-    private let apiManager = APIManager.sharedInstance
-    
+    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var name: String = ""
@@ -22,7 +22,7 @@ struct SignUpView: View {
         ScrollView {
             VStack(alignment: .center, spacing: Constants.stackSpacing) {
                 Text(L10n.LoginSignUp.Button.signUp.uppercased())
-                    .font(.custom("3dumb", size: 33))
+                    .font(.custom(Constants.titleFont, size: 33))
                 VStack {
                     PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
                     PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)
@@ -32,7 +32,7 @@ struct SignUpView: View {
                 .padding(.bottom)
                 
                 PrimaryButton(title: L10n.LoginSignUp.Button.create, style: .fill) {
-                    self.apiManager.createUser(userInfo: UserInfo(name: self.name, pairUniqId: self.id), email: self.email, password: self.password) { error in
+                    self.apiManager.createUser(userInfo: UserInfo(name: self.name, email: self.email, pairUniqId: self.id), email: self.email, password: self.password) { error in
                         if let error = error?.localizedDescription {
                             self.alertString = error
                             self.showingAlert.toggle()

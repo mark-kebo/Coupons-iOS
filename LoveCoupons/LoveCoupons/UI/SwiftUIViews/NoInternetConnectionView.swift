@@ -11,7 +11,7 @@ import SwiftUI
 struct NoInternetConnectionView: View {
     var body: some View {
         Text(L10n.noInternetConnection)
-            .font(.custom("DRAguScript-Book", size: 24))
+            .font(.custom(Constants.textFont, size: 24))
             .padding()
             .multilineTextAlignment(.center)
     }
