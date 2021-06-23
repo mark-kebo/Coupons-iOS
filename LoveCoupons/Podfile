@@ -8,7 +8,6 @@ target 'LoveCoupons' do
   pod 'IQKeyboardManagerSwift'
   pod 'SwiftGen'
   pod 'Firebase/Storage'
-  pod 'Firebase/Analytics'
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
 
