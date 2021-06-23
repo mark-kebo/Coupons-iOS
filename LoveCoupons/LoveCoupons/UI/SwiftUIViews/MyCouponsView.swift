@@ -28,6 +28,7 @@ struct MyCouponsView: View {
                     }
                     .onDelete(perform: self.deleteItems)
                 }
+                .listStyle(PlainListStyle())
                 .environment(\.defaultMinListRowHeight, 200)
                 .navigationBarTitle(Text(""),displayMode: .inline)
                 .navigationBarItems(leading: Text(L10n.MyCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)), trailing: PrimaryNavigationButton(title: L10n.Button.add, style: .fill, destination: CouponEditView(coupon: Coupon(), id: 0, state: .add)))

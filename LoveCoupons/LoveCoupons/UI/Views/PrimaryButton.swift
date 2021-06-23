@@ -32,7 +32,7 @@ struct PrimaryButton: View {
                 .padding(style == Style.fill ? spacing : 0)
                 .foregroundColor(style == Style.fill ? .white : color)
                 .background(style == Style.fill ? color : color.opacity(0))
-                .cornerRadius(.infinity)
+                .cornerRadius(8)
         }
     }
 }

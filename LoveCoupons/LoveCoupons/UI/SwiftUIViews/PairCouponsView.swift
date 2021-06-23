@@ -25,29 +25,34 @@ struct PairCouponsView: View {
     var body: some View {
         LoadingView(isShowing: $isShowLoading) {
             NavigationView {
-                List(Array(self.coupons.enumerated()), id: \.offset) { index, coupon in
-                    CouponView(coupon: coupon, id: index + 1)
-                        .onTapGesture {
-                            if MFMailComposeViewController.canSendMail() {
-                                self.isShowLoading = true
-                                self.apiManager.getPairEmail { (email, error) in
-                                    self.isShowLoading = false
-                                    if let error = error?.localizedDescription {
-                                        self.alertString = error
+                List {
+                    ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
+                        NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
+                            CouponView(coupon: coupon, id: index + 1)
+                                .onTapGesture {
+                                    if MFMailComposeViewController.canSendMail() {
+                                        self.isShowLoading = true
+                                        self.apiManager.getPairEmail { (email, error) in
+                                            self.isShowLoading = false
+                                            if let error = error?.localizedDescription {
+                                                self.alertString = error
+                                                self.showingAlert = true
+                                            } else if let email = email {
+                                                self.emailMessage = email
+                                            }
+                                            self.bodyMessage = coupon.description
+                                            self.isShowingMailView.toggle()
+                                        }
+                                    } else {
+                                        self.alertString = L10n.Alert.mail
                                         self.showingAlert = true
-                                    } else if let email = email {
-                                        self.emailMessage = email
                                     }
-                                    self.bodyMessage = coupon.description
-                                    self.isShowingMailView.toggle()
                                 }
-                            } else {
-                                self.alertString = L10n.Alert.mail
-                                self.showingAlert = true
-                            }
                         }
+                    }
                 }
                 .environment(\.defaultMinListRowHeight, 200)
+                .listStyle(PlainListStyle())
                 .navigationBarTitle(Text(""),displayMode: .inline)
                 .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)))
             }

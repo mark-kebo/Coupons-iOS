@@ -27,7 +27,7 @@ protocol APIManagerProtocol {
 }
 
 class APIManager: APIManagerProtocol {
-    static var sharedInstance: APIManagerProtocol = APIManager()
+    static let sharedInstance: APIManagerProtocol = APIManager()
     var userUid: String? {
         get {
             return Auth.auth().currentUser?.uid
