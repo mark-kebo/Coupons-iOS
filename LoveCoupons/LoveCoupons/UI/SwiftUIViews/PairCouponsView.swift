@@ -27,7 +27,7 @@ struct PairCouponsView: View {
             NavigationView {
                 List {
                     ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
-                        NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
+                        NavigationLink(destination: CouponView(coupon: coupon, id: index + 1)) {
                             CouponView(coupon: coupon, id: index + 1)
                                 .onTapGesture {
                                     if MFMailComposeViewController.canSendMail() {
