@@ -611,14 +611,14 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = AJXYUW5YRR;
+				DEVELOPMENT_TEAM = 6QP65RH9GP;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = coupons.ios.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.technocrat.dev.Dentist99;
 				PRODUCT_NAME = "Love Coupons";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
@@ -638,14 +638,14 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = AJXYUW5YRR;
+				DEVELOPMENT_TEAM = 6QP65RH9GP;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = coupons.ios.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = au.com.technocrat.dev.Dentist99;
 				PRODUCT_NAME = "Love Coupons";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";

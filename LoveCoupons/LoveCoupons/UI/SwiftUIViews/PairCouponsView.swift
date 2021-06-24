@@ -27,28 +27,26 @@ struct PairCouponsView: View {
             NavigationView {
                 List {
                     ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
-                        NavigationLink(destination: CouponView(coupon: coupon, id: index + 1)) {
-                            CouponView(coupon: coupon, id: index + 1)
-                                .onTapGesture {
-                                    if MFMailComposeViewController.canSendMail() {
-                                        self.isShowLoading = true
-                                        self.apiManager.getPairEmail { (email, error) in
-                                            self.isShowLoading = false
-                                            if let error = error?.localizedDescription {
-                                                self.alertString = error
-                                                self.showingAlert = true
-                                            } else if let email = email {
-                                                self.emailMessage = email
-                                            }
-                                            self.bodyMessage = coupon.description
-                                            self.isShowingMailView.toggle()
+                        CouponView(coupon: coupon, id: index + 1)
+                            .onTapGesture {
+                                if MFMailComposeViewController.canSendMail() {
+                                    self.isShowLoading = true
+                                    self.apiManager.getPairEmail { (email, error) in
+                                        self.isShowLoading = false
+                                        if let error = error?.localizedDescription {
+                                            self.alertString = error
+                                            self.showingAlert = true
+                                        } else if let email = email {
+                                            self.emailMessage = email
                                         }
-                                    } else {
-                                        self.alertString = L10n.Alert.mail
-                                        self.showingAlert = true
+                                        self.bodyMessage = coupon.description
+                                        self.isShowingMailView.toggle()
                                     }
+                                } else {
+                                    self.alertString = L10n.Alert.mail
+                                    self.showingAlert = true
                                 }
-                        }
+                            }
                     }
                 }
                 .environment(\.defaultMinListRowHeight, 200)
