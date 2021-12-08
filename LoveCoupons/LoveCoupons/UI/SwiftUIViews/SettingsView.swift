@@ -20,8 +20,8 @@ struct SettingsView: View {
     @State private var isShowLoading = false
     
     var body: some View {
-        LoadingView(isShowing: $isShowLoading) {
-            NavigationView {
+        NavigationView {
+            LoadingView(isShowing: $isShowLoading) {
                 ScrollView {
                     VStack {
                         PrimaryTextField(title: L10n.LoginSignUp.name, text: self.$name)

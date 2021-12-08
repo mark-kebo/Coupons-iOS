@@ -23,8 +23,8 @@ struct PairCouponsView: View {
     @State private var bodyMessage: String = ""
 
     var body: some View {
-        LoadingView(isShowing: $isShowLoading) {
-            NavigationView {
+        NavigationView {
+            LoadingView(isShowing: $isShowLoading) {
                 List {
                     ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
                         CouponView(coupon: coupon, id: index + 1)

@@ -18,8 +18,8 @@ struct MyCouponsView: View {
     @State private var isShowLoading = false
 
     var body: some View {
-        LoadingView(isShowing: $isShowLoading) {
-            NavigationView {
+        NavigationView {
+            LoadingView(isShowing: $isShowLoading) {
                 List {
                     ForEach(Array(self.coupons.enumerated()), id: \.element) { index, coupon in
                         NavigationLink(destination: CouponEditView(coupon: coupon, id: index + 1, state: .edit)) {
