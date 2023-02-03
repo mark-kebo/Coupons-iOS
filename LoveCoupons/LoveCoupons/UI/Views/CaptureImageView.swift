@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 
+//TODO: - Refactor it all
 struct CaptureImageView {
     @Binding var isShown: Bool
     @Binding var image: UIImage?

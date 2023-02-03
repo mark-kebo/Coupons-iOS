@@ -13,10 +13,16 @@ struct UserInfo {
     let email: String?
     let pairUniqId: String?
     
-    init(data: [String : String]) {
-        name = data["name"]
-        email = data["email"]
-        pairUniqId = data["pairUniqId"]
+    private enum CodingCases: String {
+        case name
+        case email
+        case pairUniqId
+    }
+    
+    init(data: [String: String]) {
+        name = data[CodingCases.name.rawValue]
+        email = data[CodingCases.email.rawValue]
+        pairUniqId = data[CodingCases.pairUniqId.rawValue]
     }
     
     init(name: String?, email: String?, pairUniqId: String?) {
@@ -26,10 +32,10 @@ struct UserInfo {
     }
     
     func toAnyObject() -> Any? {
-        return [
-            "name": name ?? "",
-            "email": email ?? "",
-            "pairUniqId": pairUniqId ?? ""
+        [
+            CodingCases.name.rawValue: name ?? "",
+            CodingCases.email.rawValue: email ?? "",
+            CodingCases.pairUniqId.rawValue: pairUniqId ?? ""
         ]
     }
 }

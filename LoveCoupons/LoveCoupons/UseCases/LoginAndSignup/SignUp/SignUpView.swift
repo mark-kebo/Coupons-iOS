@@ -9,16 +9,16 @@
 import SwiftUI
 
 struct SignUpView: View {
-    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
-
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var name: String = ""
     @State private var id: String = ""
-    @State private var alertString: String = ""
-    @State private var showingAlert = false
+    
+    private let viewModel: SignUpViewModelProtocol
 
-    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    init(viewModel: SignUpViewModelProtocol) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack(alignment: .center, spacing: Constants.stackSpacing) {
@@ -33,20 +33,8 @@ struct SignUpView: View {
             .padding(.bottom)
             Spacer()
             PrimaryButton(title: L10n.LoginSignUp.Button.create, style: .fill) {
-                self.apiManager.createUser(userInfo: UserInfo(name: self.name, email: self.email, pairUniqId: self.id), email: self.email, password: self.password) { error in
-                    if let error = error?.localizedDescription {
-                        self.alertString = error
-                        self.showingAlert.toggle()
-                    } else {
-                        let scene = UIApplication.shared.connectedScenes.first
-                        if let sd : SceneDelegate = (scene?.delegate as? SceneDelegate) {
-                            sd.setupRootVC()
-                        }
-                    }
-                }
-            }
-            .alert(isPresented: $showingAlert) { () -> Alert in
-                Alert(title: Text(L10n.error), message: Text(alertString))
+                viewModel.createUserButtonPressed(name: name, email: email,
+                                                  pairUniqId: id, password: password)
             }
         }
         .padding()
@@ -56,7 +44,7 @@ struct SignUpView: View {
 
 struct SignUpView_Previews: PreviewProvider {
     static var previews: some View {
-        SignUpView()
+        SignUpView(viewModel: SignUpViewModel(coordinator: SignUpCoordinator(rootNavigationController: nil)))
             .previewDevice("iPod touch (7th generation)")
     }
 }

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct CouponView: View {
-    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+    private let apiManager: APIManagerProtocol = APIManager()
     @State private var image: UIImage = UIImage(asset: Asset.logo)
     @State private var isShowingImagesLoading: Bool = false
     @State private var color: Color = Color(Constants.redColor)
@@ -52,6 +52,7 @@ struct CouponView: View {
         .onAppear(perform: setImage)
     }
     
+    //TODO: - Refactor it
     private func setImage() {
         isShowingImagesLoading = true
         apiManager.getImage(by: coupon.image) { (image, error) in

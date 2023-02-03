@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MyCouponsView: View {
-    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+    private let apiManager: APIManagerProtocol = APIManager()
 
     @State private var alertString: String = ""
     @State private var alertTitle: String = ""

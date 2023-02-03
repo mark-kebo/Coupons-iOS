@@ -12,4 +12,11 @@ extension UIApplication {
     func endEditing() {
         sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
+    
+    static var keyWindow: UIWindow? {
+        self.shared.connectedScenes
+            .filter({$0.activationState == .foregroundActive})
+            .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
+            .first { $0.isKeyWindow }
+    }
 }

@@ -14,7 +14,7 @@ enum CouponEditState {
 }
 
 struct CouponEditView: View {
-    private let apiManager: APIManagerProtocol = APIManager.sharedInstance
+    private let apiManager: APIManagerProtocol = APIManager()
     @State private var color: Color = Color(Constants.redColor)
     @State private var image: UIImage? = UIImage(asset: Asset.addImage)
     @State private var text: String = ""

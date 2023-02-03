@@ -20,7 +20,7 @@ struct PrimaryButton: View {
     var title: String
     var style: Style
     var maxWidth: CGFloat? = .infinity
-    var tapped: (() -> Void)?
+    var tapped: (() -> Void)?//TODO: - change to combine
 
     var body: some View {
         Button(action: {

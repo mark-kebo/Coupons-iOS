@@ -19,9 +19,14 @@ struct Coupon: Identifiable, Hashable {
         image = ""
     }
     
-    init(data: [String : String]) {
-        description = data["description"] ?? ""
-        image = data["image"] ?? ""
+    private enum CodingCases: String {
+        case description
+        case image
+    }
+    
+    init(data: [String: String]) {
+        description = data[CodingCases.description.rawValue] ?? ""
+        image = data[CodingCases.image.rawValue] ?? ""
     }
     
     init(description: String, image: String) {
@@ -30,9 +35,9 @@ struct Coupon: Identifiable, Hashable {
     }
     
     func toAnyObject() -> Any? {
-        return [
-            "description": description,
-            "image": image
+        [
+            CodingCases.description.rawValue: description,
+            CodingCases.image.rawValue: image
         ]
     }
 }

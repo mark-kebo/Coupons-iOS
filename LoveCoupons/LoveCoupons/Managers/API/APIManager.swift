@@ -9,46 +9,46 @@ import UIKit
 import Firebase
 
 protocol APIManagerProtocol {
-    static var sharedInstance: APIManagerProtocol { get }
     var userUid: String? { get }
 
-    func login(email: String, password: String, completion:@escaping (Error?) -> Void)
-    func logout(completion:@escaping (String?) -> Void)
-    func createUser(userInfo: UserInfo, email: String, password: String, completion:@escaping (Error?) -> Void)
-    func resetPassword(email: String,completion:@escaping (Error?) -> Void)
-    func set(userInfo: UserInfo, completion:@escaping (Error?) -> Void)
-    func getUserInfo(completion:@escaping (UserInfo?, Error?) -> Void)
-    func getMyCoupons(completion:@escaping ([Coupon]?, Error?) -> Void)
-    func getPairCoupons(completion:@escaping ([Coupon]?, Error?) -> Void)
-    func updateCoupon(_ coupon: Coupon, data: Data?, completion:@escaping (Error?) -> Void)
-    func deleteCoupon(_ coupon: Coupon, completion:@escaping (Error?) -> Void)
-    func getImage(by url: String?, completion:@escaping (UIImage?, Error?) -> Void)
-    func getPairEmail(completion:@escaping (String?, Error?) -> Void)
+    func login(email: String, password: String, completion: @escaping (Error?) -> Void)
+    func logout(completion: @escaping (String?) -> Void)
+    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping (Error?) -> Void)
+    func resetPassword(email: String,completion: @escaping (Error?) -> Void)
+    func setUserInfo(_ userInfo: UserInfo, completion: @escaping (Error?) -> Void)
+    func getUserInfo(completion: @escaping (UserInfo?, Error?) -> Void)
+    func getMyCoupons(completion: @escaping ([Coupon]?, Error?) -> Void)
+    func getPairCoupons(completion: @escaping ([Coupon]?, Error?) -> Void)
+    func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping (Error?) -> Void)
+    func deleteCoupon(_ coupon: Coupon, completion: @escaping (Error?) -> Void)
+    func getImage(by url: String?, completion: @escaping (UIImage?, Error?) -> Void)
+    func getPairEmail(completion: @escaping (String?, Error?) -> Void)
 }
 
-class APIManager: APIManagerProtocol {
-    static let sharedInstance: APIManagerProtocol = APIManager()
+final class APIManager: APIManagerProtocol {
     var userUid: String? {
         get {
-            return Auth.auth().currentUser?.uid
+            return auth.currentUser?.uid
         }
     }
     
     private let database = Database.database().reference()
     private let storage = Storage.storage()
-    private var cache: CacheProtocol
+    private var cacheImages: CacheImagesProtocol
     private let serialQueue: DispatchQueue
     private let session = URLSession(configuration: URLSessionConfiguration.default)
-    private let error = NSError(domain:"", code:401, userInfo:[ NSLocalizedDescriptionKey: L10n.apiDefaultError]) as Error
-    private let errorFields = NSError(domain:"", code:401, userInfo:[ NSLocalizedDescriptionKey: L10n.errorFields]) as Error
-    private let errorCoupons = NSError(domain:"", code:401, userInfo:[ NSLocalizedDescriptionKey: L10n.Alert.coupons]) as Error
+    private let error = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.apiDefaultError]) as Error
+    private let errorFields = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.errorFields]) as Error
+    private let errorCoupons = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.Alert.coupons]) as Error
+    private let auth: Auth
 
-    init() {
-        cache = CacheImages()
+    init(cacheImages: CacheImagesProtocol = CacheImages()) {
+        self.cacheImages = cacheImages
         serialQueue = DispatchQueue(label: "queue")
+        auth = Auth.auth()
     }
 
-    func getPairEmail(completion:@escaping (String?, Error?) -> Void) {
+    func getPairEmail(completion: @escaping (String?, Error?) -> Void) {
         serialQueue.async {
             self.getUserInfo { [weak self] userInfo, error in
                 if let id = userInfo?.pairUniqId {
@@ -78,7 +78,7 @@ class APIManager: APIManagerProtocol {
     
     func login(email: String, password: String, completion:@escaping (Error?) -> Void) {
         serialQueue.async {
-            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
+            self.auth.signIn(withEmail: email, password: password) { authResult, error in
                 DispatchQueue.main.async {
                     if let error = error {
                         completion(error)
@@ -92,7 +92,7 @@ class APIManager: APIManagerProtocol {
     
     func logout(completion:@escaping (String?) -> Void) {
         do {
-            try Auth.auth().signOut()
+            try auth.signOut()
             completion(nil)
         } catch {
             completion(L10n.apiDefaultError)
@@ -101,13 +101,13 @@ class APIManager: APIManagerProtocol {
     
     func createUser(userInfo: UserInfo, email: String, password: String, completion:@escaping (Error?) -> Void) {
         serialQueue.async {
-            Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            self.auth.createUser(withEmail: email, password: password) { authResult, error in
                 if let error = error {
                     DispatchQueue.main.async {
                         completion(error)
                     }
                 } else {
-                    self.set(userInfo: userInfo) { error in
+                    self.setUserInfo(userInfo) { error in
                         DispatchQueue.main.async {
                             if let error = error {
                                 completion(error)
@@ -123,7 +123,7 @@ class APIManager: APIManagerProtocol {
     
     func resetPassword(email: String,completion:@escaping (Error?) -> Void) {
         serialQueue.async {
-            Auth.auth().sendPasswordReset(withEmail: email) { error in
+            self.auth.sendPasswordReset(withEmail: email) { error in
                 if let error = error {
                     DispatchQueue.main.async {
                         completion(error)
@@ -137,7 +137,7 @@ class APIManager: APIManagerProtocol {
         }
     }
 
-    func set(userInfo: UserInfo, completion:@escaping (Error?) -> Void) {
+    func setUserInfo(_ userInfo: UserInfo, completion:@escaping (Error?) -> Void) {
         guard let uid = userUid else {
             completion(error)
             return
@@ -213,7 +213,7 @@ class APIManager: APIManagerProtocol {
         }
     }
     
-    func getPairCoupons(completion:@escaping ([Coupon]?, Error?) -> Void) {
+    func getPairCoupons(completion: @escaping ([Coupon]?, Error?) -> Void) {
         serialQueue.async {
             self.getUserInfo { [weak self] userInfo, error in
                 if let id = userInfo?.pairUniqId {
@@ -309,7 +309,7 @@ class APIManager: APIManagerProtocol {
             return
         }
         serialQueue.async {
-            if let image = self.cache.check(imageInCacheBy: urlString as NSString) {
+            if let image = self.cacheImages.check(imageInCacheBy: urlString as NSString) {
                 DispatchQueue.main.async {
                     completion(image, nil)
                 }
@@ -320,7 +320,7 @@ class APIManager: APIManagerProtocol {
                             completion(nil, error)
                             return }
                         self?.serialQueue.async {
-                            self?.cache.add(imageToCacheBy: urlString as NSString, and: img)
+                            self?.cacheImages.add(imageToCacheBy: urlString as NSString, and: img)
                             DispatchQueue.main.async {
                                 completion(img, nil)
                             }
@@ -360,13 +360,10 @@ extension APIManager {
         }
     }
     
-    private func deleteImage(_ coupon: Coupon, completion:@escaping (Error?) -> Void) {
-        if coupon.image.isEmpty {
-            return
-        }
-
+    private func deleteImage(_ coupon: Coupon, completion: @escaping (Error?) -> Void) {
+        guard !coupon.image.isEmpty else { return }
         let storageRef = storage.reference(forURL: coupon.image)
-        self.cache.delete(imageBy: coupon.image as NSString)
+        self.cacheImages.delete(imageBy: coupon.image as NSString)
         serialQueue.async {
             storageRef.delete { error in
                 if let error = error {

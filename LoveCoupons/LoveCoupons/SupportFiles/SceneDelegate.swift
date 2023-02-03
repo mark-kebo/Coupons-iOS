@@ -7,12 +7,10 @@
 
 import UIKit
 import SwiftUI
-import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -22,12 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.tintColor = UIColor(named: Constants.redColor)
             self.window = window
-            setupRootVC()
-            window.makeKeyAndVisible()
+            RootCoordinator(window: window).start()
         }
-        Reachability.sharedInstance.startMonitor()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -58,20 +53,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
     }
 
-
-}
-
-// MARK: - Create the SwiftUI view that provides the window contents.
-extension SceneDelegate {
-    func setupRootVC() {
-        if Auth.auth().currentUser != nil {
-            window?.rootViewController = UIHostingController(rootView: TabRootView())
-        } else {
-            window?.rootViewController = UIHostingController(rootView: LoginView())
-        }
-    }
-    
-    func noInternetVC() {
-        window?.rootViewController = UIHostingController(rootView: NoInternetConnectionView())
-    }
 }

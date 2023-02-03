@@ -8,22 +8,21 @@
 
 import UIKit
 
-protocol CacheProtocol {
+protocol CacheImagesProtocol {
     func add(imageToCacheBy key: NSString, and object: UIImage)
     func check(imageInCacheBy key: NSString) -> UIImage?
     func delete(imageBy key: NSString)
 }
 
-class CacheImages: CacheProtocol {
-    
-    var dictionaryCache = [NSString: UIImage]()
+final class CacheImages: CacheImagesProtocol {
+    private var dictionaryCache = [NSString: UIImage]()
     
     func add(imageToCacheBy key: NSString, and object: UIImage) {
         dictionaryCache[key] = object
     }
     
     func check(imageInCacheBy key: NSString) -> UIImage? {
-        return dictionaryCache[key]
+        dictionaryCache[key]
     }
     
     func delete(imageBy key: NSString) {
