@@ -13,7 +13,9 @@ struct ActivityIndicator: UIViewRepresentable {
     let style: UIActivityIndicatorView.Style
 
     func makeUIView(context: UIViewRepresentableContext<ActivityIndicator>) -> UIActivityIndicatorView {
-        return UIActivityIndicatorView(style: style)
+        let indicator = UIActivityIndicatorView(style: style)
+        indicator.color = UIColor(named: Constants.redColor)
+        return indicator
     }
 
     func updateUIView(_ uiView: UIActivityIndicatorView, context: UIViewRepresentableContext<ActivityIndicator>) {
@@ -37,10 +39,10 @@ struct LoadingView<Content>: View where Content: View {
                 VStack {
                     Text(L10n.indicator)
                         .font(.custom(Constants.textFont, size: 24))
-                    Image(uiImage: UIImage(asset: Asset.spinner))
-                        .aspectRatio(contentMode: ContentMode.fill)
+                    ActivityIndicator(isAnimating: $isShowing, style: .large)
                         .frame(width: 50, height: 50)
-                        .clipped()                }
+                        .clipped()
+                }
                 .frame(width: geometry.size.width / 2,
                        height: geometry.size.height / 5)
                 .background(Color.secondary.colorInvert())
@@ -51,5 +53,4 @@ struct LoadingView<Content>: View where Content: View {
             }
         }
     }
-
 }

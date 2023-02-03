@@ -22,7 +22,6 @@ internal enum Asset {
   internal static let appRed = ColorAsset(name: "AppRed")
   internal static let addImage = ImageAsset(name: "addImage")
   internal static let logo = ImageAsset(name: "logo")
-  internal static let spinner = ImageAsset(name: "spinner")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

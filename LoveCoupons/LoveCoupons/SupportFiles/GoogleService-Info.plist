@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>818611060254-p9alkq9ta3hgmcagp6bpohcudj55gqkj.apps.googleusercontent.com</string>
+	<string>818611060254-tfeu1u3flpqvgccahe6utccjk8q3sb48.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.818611060254-p9alkq9ta3hgmcagp6bpohcudj55gqkj</string>
+	<string>com.googleusercontent.apps.818611060254-tfeu1u3flpqvgccahe6utccjk8q3sb48</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>818611060254-8m5a1oai9etk8dn2s8375v3ts32r6o4s.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.dmitry.vorozhbicki.LoveCoupons</string>
+	<string>au.com.testing.app.pl</string>
 	<key>PROJECT_ID</key>
 	<string>coupons-love</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:818611060254:ios:63837ebfae6e154645380f</string>
+	<string>1:818611060254:ios:c13e928fe9d3786945380f</string>
 	<key>DATABASE_URL</key>
 	<string>https://coupons-love.firebaseio.com</string>
 </dict>

@@ -10,19 +10,27 @@ import SwiftUI
 
 struct CouponView: View {
     private let apiManager: APIManagerProtocol = APIManager.sharedInstance
-    @State private var image: UIImage = UIImage(asset: Asset.spinner)
+    @State private var image: UIImage = UIImage(asset: Asset.logo)
+    @State private var isShowingImagesLoading: Bool = false
     @State private var color: Color = Color(Constants.redColor)
 
+    private let imageSize: CGSize = CGSize(width: 130, height: 180)
     var coupon: Coupon
     var id: Int
     
     var body: some View {
         HStack {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: ContentMode.fill)
-                .frame(width: 130, height: 180)
-                .clipped()
+            if isShowingImagesLoading {
+                ActivityIndicator(isAnimating: $isShowingImagesLoading, style: .large)
+                    .frame(width: imageSize.width, height: imageSize.height)
+                    .clipped()
+            } else {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: ContentMode.fill)
+                    .frame(width: imageSize.width, height: imageSize.height)
+                    .clipped()
+            }
             VStack {
                 Text("\(L10n.Coupon.title) #\(id)".uppercased())
                     .font(.custom(Constants.titleFont, size: 28))
@@ -36,7 +44,7 @@ struct CouponView: View {
             }
             .padding(.leading, 8)
         }
-        .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 180, alignment: .leading)
+        .frame(minWidth: 0, maxWidth: .infinity, maxHeight: imageSize.height, alignment: .leading)
         .padding(.trailing, 16)
         .background(Color(UIColor.tertiarySystemBackground))
         .cornerRadius(20)
@@ -45,12 +53,14 @@ struct CouponView: View {
     }
     
     private func setImage() {
+        isShowingImagesLoading = true
         apiManager.getImage(by: coupon.image) { (image, error) in
             if error != nil {
                 self.image = UIImage(asset: Asset.logo)
-            } else if let image = image {
+            } else if let image {
                 self.image = image
             }
+            isShowingImagesLoading = false
         }
     }
 }

@@ -40,11 +40,11 @@ struct MailView: UIViewControllerRepresentable {
             defer {
                 $presentation.wrappedValue.dismiss()
             }
-            guard error == nil else {
-                self.result = .failure(error!)
+            guard let error else {
+                self.result = .success(result)
                 return
             }
-            self.result = .success(result)
+            self.result = .failure(error)
         }
     }
 

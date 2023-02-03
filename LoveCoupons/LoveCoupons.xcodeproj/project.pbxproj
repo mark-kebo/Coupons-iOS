@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0A11A723237AE41E00C2E1B9 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11A722237AE41E00C2E1B9 /* PrimaryButton.swift */; };
 		0A11A725237AE99300C2E1B9 /* PrimaryTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11A724237AE99300C2E1B9 /* PrimaryTextField.swift */; };
-		0A2F4D44238565BB005E865F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0A2F4D43238565BB005E865F /* GoogleService-Info.plist */; };
 		0A2F4D46238578B0005E865F /* TabRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F4D45238578B0005E865F /* TabRootView.swift */; };
 		0A2F4D4823857D85005E865F /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F4D4723857D85005E865F /* ResetPasswordView.swift */; };
 		0A3647CE2380647600F3393D /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3647CD2380647600F3393D /* SignUpView.swift */; };
@@ -44,6 +43,7 @@
 		969232982421004800C2D85E /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969232972421004800C2D85E /* Coupon.swift */; };
 		9692329A242111F200C2D85E /* CouponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96923299242111F200C2D85E /* CouponView.swift */; };
 		9692329F24221ECE00C2D85E /* CacheImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9692329E24221ECE00C2D85E /* CacheImages.swift */; };
+		D07BDD18298D01E2006FD8F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D07BDD17298D01E2006FD8F2 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,7 +62,6 @@
 /* Begin PBXFileReference section */
 		0A11A722237AE41E00C2E1B9 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
 		0A11A724237AE99300C2E1B9 /* PrimaryTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryTextField.swift; sourceTree = "<group>"; };
-		0A2F4D43238565BB005E865F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0A2F4D45238578B0005E865F /* TabRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabRootView.swift; sourceTree = "<group>"; };
 		0A2F4D4723857D85005E865F /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		0A3647CD2380647600F3393D /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -105,6 +104,7 @@
 		96A583AD99643BD083C1D8B9 /* Pods-EmptyProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.release.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.release.xcconfig"; sourceTree = "<group>"; };
 		A0A1C3DCA9E017CF1E594503 /* Pods-LoveCoupons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.release.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.release.xcconfig"; sourceTree = "<group>"; };
 		AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoveCoupons.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D07BDD17298D01E2006FD8F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F74DF1D969E88C22542BC8 /* Pods-RevolutTestApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.debug.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,9 +168,9 @@
 				0A80C6F424CAFB3700105ACF /* Fonts */,
 				0A7CB79E23637A1B0029FBD3 /* GeneratedResources */,
 				0A7CB79B236379350029FBD3 /* Localizable.strings */,
-				0A2F4D43238565BB005E865F /* GoogleService-Info.plist */,
 				0AE5F0462379D4FE00887BAF /* info.plist */,
 				0AE5F0192379CD3800887BAF /* SceneDelegate.swift */,
+				D07BDD17298D01E2006FD8F2 /* GoogleService-Info.plist */,
 				0A7CB771236349E30029FBD3 /* AppDelegate.swift */,
 				0A7CB77A236349E90029FBD3 /* Assets.xcassets */,
 			);
@@ -373,10 +373,10 @@
 			files = (
 				0A80C6F724CAFB5100105ACF /* 3dumb.ttf in Resources */,
 				0A7CB79223636B490029FBD3 /* LaunchScreen.storyboard in Resources */,
-				0A2F4D44238565BB005E865F /* GoogleService-Info.plist in Resources */,
 				0A7CB79D236379350029FBD3 /* Localizable.strings in Resources */,
 				0A7CB77B236349E90029FBD3 /* Assets.xcassets in Resources */,
 				0A80C6F824CAFB5100105ACF /* DRAguScript-Book.ttf in Resources */,
+				D07BDD18298D01E2006FD8F2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
