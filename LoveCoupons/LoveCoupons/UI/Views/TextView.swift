@@ -11,8 +11,8 @@ import SwiftUI
 struct TextView: UIViewRepresentable {
     @Binding var text: String
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+    func makeCoordinator() -> TextViewRepresentableCoordinator {
+        TextViewRepresentableCoordinator(self)
     }
 
     func makeUIView(context: Context) -> UITextView {
@@ -35,7 +35,7 @@ struct TextView: UIViewRepresentable {
         uiView.text = text
     }
 
-    class Coordinator : NSObject, UITextViewDelegate {
+    class TextViewRepresentableCoordinator : NSObject, UITextViewDelegate {
 
         var parent: TextView
 

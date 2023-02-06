@@ -41,9 +41,9 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     }
     
     func getUserInfo() {
-        isShowLoading.toggle()
+        isShowLoading = true
         apiManager.getUserInfo { [weak self] userInfo, error in
-            self?.isShowLoading.toggle()
+            self?.isShowLoading = false
             if let error = error?.localizedDescription {
                 self?.coordinator.showError(error)
             } else {
@@ -55,21 +55,19 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     }
     
     func sendButtonPressed(email: String) {
-        isShowLoading.toggle()
+        isShowLoading = true
         self.apiManager.resetPassword(email: email) { [weak self] error in
-            self?.isShowLoading.toggle()
+            self?.isShowLoading = false
             if let error = error?.localizedDescription {
                 self?.coordinator.showError(error)
-            } else {
-                self?.coordinator.showSuccessMessage()
             }
         }
     }
     
     func logoutButtonPressed() {
-        isShowLoading.toggle()
+        isShowLoading = true
         self.apiManager.logout { [weak self] error in
-            self?.isShowLoading.toggle()
+            self?.isShowLoading = false
             if let error {
                 self?.coordinator.showError(error)
             } else {
@@ -79,14 +77,12 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     }
     
     func submitButtonPressed() {
-        isShowLoading.toggle()
+        isShowLoading = true
         let userInfoItem = UserInfo(name: self.name, email: self.email, pairUniqId: self.id)
         self.apiManager.setUserInfo(userInfoItem) { [weak self] error in
-            self?.isShowLoading.toggle()
+            self?.isShowLoading = false
             if let error = error?.localizedDescription {
                 self?.coordinator.showError(error)
-            } else {
-                self?.coordinator.showSuccessMessage()
             }
         }
     }

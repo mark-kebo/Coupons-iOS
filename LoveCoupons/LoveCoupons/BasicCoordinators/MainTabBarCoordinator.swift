@@ -47,8 +47,8 @@ final class MainTabBarCoordinator: RootTabBarCoordinatorProtocol {
         
 //        PairCouponsCoordinator(rootNavigationController: rootNavigationController,
 //                               tabNavigationController: pairCouponsNavigationController).start()
-//        MyCouponsSettingsCoordinator(rootNavigationController: rootNavigationController,
-//                                     tabNavigationController: myCouponsNavigationController).start()
+        MyCouponsCoordinator(rootNavigationController: rootNavigationController,
+                             tabNavigationController: myCouponsNavigationController).start()
         SettingsCoordinator(rootNavigationController: rootNavigationController,
                             tabNavigationController: settingsNavigationController).start()
         

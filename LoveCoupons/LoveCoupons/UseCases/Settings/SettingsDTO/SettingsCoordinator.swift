@@ -11,7 +11,6 @@ import SwiftUI
 
 protocol SettingsCoordinatorProtocol: ErrorableCoordinatorProtocol, TabCoordinatorProtocol {
     func navigateToLogin()
-    func showSuccessMessage()
 }
 
 final class SettingsCoordinator: SettingsCoordinatorProtocol {
@@ -38,14 +37,5 @@ final class SettingsCoordinator: SettingsCoordinatorProtocol {
         NSLog("Navigate to tabs")
         let coordinator = RootCoordinator(rootNavigationController: rootNavigationController)
         coordinator.start()
-    }
-    
-    func showSuccessMessage() {
-        NSLog("Show success message")
-        let alert = UIAlertController(title: L10n.Alert.Success.title, message: nil,
-                                      preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: L10n.Alert.Button.cancel,
-                                      style: UIAlertAction.Style.default, handler: nil))
-        rootNavigationController?.present(alert, animated: true, completion: nil)
     }
 }

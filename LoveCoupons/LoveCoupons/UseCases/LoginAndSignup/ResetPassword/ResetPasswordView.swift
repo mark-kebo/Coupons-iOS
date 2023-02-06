@@ -8,12 +8,12 @@
 
 import SwiftUI
 
-struct ResetPasswordView: View {
+struct ResetPasswordView<ViewModel>: View where ViewModel: ResetPasswordViewModelProtocol {
     @State private var email: String = ""
     
-    private let viewModel: ResetPasswordViewModelProtocol
+    private let viewModel: ViewModel
 
-    init(viewModel: ResetPasswordViewModelProtocol) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
     

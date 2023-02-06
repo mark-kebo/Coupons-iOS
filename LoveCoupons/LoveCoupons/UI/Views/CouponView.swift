@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct CouponView: View {
-    private let apiManager: APIManagerProtocol = APIManager()
     @State private var image: UIImage = UIImage(asset: Asset.logo)
     @State private var isShowingImagesLoading: Bool = false
     @State private var color: Color = Color(Constants.redColor)
@@ -52,14 +51,14 @@ struct CouponView: View {
         .onAppear(perform: setImage)
     }
     
-    //TODO: - Refactor it
     private func setImage() {
         isShowingImagesLoading = true
-        apiManager.getImage(by: coupon.image) { (image, error) in
-            if error != nil {
-                self.image = UIImage(asset: Asset.logo)
-            } else if let image {
+        MediaLoadingService.shared.getMediaData(coupon.image) { result in
+            switch result {
+            case .success(let image):
                 self.image = image
+            case .failure(_):
+                self.image = UIImage(asset: Asset.logo)
             }
             isShowingImagesLoading = false
         }

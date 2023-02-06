@@ -8,15 +8,15 @@
 
 import SwiftUI
 
-struct SignUpView: View {
+struct SignUpView<ViewModel>: View where ViewModel: SignUpViewModelProtocol {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var name: String = ""
     @State private var id: String = ""
     
-    private let viewModel: SignUpViewModelProtocol
+    private let viewModel: ViewModel
 
-    init(viewModel: SignUpViewModelProtocol) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
 

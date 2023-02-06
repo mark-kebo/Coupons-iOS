@@ -8,99 +8,59 @@
 
 import SwiftUI
 
-enum CouponEditState {
-    case edit
-    case add
-}
-
-struct CouponEditView: View {
-    private let apiManager: APIManagerProtocol = APIManager()
+struct CouponEditView<ViewModel>: View where ViewModel: CouponEditViewModelProtocol {
     @State private var color: Color = Color(Constants.redColor)
-    @State private var image: UIImage? = UIImage(asset: Asset.addImage)
-    @State private var text: String = ""
-    @State var coupon: Coupon
-    var id: Int
-    var state: CouponEditState
-    @State private var alertString: String = ""
-    @State private var alertTitle: String = ""
-    @State private var showingAlert = false
-    @State private var showCaptureImageView = false
-    @State private var isShowLoading = false
-    @Environment(\.presentationMode) private var presentationMode
     
-    init(coupon: Coupon, id: Int, state: CouponEditState) {
-        UINavigationBar.appearance().titleTextAttributes = [.font : UIFont(name: Constants.titleFont, size: 28)!]
-        self._coupon = State(initialValue: coupon)
-        self.id = id
-        self.state = state
+    @ObservedObject private var viewModel: ViewModel
+    @ObservedObject private var imageStore = CouponEditImageStore()
+
+    init(viewModel: ViewModel) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
-        LoadingView(isShowing: $isShowLoading) {
+        LoadingView(isShowing: $viewModel.isShowLoading) {
             ZStack {
                 VStack {
-                    Image(uiImage: self.image ?? UIImage())
+                    Image(uiImage: imageStore.image ?? UIImage())
                         .resizable()
                         .scaledToFit()
                         .cornerRadius(20)
                         .padding(16)
                         .onTapGesture {
                             UIApplication.shared.endEditing()
-                            self.showCaptureImageView.toggle()
+                            viewModel.changeImageButtonSelected(image: $imageStore.image)
                         }
                     Spacer()
-                    TextView(text: self.$text)
+                    TextView(text: self.$viewModel.text)
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(10)
                 }
                 .onAppear(perform: self.onAppear)
-                .alert(isPresented: self.$showingAlert) { () -> Alert in
-                    Alert(title: Text(self.alertTitle), message: Text(self.alertString))
-                }
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                 .padding()
-                .navigationBarHidden(false)
-                .navigationBarTitle(Text(self.state == .edit ? "\(L10n.Coupon.title) #\(self.id)".uppercased() : L10n.Coupon.add.uppercased()), displayMode: .inline)
-                .navigationBarItems(trailing: PrimaryButton(title: self.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
-                    self.isShowLoading = true
-                    self.coupon.description = self.text
-
-                    self.apiManager.updateCoupon(self.coupon, data: self.image != UIImage(asset: Asset.addImage) ? self.image?.jpegData(compressionQuality: 0.5) : nil) { error in
-                            self.isShowLoading = false
-                            if let error = error?.localizedDescription {
-                                self.alertString = error
-                                self.showingAlert = true
-                            } else {
-                                self.presentationMode.wrappedValue.dismiss()
-                            }
-                        }
-                    })
-                .navigationBarBackButtonHidden(false)
-
-                if (self.showCaptureImageView) {
-                    CaptureImageView(isShown: self.$showCaptureImageView, image: self.$image)
-                    .navigationBarHidden(true)
-                }
+                .navigationBarTitle(Text(""),displayMode: .inline)
+                .navigationBarItems(leading: Text(viewModel.state == .edit ?
+                                                  "\(L10n.Coupon.title) #\(viewModel.id)".uppercased() :
+                                                     L10n.Coupon.add.uppercased()).font(.custom(Constants.titleFont, size: 28)),
+                                    trailing: PrimaryButton(title: viewModel.state == .edit ? L10n.Button.edit : L10n.Button.add, style: .fill, maxWidth: .none) {
+                    viewModel.sendButtonPressed(image: imageStore.image)
+                })
             }
         }
     }
     
     private func onAppear() {
-        text = coupon.description
-        self.isShowLoading = true
-        apiManager.getImage(by: coupon.image) { (image, error) in
-            self.isShowLoading = false
-            if error != nil {
-                self.image = UIImage(asset: Asset.addImage)
-            } else if let image = image {
-                self.image = image
-            }
-        }
+        viewModel.updateImage(imageStore: imageStore)
     }
 }
 
 struct CouponEditView_Previews: PreviewProvider {
     static var previews: some View {
-        CouponEditView(coupon: Coupon(description: "Test", image: "https"), id: 1, state: .add)
+        CouponEditView(viewModel: CouponEditViewModel(coordinator: CouponEditCoordinator(rootNavigationController: nil,
+                                                                                         tabNavigationController: nil,
+                                                                                         coupon: Coupon(description: "Test", image: "https"),
+                                                                                         id: 1,
+                                                                                         state: .add)))
     }
 }

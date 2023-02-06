@@ -20,12 +20,10 @@ struct PrimaryButton: View {
     var title: String
     var style: Style
     var maxWidth: CGFloat? = .infinity
-    var tapped: (() -> Void)?//TODO: - change to combine
+    var tapped: (() -> Void)
 
     var body: some View {
-        Button(action: {
-            self.tapped?()
-        }){
+        Button(action: tapped) {
             Text(title)
                 .font(.custom(Constants.textFont, size: 20))
                 .frame(minWidth: 0, maxWidth: maxWidth)
@@ -39,6 +37,6 @@ struct PrimaryButton: View {
 
 struct PrimaryButton_Previews: PreviewProvider {
     static var previews: some View {
-        PrimaryButton(title: "test", style: .light)
+        PrimaryButton(title: "test", style: .light, tapped: {})
     }
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import Network
 
 protocol APIManagerProtocol {
     var userUid: String? { get }
@@ -21,32 +22,47 @@ protocol APIManagerProtocol {
     func getPairCoupons(completion: @escaping ([Coupon]?, Error?) -> Void)
     func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping (Error?) -> Void)
     func deleteCoupon(_ coupon: Coupon, completion: @escaping (Error?) -> Void)
-    func getImage(by url: String?, completion: @escaping (UIImage?, Error?) -> Void)
     func getPairEmail(completion: @escaping (String?, Error?) -> Void)
 }
 
 final class APIManager: APIManagerProtocol {
     var userUid: String? {
-        get {
-            return auth.currentUser?.uid
-        }
+        auth.currentUser?.uid
     }
     
     private let database = Database.database().reference()
     private let storage = Storage.storage()
-    private var cacheImages: CacheImagesProtocol
     private let serialQueue: DispatchQueue
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     private let error = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.apiDefaultError]) as Error
     private let errorFields = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.errorFields]) as Error
     private let errorCoupons = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.Alert.coupons]) as Error
+    private let disconnectCoupons = NSError(domain:"", code: 500, userInfo:[ NSLocalizedDescriptionKey: L10n.noInternetConnection]) as Error
     private let auth: Auth
+//    private var monitor: NWPathMonitor?
 
-    init(cacheImages: CacheImagesProtocol = CacheImages()) {
-        self.cacheImages = cacheImages
+    init() {
         serialQueue = DispatchQueue(label: "queue")
         auth = Auth.auth()
     }
+    
+//    private func startConnectionMonitor(disconnectCompletion: @escaping (Error?) -> Void) {
+//        monitor = NWPathMonitor()
+//        let queue = DispatchQueue(label: "Monitor")
+//        monitor?.start(queue: queue)
+//        monitor?.pathUpdateHandler = { [weak self] path in
+//            DispatchQueue.main.async {
+//                self?.stopConnectionMonitoring()
+//                if path.status != .satisfied {
+//                    disconnectCompletion(self?.disconnectCoupons)
+//                }
+//            }
+//        }
+//    }
+//
+//    private func stopConnectionMonitoring() {
+//        self.monitor = nil
+//    }
 
     func getPairEmail(completion: @escaping (String?, Error?) -> Void) {
         serialQueue.async {
@@ -272,9 +288,6 @@ final class APIManager: APIManagerProtocol {
             riversRef.putData(data, metadata: nil) { (metadata, error) in
                 riversRef.downloadURL { (url, error) in
                     if let downloadURL = url {
-                        self.deleteImage(coupon) { error in
-                            completion(error)
-                        }
                         coupon.image = downloadURL.absoluteString
                         self.newDatabaseCoupon(coupon) { error in
                             completion(error)
@@ -297,45 +310,9 @@ final class APIManager: APIManagerProtocol {
             return
         }
         self.database.child(uid).child(Constants.couponsDirectory).child(key).removeValue()
-
-        deleteImage(coupon) { error in
-            completion(error)
-        }
     }
 
-    func getImage(by url: String?, completion:@escaping (UIImage?, Error?) -> Void) {
-        guard let urlString = url else {
-            completion(nil, error)
-            return
-        }
-        serialQueue.async {
-            if let image = self.cacheImages.check(imageInCacheBy: urlString as NSString) {
-                DispatchQueue.main.async {
-                    completion(image, nil)
-                }
-            } else {
-                if let url: URL = URL(string: urlString) {
-                    URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-                        guard let data = data , error == nil, let img = UIImage(data: data) else {
-                            completion(nil, error)
-                            return }
-                        self?.serialQueue.async {
-                            self?.cacheImages.add(imageToCacheBy: urlString as NSString, and: img)
-                            DispatchQueue.main.async {
-                                completion(img, nil)
-                            }
-                        }
-                    }.resume()
-                } else {
-                    completion(nil, self.error)
-                }
-            }
-        }
-    }
-}
-
-extension APIManager {
-    private func newDatabaseCoupon(_ coupon: Coupon, completion:@escaping (Error?) -> Void) {
+    private func newDatabaseCoupon(_ coupon: Coupon, completion: @escaping (Error?) -> Void) {
         guard let uid = userUid else {
             completion(error)
             return
@@ -355,25 +332,6 @@ extension APIManager {
             } else {
                 DispatchQueue.main.async {
                     completion(nil)
-                }
-            }
-        }
-    }
-    
-    private func deleteImage(_ coupon: Coupon, completion: @escaping (Error?) -> Void) {
-        guard !coupon.image.isEmpty else { return }
-        let storageRef = storage.reference(forURL: coupon.image)
-        self.cacheImages.delete(imageBy: coupon.image as NSString)
-        serialQueue.async {
-            storageRef.delete { error in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        completion(error)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        completion(nil)
-                    }
                 }
             }
         }

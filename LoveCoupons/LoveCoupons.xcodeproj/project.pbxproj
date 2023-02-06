@@ -11,7 +11,6 @@
 		0A11A725237AE99300C2E1B9 /* PrimaryTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A11A724237AE99300C2E1B9 /* PrimaryTextField.swift */; };
 		0A2F4D4823857D85005E865F /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A2F4D4723857D85005E865F /* ResetPasswordView.swift */; };
 		0A3647CE2380647600F3393D /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3647CD2380647600F3393D /* SignUpView.swift */; };
-		0A3647D023806B1E00F3393D /* PrimaryNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3647CF23806B1E00F3393D /* PrimaryNavigationButton.swift */; };
 		0A775A4024D9ED8D00917AD0 /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A775A3F24D9ED8D00917AD0 /* MailView.swift */; };
 		0A7CB772236349E30029FBD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7CB771236349E30029FBD3 /* AppDelegate.swift */; };
 		0A7CB77B236349E90029FBD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A7CB77A236349E90029FBD3 /* Assets.xcassets */; };
@@ -31,7 +30,6 @@
 		0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE5F01B2379CDA400887BAF /* LoginView.swift */; };
 		0AF2A9D424290D7B00E0049E /* CouponEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9D324290D7B00E0049E /* CouponEditView.swift */; };
 		0AF2A9D6242942AD00E0049E /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9D5242942AD00E0049E /* TextView.swift */; };
-		0AF2A9D8242A3EAE00E0049E /* CaptureImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */; };
 		0AF2A9DC242AA21300E0049E /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF2A9DB242AA21300E0049E /* ActivityIndicator.swift */; };
 		81EDAB89622ED7988D14A400 /* libPods-LoveCoupons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */; };
 		96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96583C73240FEA0700A23351 /* MyCouponsView.swift */; };
@@ -39,7 +37,6 @@
 		969232912420E11600C2D85E /* SelectableText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969232902420E11600C2D85E /* SelectableText.swift */; };
 		969232982421004800C2D85E /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969232972421004800C2D85E /* Coupon.swift */; };
 		9692329A242111F200C2D85E /* CouponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96923299242111F200C2D85E /* CouponView.swift */; };
-		9692329F24221ECE00C2D85E /* CacheImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9692329E24221ECE00C2D85E /* CacheImages.swift */; };
 		D07BDD18298D01E2006FD8F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D07BDD17298D01E2006FD8F2 /* GoogleService-Info.plist */; };
 		D07BDD20298D208D006FD8F2 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07BDD1F298D208D006FD8F2 /* LoginViewModel.swift */; };
 		D07BDD22298D20AA006FD8F2 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07BDD21298D20AA006FD8F2 /* CoordinatorProtocol.swift */; };
@@ -54,6 +51,13 @@
 		D07BDD39298D33E0006FD8F2 /* ResetPasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07BDD38298D33E0006FD8F2 /* ResetPasswordCoordinator.swift */; };
 		D07BDD43298D4C02006FD8F2 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07BDD42298D4C02006FD8F2 /* SettingsViewModel.swift */; };
 		D07BDD45298D4C0D006FD8F2 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07BDD44298D4C0D006FD8F2 /* SettingsCoordinator.swift */; };
+		D0AA80CC2990F9010094B8CB /* MyCouponsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80CB2990F9010094B8CB /* MyCouponsViewModel.swift */; };
+		D0AA80CE2990F90F0094B8CB /* MyCouponsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80CD2990F90F0094B8CB /* MyCouponsCoordinator.swift */; };
+		D0AA80D0299102D60094B8CB /* CouponEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80CF299102D60094B8CB /* CouponEditViewModel.swift */; };
+		D0AA80D2299102E50094B8CB /* CouponEditCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80D1299102E50094B8CB /* CouponEditCoordinator.swift */; };
+		D0AA80D5299106720094B8CB /* MediaLoadingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80D4299106720094B8CB /* MediaLoadingService.swift */; };
+		D0AA80D929912B1E0094B8CB /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80D829912B1E0094B8CB /* ImagePicker.swift */; };
+		D0AA80DB299136EF0094B8CB /* CouponEditImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80DA299136EF0094B8CB /* CouponEditImageStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,7 +78,6 @@
 		0A11A724237AE99300C2E1B9 /* PrimaryTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryTextField.swift; sourceTree = "<group>"; };
 		0A2F4D4723857D85005E865F /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
 		0A3647CD2380647600F3393D /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
-		0A3647CF23806B1E00F3393D /* PrimaryNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryNavigationButton.swift; sourceTree = "<group>"; };
 		0A775A3F24D9ED8D00917AD0 /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		0A7CB76E236349E30029FBD3 /* Love Coupons.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Love Coupons.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7CB771236349E30029FBD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,7 +100,6 @@
 		0AE5F0462379D4FE00887BAF /* info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 		0AF2A9D324290D7B00E0049E /* CouponEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditView.swift; sourceTree = "<group>"; };
 		0AF2A9D5242942AD00E0049E /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
-		0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureImageView.swift; sourceTree = "<group>"; };
 		0AF2A9DB242AA21300E0049E /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		0E5F775458F874B14B6C9009 /* Pods-RevolutTestApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.release.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.release.xcconfig"; sourceTree = "<group>"; };
 		725985767496E4BB7E71338B /* Pods_LoveCoupons.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoveCoupons.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,7 +109,6 @@
 		969232902420E11600C2D85E /* SelectableText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableText.swift; sourceTree = "<group>"; };
 		969232972421004800C2D85E /* Coupon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
 		96923299242111F200C2D85E /* CouponView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponView.swift; sourceTree = "<group>"; };
-		9692329E24221ECE00C2D85E /* CacheImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheImages.swift; sourceTree = "<group>"; };
 		96A583AD99643BD083C1D8B9 /* Pods-EmptyProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.release.xcconfig"; path = "Target Support Files/Pods-EmptyProject/Pods-EmptyProject.release.xcconfig"; sourceTree = "<group>"; };
 		A0A1C3DCA9E017CF1E594503 /* Pods-LoveCoupons.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.release.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.release.xcconfig"; sourceTree = "<group>"; };
 		AFB7C42CF2B4E20FB1C289BB /* libPods-LoveCoupons.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LoveCoupons.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +126,13 @@
 		D07BDD38298D33E0006FD8F2 /* ResetPasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordCoordinator.swift; sourceTree = "<group>"; };
 		D07BDD42298D4C02006FD8F2 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		D07BDD44298D4C0D006FD8F2 /* SettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCoordinator.swift; sourceTree = "<group>"; };
+		D0AA80CB2990F9010094B8CB /* MyCouponsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCouponsViewModel.swift; sourceTree = "<group>"; };
+		D0AA80CD2990F90F0094B8CB /* MyCouponsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCouponsCoordinator.swift; sourceTree = "<group>"; };
+		D0AA80CF299102D60094B8CB /* CouponEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditViewModel.swift; sourceTree = "<group>"; };
+		D0AA80D1299102E50094B8CB /* CouponEditCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditCoordinator.swift; sourceTree = "<group>"; };
+		D0AA80D4299106720094B8CB /* MediaLoadingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLoadingService.swift; sourceTree = "<group>"; };
+		D0AA80D829912B1E0094B8CB /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		D0AA80DA299136EF0094B8CB /* CouponEditImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditImageStore.swift; sourceTree = "<group>"; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F74DF1D969E88C22542BC8 /* Pods-RevolutTestApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.debug.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -221,13 +229,12 @@
 			children = (
 				0A11A722237AE41E00C2E1B9 /* PrimaryButton.swift */,
 				0A11A724237AE99300C2E1B9 /* PrimaryTextField.swift */,
-				0A3647CF23806B1E00F3393D /* PrimaryNavigationButton.swift */,
 				969232902420E11600C2D85E /* SelectableText.swift */,
 				96923299242111F200C2D85E /* CouponView.swift */,
 				0AF2A9D5242942AD00E0049E /* TextView.swift */,
-				0AF2A9D7242A3EAE00E0049E /* CaptureImageView.swift */,
 				0AF2A9DB242AA21300E0049E /* ActivityIndicator.swift */,
 				0A775A3F24D9ED8D00917AD0 /* MailView.swift */,
+				D0AA80D829912B1E0094B8CB /* ImagePicker.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -235,8 +242,8 @@
 		0A7CB78A236364DA0029FBD3 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				D0AA80D3299106060094B8CB /* MediaLoadingService */,
 				D07BDD1E298D1F36006FD8F2 /* API */,
-				9692329E24221ECE00C2D85E /* CacheImages.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -432,6 +439,8 @@
 		D07BDD3D298D49B5006FD8F2 /* MyCouponsDTO */ = {
 			isa = PBXGroup;
 			children = (
+				D0AA80CB2990F9010094B8CB /* MyCouponsViewModel.swift */,
+				D0AA80CD2990F90F0094B8CB /* MyCouponsCoordinator.swift */,
 			);
 			path = MyCouponsDTO;
 			sourceTree = "<group>";
@@ -464,8 +473,19 @@
 		D07BDD41298D4BD6006FD8F2 /* CouponEditDTO */ = {
 			isa = PBXGroup;
 			children = (
+				D0AA80CF299102D60094B8CB /* CouponEditViewModel.swift */,
+				D0AA80D1299102E50094B8CB /* CouponEditCoordinator.swift */,
+				D0AA80DA299136EF0094B8CB /* CouponEditImageStore.swift */,
 			);
 			path = CouponEditDTO;
+			sourceTree = "<group>";
+		};
+		D0AA80D3299106060094B8CB /* MediaLoadingService */ = {
+			isa = PBXGroup;
+			children = (
+				D0AA80D4299106720094B8CB /* MediaLoadingService.swift */,
+			);
+			path = MediaLoadingService;
 			sourceTree = "<group>";
 		};
 		E0B5F5AF26C395070E14CFA3 /* Frameworks */ = {
@@ -599,6 +619,7 @@
 				0A80C6FD24CB3C6100105ACF /* UIApplication.swift in Sources */,
 				0A7CB7A323637A2D0029FBD3 /* Storyboards-Constants.swift in Sources */,
 				0AE5F01C2379CDA400887BAF /* LoginView.swift in Sources */,
+				D0AA80DB299136EF0094B8CB /* CouponEditImageStore.swift in Sources */,
 				96583C74240FEA0700A23351 /* MyCouponsView.swift in Sources */,
 				0A11A723237AE41E00C2E1B9 /* PrimaryButton.swift in Sources */,
 				D07BDD2B298D27AE006FD8F2 /* LoginCoordinator.swift in Sources */,
@@ -609,23 +630,26 @@
 				D07BDD26298D20D1006FD8F2 /* MainTabBarCoordinator.swift in Sources */,
 				0AF2A9D424290D7B00E0049E /* CouponEditView.swift in Sources */,
 				D07BDD22298D20AA006FD8F2 /* CoordinatorProtocol.swift in Sources */,
-				0A3647D023806B1E00F3393D /* PrimaryNavigationButton.swift in Sources */,
 				0ABD2FEC238843EB00E04254 /* UserInfo.swift in Sources */,
+				D0AA80D0299102D60094B8CB /* CouponEditViewModel.swift in Sources */,
+				D0AA80D5299106720094B8CB /* MediaLoadingService.swift in Sources */,
 				0AF2A9D6242942AD00E0049E /* TextView.swift in Sources */,
 				0A11A725237AE99300C2E1B9 /* PrimaryTextField.swift in Sources */,
 				D07BDD24298D20BF006FD8F2 /* TabBarCoordinatorProtocols.swift in Sources */,
 				0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */,
+				D0AA80CC2990F9010094B8CB /* MyCouponsViewModel.swift in Sources */,
 				0A7CB7A223637A2D0029FBD3 /* Assets-Constants.swift in Sources */,
 				0A3647CE2380647600F3393D /* SignUpView.swift in Sources */,
 				D07BDD20298D208D006FD8F2 /* LoginViewModel.swift in Sources */,
-				0AF2A9D8242A3EAE00E0049E /* CaptureImageView.swift in Sources */,
 				D07BDD39298D33E0006FD8F2 /* ResetPasswordCoordinator.swift in Sources */,
 				D07BDD32298D2FE1006FD8F2 /* SignUpViewModel.swift in Sources */,
 				D07BDD45298D4C0D006FD8F2 /* SettingsCoordinator.swift in Sources */,
 				D07BDD37298D33D5006FD8F2 /* ResetPasswordViewModel.swift in Sources */,
+				D0AA80CE2990F90F0094B8CB /* MyCouponsCoordinator.swift in Sources */,
 				0AF2A9DC242AA21300E0049E /* ActivityIndicator.swift in Sources */,
+				D0AA80D929912B1E0094B8CB /* ImagePicker.swift in Sources */,
 				0A775A4024D9ED8D00917AD0 /* MailView.swift in Sources */,
-				9692329F24221ECE00C2D85E /* CacheImages.swift in Sources */,
+				D0AA80D2299102E50094B8CB /* CouponEditCoordinator.swift in Sources */,
 				969232912420E11600C2D85E /* SelectableText.swift in Sources */,
 				0A7CB7A423637A2D0029FBD3 /* Strings.swift in Sources */,
 				D07BDD2D298D2BF2006FD8F2 /* RootCoordinator.swift in Sources */,
@@ -789,7 +813,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 4794J8835L;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -816,7 +840,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 4794J8835L;
 				INFOPLIST_FILE = LoveCoupons/SupportFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

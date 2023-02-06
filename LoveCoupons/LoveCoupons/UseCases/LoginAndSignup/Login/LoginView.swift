@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  LoginView.swift
 //  Test
 //
 //  Created by Dmitry Vorozhbicki on 11/11/2019.
@@ -9,13 +9,13 @@
 import SwiftUI
 import Firebase
 
-struct LoginView: View {
+struct LoginView<ViewModel>: View where ViewModel: LoginViewModelProtocol {
     @State private var email: String = ""
     @State private var password: String = ""
     
-    private let viewModel: LoginViewModelProtocol
+    private let viewModel: ViewModel
 
-    init(viewModel: LoginViewModelProtocol) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
     
