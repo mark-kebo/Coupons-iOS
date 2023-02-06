@@ -35,7 +35,6 @@ final class SettingsCoordinator: SettingsCoordinatorProtocol {
     
     func navigateToLogin() {
         NSLog("Navigate to tabs")
-        let coordinator = RootCoordinator(rootNavigationController: rootNavigationController)
-        coordinator.start()
+        RootCoordinator().start()
     }
 }

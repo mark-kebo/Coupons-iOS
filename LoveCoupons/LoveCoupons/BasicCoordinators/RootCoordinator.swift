@@ -19,13 +19,8 @@ final class RootCoordinator: CoordinatorProtocol {
         NSLog("\(self) deinited")
     }
     
-    init(window: UIWindow?) {
+    init(window: UIWindow? = UIApplication.keyWindow) {
         self.window = window
-    }
-    
-    init(rootNavigationController: UINavigationController?) {
-        self.rootNavigationController = rootNavigationController
-        self.window = nil
     }
     
     func start() {

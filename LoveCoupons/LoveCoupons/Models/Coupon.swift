@@ -24,9 +24,9 @@ struct Coupon: Identifiable, Hashable {
         case image
     }
     
-    init(data: [String: String]) {
-        description = data[CodingCases.description.rawValue] ?? ""
-        image = data[CodingCases.image.rawValue] ?? ""
+    init(data: [String: Any]) {
+        description = (data[CodingCases.description.rawValue] as? String) ?? ""
+        image = (data[CodingCases.image.rawValue] as? String) ?? ""
     }
     
     init(description: String, image: String) {

@@ -58,6 +58,9 @@
 		D0AA80D5299106720094B8CB /* MediaLoadingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80D4299106720094B8CB /* MediaLoadingService.swift */; };
 		D0AA80D929912B1E0094B8CB /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80D829912B1E0094B8CB /* ImagePicker.swift */; };
 		D0AA80DB299136EF0094B8CB /* CouponEditImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80DA299136EF0094B8CB /* CouponEditImageStore.swift */; };
+		D0AA80DD29913CAC0094B8CB /* PairCouponsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80DC29913CAC0094B8CB /* PairCouponsViewModel.swift */; };
+		D0AA80DF29913CBC0094B8CB /* PairCouponsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80DE29913CBC0094B8CB /* PairCouponsCoordinator.swift */; };
+		D0AA80E1299143F50094B8CB /* PairCouponsMailDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80E0299143F50094B8CB /* PairCouponsMailDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -133,6 +136,9 @@
 		D0AA80D4299106720094B8CB /* MediaLoadingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaLoadingService.swift; sourceTree = "<group>"; };
 		D0AA80D829912B1E0094B8CB /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		D0AA80DA299136EF0094B8CB /* CouponEditImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponEditImageStore.swift; sourceTree = "<group>"; };
+		D0AA80DC29913CAC0094B8CB /* PairCouponsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsViewModel.swift; sourceTree = "<group>"; };
+		D0AA80DE29913CBC0094B8CB /* PairCouponsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsCoordinator.swift; sourceTree = "<group>"; };
+		D0AA80E0299143F50094B8CB /* PairCouponsMailDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsMailDataStore.swift; sourceTree = "<group>"; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F74DF1D969E88C22542BC8 /* Pods-RevolutTestApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.debug.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -457,6 +463,9 @@
 		D07BDD3F298D4BC2006FD8F2 /* PairCouponsDTO */ = {
 			isa = PBXGroup;
 			children = (
+				D0AA80DC29913CAC0094B8CB /* PairCouponsViewModel.swift */,
+				D0AA80DE29913CBC0094B8CB /* PairCouponsCoordinator.swift */,
+				D0AA80E0299143F50094B8CB /* PairCouponsMailDataStore.swift */,
 			);
 			path = PairCouponsDTO;
 			sourceTree = "<group>";
@@ -624,6 +633,7 @@
 				0A11A723237AE41E00C2E1B9 /* PrimaryButton.swift in Sources */,
 				D07BDD2B298D27AE006FD8F2 /* LoginCoordinator.swift in Sources */,
 				D07BDD28298D20E1006FD8F2 /* ErrorableCoordinatorProtocol.swift in Sources */,
+				D0AA80E1299143F50094B8CB /* PairCouponsMailDataStore.swift in Sources */,
 				969232982421004800C2D85E /* Coupon.swift in Sources */,
 				D07BDD43298D4C02006FD8F2 /* SettingsViewModel.swift in Sources */,
 				0A7CB7AE23638BA70029FBD3 /* APIManager.swift in Sources */,
@@ -634,6 +644,7 @@
 				D0AA80D0299102D60094B8CB /* CouponEditViewModel.swift in Sources */,
 				D0AA80D5299106720094B8CB /* MediaLoadingService.swift in Sources */,
 				0AF2A9D6242942AD00E0049E /* TextView.swift in Sources */,
+				D0AA80DF29913CBC0094B8CB /* PairCouponsCoordinator.swift in Sources */,
 				0A11A725237AE99300C2E1B9 /* PrimaryTextField.swift in Sources */,
 				D07BDD24298D20BF006FD8F2 /* TabBarCoordinatorProtocols.swift in Sources */,
 				0AE5F01A2379CD3800887BAF /* SceneDelegate.swift in Sources */,
@@ -653,6 +664,7 @@
 				969232912420E11600C2D85E /* SelectableText.swift in Sources */,
 				0A7CB7A423637A2D0029FBD3 /* Strings.swift in Sources */,
 				D07BDD2D298D2BF2006FD8F2 /* RootCoordinator.swift in Sources */,
+				D0AA80DD29913CAC0094B8CB /* PairCouponsViewModel.swift in Sources */,
 				0A982FD72364F72C0082E142 /* Constants.swift in Sources */,
 				0A7CB772236349E30029FBD3 /* AppDelegate.swift in Sources */,
 				9692329A242111F200C2D85E /* CouponView.swift in Sources */,

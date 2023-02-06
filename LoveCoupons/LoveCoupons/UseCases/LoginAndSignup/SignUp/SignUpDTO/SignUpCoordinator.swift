@@ -32,7 +32,6 @@ final class SignUpCoordinator: SignUpCoordinatorProtocol {
     
     func navigateToTabs() {
         NSLog("Navigate to tabs")
-        let coordinator = RootCoordinator(rootNavigationController: rootNavigationController)
-        coordinator.start()
+        RootCoordinator().start()
     }
 }

@@ -69,7 +69,7 @@ final class APIManager: APIManagerProtocol {
             self.getUserInfo { [weak self] userInfo, error in
                 if let id = userInfo?.pairUniqId {
                     self?.database.child(id).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
-                        if let postDict = snapshot.value as? [String : String] {
+                        if let postDict = snapshot.value as? [String : Any] {
                             DispatchQueue.main.async {
                                 completion(UserInfo(data: postDict).email, nil)
                             }
@@ -115,7 +115,12 @@ final class APIManager: APIManagerProtocol {
         }
     }
     
-    func createUser(userInfo: UserInfo, email: String, password: String, completion:@escaping (Error?) -> Void) {
+    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping (Error?) -> Void) {
+        guard !email.isEmpty, !password.isEmpty, !(userInfo.name?.isEmpty ?? true),
+              !(userInfo.pairUniqId?.isEmpty ?? true) else {
+            completion(errorFields)
+            return
+        }
         serialQueue.async {
             self.auth.createUser(withEmail: email, password: password) { authResult, error in
                 if let error = error {
@@ -180,7 +185,7 @@ final class APIManager: APIManagerProtocol {
         }
         serialQueue.async {
             self.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
-                if let postDict = snapshot.value as? [String : String] {
+                if let postDict = snapshot.value as? [String: Any] {
                     DispatchQueue.main.async {
                         completion(UserInfo(data: postDict), nil)
                     }
@@ -203,11 +208,11 @@ final class APIManager: APIManagerProtocol {
             return
         }
         serialQueue.async {
-            self.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+            self.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { [weak self] snapshot in
                 if let dict = snapshot.value as? [String : AnyObject] {
                     var coupons: [Coupon] = []
                     dict.forEach {
-                        if let coupon = $0.value as? [String : String] {
+                        if let coupon = $0.value as? [String : Any] {
                             var newCoupon = Coupon(data: coupon)
                             newCoupon.key = $0.key
                             coupons.append(newCoupon)
@@ -218,7 +223,7 @@ final class APIManager: APIManagerProtocol {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        completion(nil, self.error)
+                        completion(nil, self?.errorCoupons)
                     }
                 }
             }) { error in
@@ -237,7 +242,7 @@ final class APIManager: APIManagerProtocol {
                         if let dict = snapshot.value as? [String : AnyObject] {
                             var coupons: [Coupon] = []
                             dict.forEach {
-                                if let coupon = $0.value as? [String : String] {
+                                if let coupon = $0.value as? [String : Any] {
                                     var newCoupon = Coupon(data: coupon)
                                     newCoupon.key = $0.key
                                     coupons.append(Coupon(data: coupon))

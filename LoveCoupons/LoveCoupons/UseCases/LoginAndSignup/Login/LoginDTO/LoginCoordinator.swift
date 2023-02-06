@@ -34,8 +34,7 @@ final class LoginCoordinator: LoginCoordinatorProtocol {
     
     func navigateToTabs() {
         NSLog("Navigate to tabs")
-        let coordinator = RootCoordinator(rootNavigationController: rootNavigationController)
-        coordinator.start()
+        RootCoordinator().start()
     }
     
     func navigateToSignUp() {

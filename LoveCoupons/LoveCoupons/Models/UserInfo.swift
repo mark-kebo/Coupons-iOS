@@ -19,10 +19,10 @@ struct UserInfo {
         case pairUniqId
     }
     
-    init(data: [String: String]) {
-        name = data[CodingCases.name.rawValue]
-        email = data[CodingCases.email.rawValue]
-        pairUniqId = data[CodingCases.pairUniqId.rawValue]
+    init(data: [String: Any]) {
+        name = data[CodingCases.name.rawValue] as? String
+        email = data[CodingCases.email.rawValue] as? String
+        pairUniqId = data[CodingCases.pairUniqId.rawValue] as? String
     }
     
     init(name: String?, email: String?, pairUniqId: String?) {
