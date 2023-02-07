@@ -274,7 +274,7 @@ final class APIManager: APIManagerProtocol {
     }
     
     func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping () -> Void) {
-        guard !coupon.image.isEmpty, !coupon.description.isEmpty else {
+        guard !coupon.description.isEmpty else {
             self.apiError = ApiErrorMessage.fields
             return
         }

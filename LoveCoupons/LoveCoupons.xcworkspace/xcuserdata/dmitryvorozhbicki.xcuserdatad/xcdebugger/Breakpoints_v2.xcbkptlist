@@ -68,5 +68,115 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C42DFB7A-8CCF-402D-BEB5-A9D25009CEAA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoveCoupons/Managers/API/APIManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
+            landmarkName = "updateCoupon(_:data:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "128C2962-B4BE-47E2-934A-813C5DDD8FD7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoveCoupons/Managers/API/APIManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "278"
+            endingLineNumber = "278"
+            landmarkName = "updateCoupon(_:data:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7140B54D-CC4D-4D67-AC2B-8066395F825F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "LoveCoupons/Managers/API/APIManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
+            landmarkName = "updateCoupon(_:data:completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7140B54D-CC4D-4D67-AC2B-8066395F825F - d35cf58f0d86efe3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Love_Coupons.APIManager.updateCoupon(_: Love_Coupons.Coupon, data: Swift.Optional&lt;Foundation.Data&gt;, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Love Coupons"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitryvorozhbicki/Work/Coupons-iOS/LoveCoupons/LoveCoupons/Managers/API/APIManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "281"
+                  endingLineNumber = "281"
+                  offsetFromSymbolStart = "808">
+               </Location>
+               <Location
+                  uuid = "7140B54D-CC4D-4D67-AC2B-8066395F825F - 4b4541d5baf53e3c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Love_Coupons.APIManager.updateCoupon(_: Love_Coupons.Coupon, data: Swift.Optional&lt;Foundation.Data&gt;, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Love Coupons"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitryvorozhbicki/Work/Coupons-iOS/LoveCoupons/LoveCoupons/Managers/API/APIManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "281"
+                  endingLineNumber = "281"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "7140B54D-CC4D-4D67-AC2B-8066395F825F - fe4a11a86c43ba80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.FIRStorageMetadata&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 () -&gt; () in Love_Coupons.APIManager.updateCoupon(_: Love_Coupons.Coupon, data: Swift.Optional&lt;Foundation.Data&gt;, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Love Coupons"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitryvorozhbicki/Work/Coupons-iOS/LoveCoupons/LoveCoupons/Managers/API/APIManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "281"
+                  endingLineNumber = "281"
+                  offsetFromSymbolStart = "80">
+               </Location>
+               <Location
+                  uuid = "7140B54D-CC4D-4D67-AC2B-8066395F825F - 6ba792540ccf451b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.URL&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 (Swift.Optional&lt;__C.FIRStorageMetadata&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in closure #1 () -&gt; () in Love_Coupons.APIManager.updateCoupon(_: Love_Coupons.Coupon, data: Swift.Optional&lt;Foundation.Data&gt;, completion: () -&gt; ()) -&gt; ()"
+                  moduleName = "Love Coupons"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dmitryvorozhbicki/Work/Coupons-iOS/LoveCoupons/LoveCoupons/Managers/API/APIManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "281"
+                  endingLineNumber = "281"
+                  offsetFromSymbolStart = "392">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
