@@ -8,6 +8,7 @@
 
 import SwiftUI
 import MessageUI
+import Combine
 
 protocol PairCouponsViewModelProtocol: ObservableObject {
     var isShowLoading: Bool { get set }
@@ -23,23 +24,37 @@ final class PairCouponsViewModel: PairCouponsViewModelProtocol {
     @Published var isShowLoading = false
     @Published var coupons: [Coupon] = []
     @ObservedObject private var mailDataStore = PairCouponsMailDataStore()
-    
+    private var cancellables: Set<AnyCancellable> = []
+
     init(coordinator: PairCouponsCoordinatorProtocol,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+
+    deinit {
+        cancellables.removeAll()
     }
     
     func showSendEmailView(coupon: Coupon) {
         if MFMailComposeViewController.canSendMail() {
             self.isShowLoading = true
-            self.apiManager.getPairEmail { [weak self] (email, error) in
+            self.apiManager.getPairEmail { [weak self] email in
                 guard let self else { return }
                 self.isShowLoading = false
-                if let error = error?.localizedDescription {
-                    self.coordinator.showError(error)
-                } else if let email = email {
+                if let email = email {
                     self.mailDataStore.emailMessage = email
                 }
                 self.mailDataStore.bodyMessage = coupon.description
@@ -55,10 +70,8 @@ final class PairCouponsViewModel: PairCouponsViewModelProtocol {
     func updateViewData() {
         coupons.removeAll()
         isShowLoading = true
-        apiManager.getPairCoupons { [weak self] coupons, error in
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            } else if let coupons = coupons {
+        apiManager.getPairCoupons { [weak self] coupons in
+             if let coupons = coupons {
                 self?.coupons = coupons.sorted { $0.description < $1.description }
             }
             self?.isShowLoading = false

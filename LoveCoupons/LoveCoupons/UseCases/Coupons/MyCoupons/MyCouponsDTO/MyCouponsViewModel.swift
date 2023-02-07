@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol MyCouponsViewModelProtocol: ObservableObject {
     var isShowLoading: Bool { get set }
@@ -23,7 +24,8 @@ final class MyCouponsViewModel: MyCouponsViewModelProtocol {
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var coupons: [Coupon] = []
-    
+    private var cancellables: Set<AnyCancellable> = []
+
     var userUid: String {
         apiManager.userUid ?? ""
     }
@@ -33,27 +35,37 @@ final class MyCouponsViewModel: MyCouponsViewModelProtocol {
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+
+    deinit {
+        cancellables.removeAll()
     }
     
     func deleteItems(at offsets: IndexSet) {
         guard let first = offsets.first else { return }
         isShowLoading = true
-        apiManager.deleteCoupon(coupons[first]) { [weak self] error in
+        apiManager.deleteCoupon(coupons[first]) { [weak self] in
             self?.isShowLoading = false
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            }
         }
     }
     
     func getCoupons() {
         isShowLoading = true
         coupons.removeAll()
-        apiManager.getMyCoupons { [weak self] coupons, error in
+        apiManager.getMyCoupons { [weak self] coupons in
             self?.isShowLoading = false
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            } else if let coupons = coupons {
+            if let coupons = coupons {
                 self?.coupons = coupons.sorted { $0.description < $1.description }
             }
         }

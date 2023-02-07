@@ -12,14 +12,3 @@ protocol CoordinatorProtocol {
     var rootNavigationController: UINavigationController? { get }
     func start()
 }
-
-extension CoordinatorProtocol {
-    var topViewController: UIViewController? {
-        let keyWindow = UIApplication.keyWindow
-        guard let rootController = keyWindow?.rootViewController else { return nil }
-        if let topPresentedViewController = rootController.presentedViewController {
-            return topPresentedViewController
-        }
-        return rootController
-    }
-}

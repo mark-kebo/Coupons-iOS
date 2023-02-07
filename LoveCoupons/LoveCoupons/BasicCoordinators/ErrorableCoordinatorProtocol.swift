@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol ErrorableCoordinatorProtocol: CoordinatorProtocol {
     func showError(_ error: String)
@@ -15,11 +16,13 @@ protocol ErrorableCoordinatorProtocol: CoordinatorProtocol {
 extension ErrorableCoordinatorProtocol {
     func showError(_ error: String) {
         NSLog("Show error: \(error)")
-        let alert = UIAlertController(title: L10n.error,
-                                      message: error,
-                                      preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: L10n.Alert.Button.cancel,
-                                      style: UIAlertAction.Style.default, handler: nil))
-        rootNavigationController?.present(alert, animated: true, completion: nil)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: L10n.error,
+                                          message: error,
+                                          preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: L10n.Alert.Button.cancel,
+                                          style: UIAlertAction.Style.default, handler: nil))
+            self.rootNavigationController?.present(alert, animated: true, completion: nil)
+        }
     }
 }

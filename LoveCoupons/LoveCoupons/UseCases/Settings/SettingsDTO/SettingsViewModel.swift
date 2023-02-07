@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 protocol SettingsViewModelProtocol: ObservableObject {
     var isShowLoading: Bool { get set }
@@ -28,7 +29,8 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     @Published var name: String = ""
     @Published var email: String = ""
     @Published var id: String = ""
-    
+    private var cancellables: Set<AnyCancellable> = []
+
     var userUid: String {
         apiManager.userUid ?? ""
     }
@@ -38,52 +40,53 @@ final class SettingsViewModel: SettingsViewModelProtocol {
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+
+    deinit {
+        cancellables.removeAll()
     }
     
     func getUserInfo() {
         isShowLoading = true
-        apiManager.getUserInfo { [weak self] userInfo, error in
+        apiManager.getUserInfo { [weak self] userInfo in
             self?.isShowLoading = false
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            } else {
-                self?.name = userInfo?.name ?? ""
-                self?.id = userInfo?.pairUniqId ?? ""
-                self?.email = userInfo?.email ?? ""
-            }
+            self?.name = userInfo?.name ?? ""
+            self?.id = userInfo?.pairUniqId ?? ""
+            self?.email = userInfo?.email ?? ""
         }
     }
     
     func sendButtonPressed(email: String) {
         isShowLoading = true
-        self.apiManager.resetPassword(email: email) { [weak self] error in
+        self.apiManager.resetPassword(email: email) { [weak self] in
             self?.isShowLoading = false
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            }
         }
     }
     
     func logoutButtonPressed() {
         isShowLoading = true
-        self.apiManager.logout { [weak self] error in
+        self.apiManager.logout { [weak self] in
             self?.isShowLoading = false
-            if let error {
-                self?.coordinator.showError(error)
-            } else {
-                self?.coordinator.navigateToLogin()
-            }
+            self?.coordinator.navigateToLogin()
         }
     }
     
     func submitButtonPressed() {
         isShowLoading = true
         let userInfoItem = UserInfo(name: self.name, email: self.email, pairUniqId: self.id)
-        self.apiManager.setUserInfo(userInfoItem) { [weak self] error in
+        self.apiManager.setUserInfo(userInfoItem) { [weak self] in
             self?.isShowLoading = false
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            }
         }
     }
 }

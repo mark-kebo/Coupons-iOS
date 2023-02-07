@@ -7,29 +7,46 @@
 //
 
 import Foundation
+import Combine
 
-protocol ResetPasswordViewModelProtocol {
+protocol ResetPasswordViewModelProtocol: ObservableObject {
+    var isShowLoading: Bool { get set }
     func sendButtonPressed(email: String)
 }
 
 final class ResetPasswordViewModel: ResetPasswordViewModelProtocol {
     private let coordinator: ResetPasswordCoordinatorProtocol
     private let apiManager: APIManagerProtocol
+    private var cancellables: Set<AnyCancellable> = []
+    @Published var isShowLoading = false
 
     init(coordinator: ResetPasswordCoordinatorProtocol,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+
+    deinit {
+        cancellables.removeAll()
     }
     
     func sendButtonPressed(email: String) {
-        self.apiManager.resetPassword(email: email) { [weak self] error in
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            } else {
-                self?.coordinator.showSuccessMessage()
-            }
+        isShowLoading = true
+        self.apiManager.resetPassword(email: email) { [weak self] in
+            self?.isShowLoading = false
+            self?.coordinator.showSuccessMessage()
         }
     }
 }

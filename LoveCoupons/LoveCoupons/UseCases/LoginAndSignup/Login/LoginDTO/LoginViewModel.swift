@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import Combine
 
-protocol LoginViewModelProtocol {
+protocol LoginViewModelProtocol: ObservableObject {
+    var isShowLoading: Bool { get set }
     func loginButtonPressed(userLogin: String,
                             userPass: String)
     func signUpButtonPressed()
@@ -18,22 +20,37 @@ protocol LoginViewModelProtocol {
 final class LoginViewModel: LoginViewModelProtocol {
     private let coordinator: LoginCoordinatorProtocol
     private let apiManager: APIManagerProtocol
+    private var cancellables: Set<AnyCancellable> = []
+    @Published var isShowLoading = false
 
     init(coordinator: LoginCoordinatorProtocol,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+
+    deinit {
+        cancellables.removeAll()
     }
     
     func loginButtonPressed(userLogin: String,
                             userPass: String) {
-        self.apiManager.login(email: userLogin, password: userPass) { [weak self] error in
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            } else {
-                self?.coordinator.navigateToTabs()
-            }
+        isShowLoading = true
+        self.apiManager.login(email: userLogin, password: userPass) { [weak self] in
+            self?.isShowLoading = false
+            self?.coordinator.navigateToTabs()
         }
     }
     

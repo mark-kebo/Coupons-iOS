@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 
 enum CouponEditState {
     case edit
@@ -32,7 +33,8 @@ final class CouponEditViewModel: CouponEditViewModelProtocol {
     @Published var isShowLoading = false
     @Published var coupon: Coupon
     @Published var text: String = ""
-        
+    private var cancellables: Set<AnyCancellable> = []
+
     let id: Int
     let state: CouponEditState
 
@@ -45,18 +47,29 @@ final class CouponEditViewModel: CouponEditViewModelProtocol {
         self.state = coordinator.state
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+    
+    deinit {
+        cancellables.removeAll()
     }
     
     func sendButtonPressed(image: UIImage?) {
         isShowLoading = true
         coupon.description = self.text
-        apiManager.updateCoupon(coupon, data: image != UIImage(asset: Asset.addImage) ? image?.jpegData(compressionQuality: 0.5) : nil) { [weak self] error in
+        apiManager.updateCoupon(coupon, data: image != UIImage(asset: Asset.addImage) ? image?.jpegData(compressionQuality: 0.5) : nil) { [weak self] in
                 self?.isShowLoading = false
-                if let error = error?.localizedDescription {
-                    self?.coordinator.showError(error)
-                } else {
-                    self?.coordinator.navigateBack()
-                }
+                self?.coordinator.navigateBack()
             }
     }
     

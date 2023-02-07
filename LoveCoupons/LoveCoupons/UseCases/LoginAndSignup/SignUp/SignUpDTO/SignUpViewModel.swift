@@ -7,8 +7,10 @@
 //
 
 import Foundation
+import Combine
 
-protocol SignUpViewModelProtocol {
+protocol SignUpViewModelProtocol: ObservableObject {
+    var isShowLoading: Bool { get set }
     func createUserButtonPressed(name: String, email: String,
                                  pairUniqId: String, password: String)
 }
@@ -16,23 +18,38 @@ protocol SignUpViewModelProtocol {
 final class SignUpViewModel: SignUpViewModelProtocol {
     private let coordinator: SignUpCoordinatorProtocol
     private let apiManager: APIManagerProtocol
+    private var cancellables: Set<AnyCancellable> = []
+    @Published var isShowLoading = false
 
     init(coordinator: SignUpCoordinatorProtocol,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        prepareErrorPublisher()
+    }
+    
+    private func prepareErrorPublisher() {
+        apiManager.apiErrorPublisher
+            .receive(on: RunLoop.main)
+            .sink { [weak self] error in
+                guard let error = error?.description else { return }
+                self?.isShowLoading = false
+                self?.coordinator.showError(error)
+            }.store(in: &cancellables)
+    }
+    
+    deinit {
+        cancellables.removeAll()
     }
     
     func createUserButtonPressed(name: String, email: String,
                                  pairUniqId: String, password: String) {
         let userInfoItem = UserInfo(name: name, email: email, pairUniqId: pairUniqId)
-        self.apiManager.createUser(userInfo: userInfoItem, email: email, password: password) { [weak self] error in
-            if let error = error?.localizedDescription {
-                self?.coordinator.showError(error)
-            } else {
-                self?.coordinator.navigateToTabs()
-            }
+        isShowLoading = true
+        self.apiManager.createUser(userInfo: userInfoItem, email: email, password: password) { [weak self] in
+            self?.isShowLoading = false
+            self?.coordinator.navigateToTabs()
         }
     }
 }

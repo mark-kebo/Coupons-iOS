@@ -11,204 +11,218 @@ import Network
 
 protocol APIManagerProtocol {
     var userUid: String? { get }
+    var apiErrorPublisher: Published<String?>.Publisher { get }
 
-    func login(email: String, password: String, completion: @escaping (Error?) -> Void)
-    func logout(completion: @escaping (String?) -> Void)
-    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping (Error?) -> Void)
-    func resetPassword(email: String,completion: @escaping (Error?) -> Void)
-    func setUserInfo(_ userInfo: UserInfo, completion: @escaping (Error?) -> Void)
-    func getUserInfo(completion: @escaping (UserInfo?, Error?) -> Void)
-    func getMyCoupons(completion: @escaping ([Coupon]?, Error?) -> Void)
-    func getPairCoupons(completion: @escaping ([Coupon]?, Error?) -> Void)
-    func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping (Error?) -> Void)
-    func deleteCoupon(_ coupon: Coupon, completion: @escaping (Error?) -> Void)
-    func getPairEmail(completion: @escaping (String?, Error?) -> Void)
+    func login(email: String, password: String, completion: @escaping () -> Void)
+    func logout(completion: @escaping () -> Void)
+    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping () -> Void)
+    func resetPassword(email: String,completion: @escaping () -> Void)
+    func setUserInfo(_ userInfo: UserInfo, completion: @escaping () -> Void)
+    func getUserInfo(completion: @escaping (UserInfo?) -> Void)
+    func getMyCoupons(completion: @escaping ([Coupon]?) -> Void)
+    func getPairCoupons(completion: @escaping ([Coupon]?) -> Void)
+    func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping () -> Void)
+    func deleteCoupon(_ coupon: Coupon, completion: @escaping () -> Void)
+    func getPairEmail(completion: @escaping (String?) -> Void)
 }
 
 final class APIManager: APIManagerProtocol {
-    var userUid: String? {
-        auth.currentUser?.uid
-    }
     
+    private struct ApiErrorMessage {
+        static let defaultMessage = L10n.apiDefaultError
+        static let fields = L10n.errorFields
+        static let couponsMessage = L10n.Alert.coupons
+        static let disconnect = L10n.noInternetConnection
+    }
+    private let timeoutDelay: CGFloat = 10
     private let database = Database.database().reference()
     private let storage = Storage.storage()
     private let serialQueue: DispatchQueue
     private let session = URLSession(configuration: URLSessionConfiguration.default)
-    private let error = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.apiDefaultError]) as Error
-    private let errorFields = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.errorFields]) as Error
-    private let errorCoupons = NSError(domain:"", code: 401, userInfo:[ NSLocalizedDescriptionKey: L10n.Alert.coupons]) as Error
-    private let disconnectCoupons = NSError(domain:"", code: 500, userInfo:[ NSLocalizedDescriptionKey: L10n.noInternetConnection]) as Error
+
     private let auth: Auth
-//    private var monitor: NWPathMonitor?
+    
+    private var timeoutDataTask: DispatchWorkItem?
+    var apiErrorPublisher: Published<String?>.Publisher { $apiError }
+    @Published var apiError: String?
 
     init() {
         serialQueue = DispatchQueue(label: "queue")
         auth = Auth.auth()
     }
     
-//    private func startConnectionMonitor(disconnectCompletion: @escaping (Error?) -> Void) {
-//        monitor = NWPathMonitor()
-//        let queue = DispatchQueue(label: "Monitor")
-//        monitor?.start(queue: queue)
-//        monitor?.pathUpdateHandler = { [weak self] path in
-//            DispatchQueue.main.async {
-//                self?.stopConnectionMonitoring()
-//                if path.status != .satisfied {
-//                    disconnectCompletion(self?.disconnectCoupons)
-//                }
-//            }
-//        }
-//    }
-//
-//    private func stopConnectionMonitoring() {
-//        self.monitor = nil
-//    }
-
-    func getPairEmail(completion: @escaping (String?, Error?) -> Void) {
+    deinit {
+        stopTimeoutHandler()
+    }
+    
+    private func startTimeoutHandler() {
+        stopTimeoutHandler()
+        timeoutDataTask = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            self.apiError = ApiErrorMessage.disconnect
+        }
+        if let task = timeoutDataTask {
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeoutDelay, execute: task)
+        }
+    }
+    
+    private func stopTimeoutHandler() {
+        timeoutDataTask?.cancel()
+        timeoutDataTask = nil
+    }
+    
+    var userUid: String? {
+        auth.currentUser?.uid
+    }
+    
+    func getPairEmail(completion: @escaping (String?) -> Void) {
         serialQueue.async {
-            self.getUserInfo { [weak self] userInfo, error in
+            self.getUserInfo { [weak self] userInfo in
+                guard let self else { return }
                 if let id = userInfo?.pairUniqId {
-                    self?.database.child(id).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
-                        if let postDict = snapshot.value as? [String : Any] {
+                    self.database.child(id).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
+                        if let postDict = snapshot.value as? [String: Any] {
                             DispatchQueue.main.async {
-                                completion(UserInfo(data: postDict).email, nil)
+                                completion(UserInfo(data: postDict).email)
                             }
                         } else {
-                            DispatchQueue.main.async {
-                                completion(nil, self?.error)
-                            }
+                            self.apiError = ApiErrorMessage.defaultMessage
                         }
                     }) { error in
-                        DispatchQueue.main.async {
-                            completion(nil, error)
-                        }
+                        self.apiError = error.localizedDescription
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        completion(nil, error)
-                    }
+                    self.apiError = ApiErrorMessage.defaultMessage
                 }
             }
         }
     }
     
-    func login(email: String, password: String, completion:@escaping (Error?) -> Void) {
+    func login(email: String, password: String, completion: @escaping () -> Void) {
+        guard !email.isEmpty, !password.isEmpty else {
+            self.apiError = ApiErrorMessage.fields
+            return
+        }
+        self.startTimeoutHandler()
         serialQueue.async {
-            self.auth.signIn(withEmail: email, password: password) { authResult, error in
+            self.auth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
+                self?.stopTimeoutHandler()
                 DispatchQueue.main.async {
-                    if let error = error {
-                        completion(error)
+                    if let error {
+                        self?.apiError = error.localizedDescription
                     } else {
-                        completion(nil)
+                        completion()
                     }
                 }
             }
         }
     }
     
-    func logout(completion:@escaping (String?) -> Void) {
+    func logout(completion: @escaping () -> Void) {
         do {
             try auth.signOut()
-            completion(nil)
+            DispatchQueue.main.async {
+                completion()
+            }
         } catch {
-            completion(L10n.apiDefaultError)
+            self.apiError = ApiErrorMessage.defaultMessage
         }
     }
     
-    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping (Error?) -> Void) {
+    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping () -> Void) {
         guard !email.isEmpty, !password.isEmpty, !(userInfo.name?.isEmpty ?? true),
               !(userInfo.pairUniqId?.isEmpty ?? true) else {
-            completion(errorFields)
+            self.apiError = ApiErrorMessage.fields
             return
         }
         serialQueue.async {
             self.auth.createUser(withEmail: email, password: password) { authResult, error in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        completion(error)
-                    }
+                if let error {
+                    self.apiError = error.localizedDescription
                 } else {
-                    self.setUserInfo(userInfo) { error in
-                        DispatchQueue.main.async {
-                            if let error = error {
-                                completion(error)
-                            } else {
-                                completion(nil)
-                            }
-                        }
-                    }
+                    self.setUserInfo(userInfo, completion: completion)
                 }
             }
         }
     }
     
-    func resetPassword(email: String,completion:@escaping (Error?) -> Void) {
+    func resetPassword(email: String,completion:@escaping () -> Void) {
+        guard !email.isEmpty else {
+            self.apiError = ApiErrorMessage.fields
+            return
+        }
+        self.startTimeoutHandler()
         serialQueue.async {
-            self.auth.sendPasswordReset(withEmail: email) { error in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        completion(error)
-                    }
+            self.auth.sendPasswordReset(withEmail: email) { [weak self] error in
+                self?.stopTimeoutHandler()
+                if let error {
+                    self?.apiError = error.localizedDescription
                 } else {
                     DispatchQueue.main.async {
-                        completion(nil)
+                        completion()
                     }
                 }
             }
         }
     }
 
-    func setUserInfo(_ userInfo: UserInfo, completion:@escaping (Error?) -> Void) {
-        guard let uid = userUid else {
-            completion(error)
+    func setUserInfo(_ userInfo: UserInfo, completion:@escaping () -> Void) {
+        guard !(userInfo.name?.isEmpty ?? true),
+              !(userInfo.pairUniqId?.isEmpty ?? true) else {
+            self.apiError = ApiErrorMessage.fields
             return
         }
+        guard let uid = userUid else {
+            self.apiError = ApiErrorMessage.defaultMessage
+            return
+        }
+        self.startTimeoutHandler()
         serialQueue.async {
-            self.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { (error, ref) in
-                if let error = error {
-                    DispatchQueue.main.async {
-                        completion(error)
-                    }
+            self.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { [weak self] (error, ref) in
+                self?.stopTimeoutHandler()
+                if let error {
+                    self?.apiError = error.localizedDescription
                 } else {
                     DispatchQueue.main.async {
-                        completion(nil)
+                        completion()
                     }
                 }
             }
         }
     }
     
-    func getUserInfo(completion:@escaping (UserInfo?, Error?) -> Void) {
+    func getUserInfo(completion: @escaping (UserInfo?) -> Void) {
         guard let uid = userUid else {
-            completion(nil, error)
+            self.apiError = ApiErrorMessage.defaultMessage
             return
         }
+        self.startTimeoutHandler()
         serialQueue.async {
-            self.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
+            self.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { [weak self] snapshot in
+                self?.stopTimeoutHandler()
                 if let postDict = snapshot.value as? [String: Any] {
                     DispatchQueue.main.async {
-                        completion(UserInfo(data: postDict), nil)
+                        completion(UserInfo(data: postDict))
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        completion(nil, self.error)
-                    }
+                    self?.apiError = ApiErrorMessage.defaultMessage
                 }
-            }) { error in
-                DispatchQueue.main.async {
-                    completion(nil, error)
-                }
+            }) { [weak self] error in
+                self?.stopTimeoutHandler()
+                self?.apiError = error.localizedDescription
             }
         }
     }
     
-    func getMyCoupons(completion:@escaping ([Coupon]?, Error?) -> Void) {
+    func getMyCoupons(completion:@escaping ([Coupon]?) -> Void) {
         guard let uid = userUid else {
-            completion(nil, error)
+            self.apiError = ApiErrorMessage.defaultMessage
             return
         }
+        self.startTimeoutHandler()
         serialQueue.async {
             self.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { [weak self] snapshot in
+                self?.stopTimeoutHandler()
                 if let dict = snapshot.value as? [String : AnyObject] {
                     var coupons: [Coupon] = []
                     dict.forEach {
@@ -219,24 +233,21 @@ final class APIManager: APIManagerProtocol {
                         }
                     }
                     DispatchQueue.main.async {
-                        completion(coupons, nil)
+                        completion(coupons)
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        completion(nil, self?.errorCoupons)
-                    }
+                    self?.apiError = ApiErrorMessage.couponsMessage
                 }
-            }) { error in
-                DispatchQueue.main.async {
-                    completion(nil, error)
-                }
+            }) { [weak self] error in
+                self?.stopTimeoutHandler()
+                self?.apiError = error.localizedDescription
             }
         }
     }
     
-    func getPairCoupons(completion: @escaping ([Coupon]?, Error?) -> Void) {
+    func getPairCoupons(completion: @escaping ([Coupon]?) -> Void) {
         serialQueue.async {
-            self.getUserInfo { [weak self] userInfo, error in
+            self.getUserInfo { [weak self] userInfo in
                 if let id = userInfo?.pairUniqId {
                     self?.database.child(id).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
                         if let dict = snapshot.value as? [String : AnyObject] {
@@ -249,94 +260,85 @@ final class APIManager: APIManagerProtocol {
                                 }
                             }
                             DispatchQueue.main.async {
-                                completion(coupons, nil)
+                                completion(coupons)
                             }
                         } else {
-                            DispatchQueue.main.async {
-                                completion(nil, self?.errorCoupons)
-                            }
+                            self?.apiError = ApiErrorMessage.couponsMessage
                         }
-                    }) { error in
-                        DispatchQueue.main.async {
-                            completion(nil, error)
-                        }
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        completion(nil, error)
+                    }) { [weak self] error in
+                        self?.apiError = error.localizedDescription
                     }
                 }
             }
         }
     }
     
-    func updateCoupon(_ coupon: Coupon, data: Data?, completion:@escaping (Error?) -> Void) {
+    func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping () -> Void) {
+        guard !coupon.image.isEmpty, !coupon.description.isEmpty else {
+            self.apiError = ApiErrorMessage.fields
+            return
+        }
         var coupon = coupon
 
         guard let uid = userUid else {
-            completion(error)
+            self.apiError = ApiErrorMessage.defaultMessage
             return
         }
         if data == nil, !coupon.description.isEmpty, !coupon.image.isEmpty {
-            self.newDatabaseCoupon(coupon) { error in
-                completion(error)
-            }
+            self.newDatabaseCoupon(coupon, completion: completion)
             return
         }
         guard !coupon.description.isEmpty, let data = data else {
-            completion(errorFields)
+            self.apiError = ApiErrorMessage.fields
             return
         }
         
+        self.startTimeoutHandler()
         let riversRef = storage.reference().child("\(uid)/\(UUID()).jpg")
         serialQueue.async {
             riversRef.putData(data, metadata: nil) { (metadata, error) in
-                riversRef.downloadURL { (url, error) in
+                riversRef.downloadURL { [weak self] (url, error) in
+                    self?.stopTimeoutHandler()
                     if let downloadURL = url {
                         coupon.image = downloadURL.absoluteString
-                        self.newDatabaseCoupon(coupon) { error in
-                            completion(error)
-                        }
+                        self?.newDatabaseCoupon(coupon, completion: completion)
                     } else {
-                        completion(error ?? self.error)
+                        self?.apiError = error?.localizedDescription ?? ApiErrorMessage.defaultMessage
                     }
                 }
             }
         }
     }
     
-    func deleteCoupon(_ coupon: Coupon, completion:@escaping (Error?) -> Void) {
-        guard let uid = userUid else {
-            completion(error)
-            return
-        }
-        guard let key = coupon.key else {
-            completion(error)
+    func deleteCoupon(_ coupon: Coupon, completion: @escaping () -> Void) {
+        guard let uid = userUid,
+              let key = coupon.key else {
+            self.apiError = ApiErrorMessage.defaultMessage
             return
         }
         self.database.child(uid).child(Constants.couponsDirectory).child(key).removeValue()
     }
 
-    private func newDatabaseCoupon(_ coupon: Coupon, completion: @escaping (Error?) -> Void) {
+    private func newDatabaseCoupon(_ coupon: Coupon, completion: @escaping () -> Void) {
         guard let uid = userUid else {
-            completion(error)
+            self.apiError = ApiErrorMessage.defaultMessage
             return
         }
 
         let ref = Database.database().reference().child(uid).child(Constants.couponsDirectory).child(coupon.key ?? UUID().uuidString)
 
         guard let values = coupon.toAnyObject() as? [AnyHashable : Any] else {
-            completion(error)
+            self.apiError = ApiErrorMessage.defaultMessage
             return
         }
-        ref.updateChildValues(values) { (error, reference) in
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(error)
-                }
+        self.startTimeoutHandler()
+        ref.updateChildValues(values) { [weak self] (error, reference) in
+            self?.stopTimeoutHandler()
+            if let error {
+                self?.apiError = error.localizedDescription
             } else {
                 DispatchQueue.main.async {
-                    completion(nil)
+                    completion()
                 }
             }
         }
