@@ -19,8 +19,8 @@ protocol MyCouponsViewModelProtocol: ObservableObject {
     func addCouponButtonSelected()
 }
 
-final class MyCouponsViewModel: MyCouponsViewModelProtocol {
-    private let coordinator: MyCouponsCoordinatorProtocol
+final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Coordinator: MyCouponsCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var coupons: [Coupon] = []
@@ -30,7 +30,7 @@ final class MyCouponsViewModel: MyCouponsViewModelProtocol {
         apiManager.userUid ?? ""
     }
     
-    init(coordinator: MyCouponsCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator

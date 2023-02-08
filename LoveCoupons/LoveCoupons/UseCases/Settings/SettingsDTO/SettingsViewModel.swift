@@ -22,8 +22,8 @@ protocol SettingsViewModelProtocol: ObservableObject {
     func submitButtonPressed()
 }
 
-final class SettingsViewModel: SettingsViewModelProtocol {
-    private let coordinator: SettingsCoordinatorProtocol
+final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coordinator: SettingsCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var name: String = ""
@@ -35,7 +35,7 @@ final class SettingsViewModel: SettingsViewModelProtocol {
         apiManager.userUid ?? ""
     }
     
-    init(coordinator: SettingsCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator

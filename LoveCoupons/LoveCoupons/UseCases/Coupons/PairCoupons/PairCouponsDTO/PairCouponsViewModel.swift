@@ -18,15 +18,15 @@ protocol PairCouponsViewModelProtocol: ObservableObject {
     func updateViewData()
 }
 
-final class PairCouponsViewModel: PairCouponsViewModelProtocol {
-    private let coordinator: PairCouponsCoordinatorProtocol
+final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol where Coordinator: PairCouponsCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var coupons: [Coupon] = []
     @ObservedObject private var mailDataStore = PairCouponsMailDataStore()
     private var cancellables: Set<AnyCancellable> = []
 
-    init(coordinator: PairCouponsCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator

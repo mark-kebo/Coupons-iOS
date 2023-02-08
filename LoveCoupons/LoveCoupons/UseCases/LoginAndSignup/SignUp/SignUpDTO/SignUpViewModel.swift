@@ -15,13 +15,14 @@ protocol SignUpViewModelProtocol: ObservableObject {
                                  pairUniqId: String, password: String)
 }
 
-final class SignUpViewModel: SignUpViewModelProtocol {
-    private let coordinator: SignUpCoordinatorProtocol
+
+final class SignUpViewModel<Coordinator>: SignUpViewModelProtocol where Coordinator: SignUpCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     private var cancellables: Set<AnyCancellable> = []
     @Published var isShowLoading = false
 
-    init(coordinator: SignUpCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator

@@ -17,13 +17,13 @@ protocol LoginViewModelProtocol: ObservableObject {
     func restPasswordButtonPressed()
 }
 
-final class LoginViewModel: LoginViewModelProtocol {
-    private let coordinator: LoginCoordinatorProtocol
+final class LoginViewModel<Coordinator>: LoginViewModelProtocol where Coordinator: LoginCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     private var cancellables: Set<AnyCancellable> = []
     @Published var isShowLoading = false
 
-    init(coordinator: LoginCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator

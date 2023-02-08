@@ -14,13 +14,13 @@ protocol ResetPasswordViewModelProtocol: ObservableObject {
     func sendButtonPressed(email: String)
 }
 
-final class ResetPasswordViewModel: ResetPasswordViewModelProtocol {
-    private let coordinator: ResetPasswordCoordinatorProtocol
+final class ResetPasswordViewModel<Coordinator>: ResetPasswordViewModelProtocol where Coordinator: ResetPasswordCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     private var cancellables: Set<AnyCancellable> = []
     @Published var isShowLoading = false
 
-    init(coordinator: ResetPasswordCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         self.coordinator = coordinator

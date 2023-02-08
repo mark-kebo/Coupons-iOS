@@ -27,8 +27,8 @@ protocol CouponEditViewModelProtocol: ObservableObject {
     func changeImageButtonSelected(image: Binding<UIImage?>)
 }
 
-final class CouponEditViewModel: CouponEditViewModelProtocol {
-    private let coordinator: CouponEditCoordinatorProtocol
+final class CouponEditViewModel<Coordinator>: CouponEditViewModelProtocol where Coordinator: CouponEditCoordinatorProtocol {
+    private let coordinator: Coordinator
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var coupon: Coupon
@@ -38,7 +38,7 @@ final class CouponEditViewModel: CouponEditViewModelProtocol {
     let id: Int
     let state: CouponEditState
 
-    init(coordinator: CouponEditCoordinatorProtocol,
+    init(coordinator: Coordinator,
          apiManager: APIManagerProtocol = APIManager()
     ) {
         _coupon = Published(initialValue: coordinator.coupon)
