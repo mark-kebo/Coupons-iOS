@@ -51,7 +51,7 @@ final class APIManager: APIManagerProtocol {
         timeoutDataTask?.cancel()
         timeoutDataTask = nil
     }
-
+//TODO: - create timeout for all endpoints
     private var timeoutHandler: AnyPublisher<ApiError, Never> {
         stopTimeoutHandler()
         return Future { [weak self] promise in
