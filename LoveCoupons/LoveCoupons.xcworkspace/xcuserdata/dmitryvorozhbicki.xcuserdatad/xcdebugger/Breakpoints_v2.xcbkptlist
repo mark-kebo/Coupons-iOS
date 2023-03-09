@@ -39,22 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "779F3EAB-380C-41AB-B62A-E2F168CEC0AF"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LoveCoupons/Managers/API/APIManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
-            landmarkName = "getUserInfo(completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "DD60D06C-7203-4306-A63E-3313EF17BE0F"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -71,22 +55,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C42DFB7A-8CCF-402D-BEB5-A9D25009CEAA"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "LoveCoupons/Managers/API/APIManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "277"
-            endingLineNumber = "277"
-            landmarkName = "updateCoupon(_:data:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "128C2962-B4BE-47E2-934A-813C5DDD8FD7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -94,9 +62,9 @@
             filePath = "LoveCoupons/Managers/API/APIManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "278"
-            endingLineNumber = "278"
-            landmarkName = "updateCoupon(_:data:completion:)"
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "updateCoupon(_:data:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -110,9 +78,9 @@
             filePath = "LoveCoupons/Managers/API/APIManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "updateCoupon(_:data:completion:)"
+            startingLineNumber = "283"
+            endingLineNumber = "283"
+            landmarkName = "updateCoupon(_:data:)"
             landmarkType = "7">
             <Locations>
                <Location

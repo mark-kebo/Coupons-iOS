@@ -61,6 +61,7 @@
 		D0AA80DD29913CAC0094B8CB /* PairCouponsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80DC29913CAC0094B8CB /* PairCouponsViewModel.swift */; };
 		D0AA80DF29913CBC0094B8CB /* PairCouponsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80DE29913CBC0094B8CB /* PairCouponsCoordinator.swift */; };
 		D0AA80E1299143F50094B8CB /* PairCouponsMailDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0AA80E0299143F50094B8CB /* PairCouponsMailDataStore.swift */; };
+		D0EA702929BA1B130065A5A1 /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EA702829BA1B130065A5A1 /* ApiError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -139,6 +140,7 @@
 		D0AA80DC29913CAC0094B8CB /* PairCouponsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsViewModel.swift; sourceTree = "<group>"; };
 		D0AA80DE29913CBC0094B8CB /* PairCouponsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsCoordinator.swift; sourceTree = "<group>"; };
 		D0AA80E0299143F50094B8CB /* PairCouponsMailDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairCouponsMailDataStore.swift; sourceTree = "<group>"; };
+		D0EA702829BA1B130065A5A1 /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
 		DF1615DA99203302F780BDFD /* Pods-LoveCoupons.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoveCoupons.debug.xcconfig"; path = "Target Support Files/Pods-LoveCoupons/Pods-LoveCoupons.debug.xcconfig"; sourceTree = "<group>"; };
 		E4F74DF1D969E88C22542BC8 /* Pods-RevolutTestApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RevolutTestApplication.debug.xcconfig"; path = "Target Support Files/Pods-RevolutTestApplication/Pods-RevolutTestApplication.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -269,6 +271,7 @@
 			children = (
 				0ABD2FEB238843EB00E04254 /* UserInfo.swift */,
 				969232972421004800C2D85E /* Coupon.swift */,
+				D0EA702829BA1B130065A5A1 /* ApiError.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				D07BDD20298D208D006FD8F2 /* LoginViewModel.swift in Sources */,
 				D07BDD39298D33E0006FD8F2 /* ResetPasswordCoordinator.swift in Sources */,
 				D07BDD32298D2FE1006FD8F2 /* SignUpViewModel.swift in Sources */,
+				D0EA702929BA1B130065A5A1 /* ApiError.swift in Sources */,
 				D07BDD45298D4C0D006FD8F2 /* SettingsCoordinator.swift in Sources */,
 				D07BDD37298D33D5006FD8F2 /* ResetPasswordViewModel.swift in Sources */,
 				D0AA80CE2990F90F0094B8CB /* MyCouponsCoordinator.swift in Sources */,

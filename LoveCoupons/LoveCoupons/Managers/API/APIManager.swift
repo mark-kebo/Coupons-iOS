@@ -8,32 +8,25 @@
 import UIKit
 import Firebase
 import Network
+import Combine
 
 protocol APIManagerProtocol {
     var userUid: String? { get }
-    var apiErrorPublisher: Published<String?>.Publisher { get }
-
-    func login(email: String, password: String, completion: @escaping () -> Void)
-    func logout(completion: @escaping () -> Void)
-    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping () -> Void)
-    func resetPassword(email: String,completion: @escaping () -> Void)
-    func setUserInfo(_ userInfo: UserInfo, completion: @escaping () -> Void)
-    func getUserInfo(completion: @escaping (UserInfo?) -> Void)
-    func getMyCoupons(completion: @escaping ([Coupon]?) -> Void)
-    func getPairCoupons(completion: @escaping ([Coupon]?) -> Void)
-    func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping () -> Void)
-    func deleteCoupon(_ coupon: Coupon, completion: @escaping () -> Void)
-    func getPairEmail(completion: @escaping (String?) -> Void)
+    
+    func login(email: String, password: String) -> AnyPublisher<Bool, Error>
+    func logout() -> AnyPublisher<Bool, Error>
+    func createUser(userInfo: UserInfo, email: String, password: String) -> AnyPublisher<Bool, Error>
+    func resetPassword(email: String) -> AnyPublisher<Bool, Error>
+    func setUserInfo(_ userInfo: UserInfo) -> AnyPublisher<Bool, Error>
+    func getUserInfo() -> AnyPublisher<UserInfo?, Error>
+    func getMyCoupons() -> AnyPublisher<[Coupon]?, Error>
+    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, Error>
+    func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, Error>
+    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, Error>
 }
 
 final class APIManager: APIManagerProtocol {
     
-    private struct ApiErrorMessage {
-        static let defaultMessage = L10n.apiDefaultError
-        static let fields = L10n.errorFields
-        static let couponsMessage = L10n.Alert.coupons
-        static let disconnect = L10n.noInternetConnection
-    }
     private let timeoutDelay: CGFloat = 10
     private let database = Database.database().reference()
     private let storage = Storage.storage()
@@ -43,8 +36,7 @@ final class APIManager: APIManagerProtocol {
     private let auth: Auth
     
     private var timeoutDataTask: DispatchWorkItem?
-    var apiErrorPublisher: Published<String?>.Publisher { $apiError }
-    @Published var apiError: String?
+    private var cancellableSet: Set<AnyCancellable> = []
 
     init() {
         serialQueue = DispatchQueue(label: "queue")
@@ -54,293 +46,286 @@ final class APIManager: APIManagerProtocol {
     deinit {
         stopTimeoutHandler()
     }
-    
-    private func startTimeoutHandler() {
-        stopTimeoutHandler()
-        timeoutDataTask = DispatchWorkItem { [weak self] in
-            guard let self else { return }
-            self.apiError = ApiErrorMessage.disconnect
-        }
-        if let task = timeoutDataTask {
-            DispatchQueue.main.asyncAfter(deadline: .now() + timeoutDelay, execute: task)
-        }
-    }
-    
+
     private func stopTimeoutHandler() {
         timeoutDataTask?.cancel()
         timeoutDataTask = nil
     }
+
+    private var timeoutHandler: AnyPublisher<ApiError, Never> {
+        stopTimeoutHandler()
+        return Future { [weak self] promise in
+            self?.timeoutDataTask = DispatchWorkItem {
+                promise(.success(ApiError(type: .disconnect)))
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+        if let task = timeoutDataTask {
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeoutDelay, execute: task)
+        }
+    }
+    //            self?.timeoutHandler.sink(receiveCompletion: { error in
+    //                if let error = error as? Error {
+    //                    promise(.failure(error))
+    //                }
+    //            }, receiveValue: { apiError in
+    //                promise(.failure(apiError))
+    //            }).store(in: self?.&cancellableSet)
+
     
     var userUid: String? {
         auth.currentUser?.uid
     }
     
-    func getPairEmail(completion: @escaping (String?) -> Void) {
-        serialQueue.async {
-            self.getUserInfo { [weak self] userInfo in
-                guard let self else { return }
-                if let id = userInfo?.pairUniqId {
-                    self.database.child(id).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
-                        if let postDict = snapshot.value as? [String: Any] {
-                            DispatchQueue.main.async {
-                                completion(UserInfo(data: postDict).email)
-                            }
-                        } else {
-                            self.apiError = ApiErrorMessage.defaultMessage
-                        }
-                    }) { error in
-                        self.apiError = error.localizedDescription
-                    }
-                } else {
-                    self.apiError = ApiErrorMessage.defaultMessage
-                }
-            }
-        }
-    }
-    
-    func login(email: String, password: String, completion: @escaping () -> Void) {
+    func login(email: String, password: String) -> AnyPublisher<Bool, Error> {
         guard !email.isEmpty, !password.isEmpty else {
-            self.apiError = ApiErrorMessage.fields
-            return
+            return Fail(error: ApiError(type: .fields))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        self.startTimeoutHandler()
-        serialQueue.async {
-            self.auth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
-                self?.stopTimeoutHandler()
-                DispatchQueue.main.async {
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.auth.signIn(withEmail: email, password: password) { authResult, error in
                     if let error {
-                        self?.apiError = error.localizedDescription
+                        promise(.failure(error))
                     } else {
-                        completion()
+                        promise(.success(true))
                     }
                 }
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
-    func logout(completion: @escaping () -> Void) {
-        do {
-            try auth.signOut()
-            DispatchQueue.main.async {
-                completion()
+    func logout() -> AnyPublisher<Bool, Error> {
+        return Future { [weak self] promise in
+            do {
+                try self?.auth.signOut()
+                promise(.success(true))
+            } catch {
+                promise(.failure(ApiError(type: .defaultMessage)))
             }
-        } catch {
-            self.apiError = ApiErrorMessage.defaultMessage
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
-    func createUser(userInfo: UserInfo, email: String, password: String, completion: @escaping () -> Void) {
+    func createUser(userInfo: UserInfo, email: String, password: String) -> AnyPublisher<Bool, Error> {
         guard !email.isEmpty, !password.isEmpty, !(userInfo.name?.isEmpty ?? true),
               !(userInfo.pairUniqId?.isEmpty ?? true) else {
-            self.apiError = ApiErrorMessage.fields
-            return
+            return Fail(error: ApiError(type: .fields))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        serialQueue.async {
-            self.auth.createUser(withEmail: email, password: password) { authResult, error in
-                if let error {
-                    self.apiError = error.localizedDescription
-                } else {
-                    self.setUserInfo(userInfo, completion: completion)
-                }
-            }
-        }
-    }
-    
-    func resetPassword(email: String,completion:@escaping () -> Void) {
-        guard !email.isEmpty else {
-            self.apiError = ApiErrorMessage.fields
-            return
-        }
-        self.startTimeoutHandler()
-        serialQueue.async {
-            self.auth.sendPasswordReset(withEmail: email) { [weak self] error in
-                self?.stopTimeoutHandler()
-                if let error {
-                    self?.apiError = error.localizedDescription
-                } else {
-                    DispatchQueue.main.async {
-                        completion()
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.auth.createUser(withEmail: email, password: password) { authResult, error in
+                    if let error {
+                        promise(.failure(error))
+                    } else {
+                        //setUserInfo
+                        promise(.success(true))
                     }
                 }
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
-
-    func setUserInfo(_ userInfo: UserInfo, completion:@escaping () -> Void) {
+    
+    func setUserInfo(_ userInfo: UserInfo) -> AnyPublisher<Bool, Error> {
         guard !(userInfo.name?.isEmpty ?? true),
               !(userInfo.pairUniqId?.isEmpty ?? true) else {
-            self.apiError = ApiErrorMessage.fields
-            return
+            return Fail(error: ApiError(type: .fields))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
         guard let uid = userUid else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        self.startTimeoutHandler()
-        serialQueue.async {
-            self.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { [weak self] (error, ref) in
-                self?.stopTimeoutHandler()
-                if let error {
-                    self?.apiError = error.localizedDescription
-                } else {
-                    DispatchQueue.main.async {
-                        completion()
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { (error, ref) in
+                    if let error {
+                        promise(.failure(error))
+                    } else {
+                        promise(.success(true))
                     }
                 }
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
-    func getUserInfo(completion: @escaping (UserInfo?) -> Void) {
-        guard let uid = userUid else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
+    func resetPassword(email: String) -> AnyPublisher<Bool, Error> {
+        guard !email.isEmpty else {
+            return Fail(error: ApiError(type: .fields))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        self.startTimeoutHandler()
-        serialQueue.async {
-            self.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { [weak self] snapshot in
-                self?.stopTimeoutHandler()
-                if let postDict = snapshot.value as? [String: Any] {
-                    DispatchQueue.main.async {
-                        completion(UserInfo(data: postDict))
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.auth.sendPasswordReset(withEmail: email) { error in
+                    if let error {
+                        promise(.failure(error))
+                    } else {
+                        promise(.success(true))
                     }
-                } else {
-                    self?.apiError = ApiErrorMessage.defaultMessage
                 }
-            }) { [weak self] error in
-                self?.stopTimeoutHandler()
-                self?.apiError = error.localizedDescription
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
-    func getMyCoupons(completion:@escaping ([Coupon]?) -> Void) {
+    /// get user info
+    /// - Returns: UserInfo contain PairEmail
+    func getUserInfo() -> AnyPublisher<UserInfo?, Error> {
         guard let uid = userUid else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        self.startTimeoutHandler()
-        serialQueue.async {
-            self.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { [weak self] snapshot in
-                self?.stopTimeoutHandler()
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.database.child(uid).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
+                    if let postDict = snapshot.value as? [String: Any] {
+                        promise(.success(UserInfo(data: postDict)))
+                    } else {
+                        promise(.failure(ApiError(type: .defaultMessage)))
+                    }
+                }) { error in
+                    promise(.failure(error))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func getMyCoupons() -> AnyPublisher<[Coupon]?, Error> {
+        guard let uid = userUid else {
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
+        }
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+                    self?.stopTimeoutHandler()
+                    if let dict = snapshot.value as? [String : AnyObject] {
+                        var coupons: [Coupon] = []
+                        dict.forEach {
+                            if let coupon = $0.value as? [String : Any] {
+                                var newCoupon = Coupon(data: coupon)
+                                newCoupon.key = $0.key
+                                coupons.append(newCoupon)
+                            }
+                        }
+                        promise(.success(coupons))
+                    } else {
+                        promise(.failure(ApiError(type: .defaultMessage)))
+                    }
+                }) { error in
+                    promise(.failure(error))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    /// getPairCoupons
+    /// - Parameter pairUniqId: from getUserInfo()
+    /// - Returns: coupons
+    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, Error> {
+        guard let pairUniqId else {
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
+        }
+        return Future { [weak self] promise in
+            self?.database.child(pairUniqId).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
                 if let dict = snapshot.value as? [String : AnyObject] {
                     var coupons: [Coupon] = []
                     dict.forEach {
                         if let coupon = $0.value as? [String : Any] {
                             var newCoupon = Coupon(data: coupon)
                             newCoupon.key = $0.key
-                            coupons.append(newCoupon)
+                            coupons.append(Coupon(data: coupon))
                         }
                     }
-                    DispatchQueue.main.async {
-                        completion(coupons)
-                    }
+                    promise(.success(coupons))
                 } else {
-                    self?.apiError = ApiErrorMessage.couponsMessage
+                    promise(.failure(ApiError(type: .couponsMessage)))
                 }
-            }) { [weak self] error in
-                self?.stopTimeoutHandler()
-                self?.apiError = error.localizedDescription
+            }) { error in
+                promise(.failure(error))
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
-    func getPairCoupons(completion: @escaping ([Coupon]?) -> Void) {
-        serialQueue.async {
-            self.getUserInfo { [weak self] userInfo in
-                if let id = userInfo?.pairUniqId {
-                    self?.database.child(id).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
-                        if let dict = snapshot.value as? [String : AnyObject] {
-                            var coupons: [Coupon] = []
-                            dict.forEach {
-                                if let coupon = $0.value as? [String : Any] {
-                                    var newCoupon = Coupon(data: coupon)
-                                    newCoupon.key = $0.key
-                                    coupons.append(Coupon(data: coupon))
-                                }
-                            }
-                            DispatchQueue.main.async {
-                                completion(coupons)
-                            }
-                        } else {
-                            self?.apiError = ApiErrorMessage.couponsMessage
-                        }
-                    }) { [weak self] error in
-                        self?.apiError = error.localizedDescription
-                    }
-                }
-            }
-        }
-    }
-    
-    func updateCoupon(_ coupon: Coupon, data: Data?, completion: @escaping () -> Void) {
-        guard !coupon.description.isEmpty else {
-            self.apiError = ApiErrorMessage.fields
-            return
+    func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, Error> {
+        guard !coupon.description.isEmpty,
+              !coupon.description.isEmpty, !coupon.image.isEmpty,
+              let data else {
+            return Fail(error: ApiError(type: .fields))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
         var coupon = coupon
-
         guard let uid = userUid else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        if data == nil, !coupon.description.isEmpty, !coupon.image.isEmpty {
-            self.newDatabaseCoupon(coupon, completion: completion)
-            return
-        }
-        guard !coupon.description.isEmpty, let data = data else {
-            self.apiError = ApiErrorMessage.fields
-            return
-        }
-        
-        self.startTimeoutHandler()
         let riversRef = storage.reference().child("\(uid)/\(UUID()).jpg")
-        serialQueue.async {
-            riversRef.putData(data, metadata: nil) { (metadata, error) in
-                riversRef.downloadURL { [weak self] (url, error) in
-                    self?.stopTimeoutHandler()
-                    if let downloadURL = url {
-                        coupon.image = downloadURL.absoluteString
-                        self?.newDatabaseCoupon(coupon, completion: completion)
-                    } else {
-                        self?.apiError = error?.localizedDescription ?? ApiErrorMessage.defaultMessage
+        let ref = Database.database().reference().child(uid).child(Constants.couponsDirectory).child(coupon.key ?? UUID().uuidString)
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                riversRef.putData(data, metadata: nil) { (metadata, error) in
+                    riversRef.downloadURL { (url, error) in
+                        if let downloadURL = url {
+                            coupon.image = downloadURL.absoluteString
+                            guard let values = coupon.toAnyObject() as? [AnyHashable : Any] else {
+                                promise(.failure(ApiError(type: .defaultMessage)))
+                                return
+                            }
+                            ref.updateChildValues(values) { (error, reference) in
+                                if let error {
+                                    promise(.failure(error))
+                                } else {
+                                    promise(.success(true))
+                                }
+                            }
+                        } else {
+                            promise(.failure(error ?? ApiError(type: .defaultMessage)))
+                        }
                     }
                 }
             }
         }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
     }
     
-    func deleteCoupon(_ coupon: Coupon, completion: @escaping () -> Void) {
+    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, Error> {
         guard let uid = userUid,
               let key = coupon.key else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
         self.database.child(uid).child(Constants.couponsDirectory).child(key).removeValue()
-    }
-
-    private func newDatabaseCoupon(_ coupon: Coupon, completion: @escaping () -> Void) {
-        guard let uid = userUid else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
-        }
-
-        let ref = Database.database().reference().child(uid).child(Constants.couponsDirectory).child(coupon.key ?? UUID().uuidString)
-
-        guard let values = coupon.toAnyObject() as? [AnyHashable : Any] else {
-            self.apiError = ApiErrorMessage.defaultMessage
-            return
-        }
-        self.startTimeoutHandler()
-        ref.updateChildValues(values) { [weak self] (error, reference) in
-            self?.stopTimeoutHandler()
-            if let error {
-                self?.apiError = error.localizedDescription
-            } else {
-                DispatchQueue.main.async {
-                    completion()
-                }
-            }
-        }
+        return Future { $0(.success(true)) }
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
     }
 }
