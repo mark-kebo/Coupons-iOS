@@ -47,17 +47,6 @@ final class CouponEditViewModel<Coordinator>: CouponEditViewModelProtocol where 
         self.state = coordinator.state
         self.coordinator = coordinator
         self.apiManager = apiManager
-        prepareErrorPublisher()
-    }
-    
-    private func prepareErrorPublisher() {
-        apiManager.apiErrorPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error in
-                guard let error = error?.description else { return }
-                self?.isShowLoading = false
-                self?.coordinator.showError(error)
-            }.store(in: &cancellables)
     }
     
     deinit {
@@ -67,23 +56,33 @@ final class CouponEditViewModel<Coordinator>: CouponEditViewModelProtocol where 
     func sendButtonPressed(image: UIImage?) {
         isShowLoading = true
         coupon.description = self.text
-        apiManager.updateCoupon(coupon, data: image != UIImage(asset: Asset.addImage) ? image?.jpegData(compressionQuality: 0.5) : nil) { [weak self] in
+        apiManager.updateCoupon(coupon, data: image != UIImage(asset: Asset.addImage) ? image?.jpegData(compressionQuality: 0.5) : nil)
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
                 self?.isShowLoading = false
-                self?.coordinator.navigateBack()
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] _ in
+                guard let self else { return }
+                self.isShowLoading = false
+                self.coordinator.navigateBack()
             }
+            .store(in: &self.cancellables)
     }
     
     func updateImage(imageStore: CouponEditImageStore)  {
         isShowLoading = true
-        MediaLoadingService.shared.getMediaData(coupon.image) { [weak self] result in
-            self?.isShowLoading = false
-            switch result {
-            case .success(let image):
-                imageStore.image = image
-            case .failure(_):
-                imageStore.image = UIImage(asset: Asset.addImage)
-            }
-        }
+        MediaLoadingService.shared.getMediaData(coupon.image)
+            .sink(receiveValue: { [weak self] image in
+                self?.isShowLoading = false
+                imageStore.image = image ?? UIImage(asset: Asset.addImage)
+            })
+            .store(in: &self.cancellables)
     }
     
     func changeImageButtonSelected(image: Binding<UIImage?>) {

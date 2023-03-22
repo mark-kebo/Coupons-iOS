@@ -13,6 +13,7 @@ enum ApiErrorType {
     case fields
     case couponsMessage
     case disconnect
+    case other(String?)
     
     var text: String {
         switch self {
@@ -24,10 +25,12 @@ enum ApiErrorType {
             return L10n.Alert.coupons
         case .disconnect:
             return L10n.noInternetConnection
+        case .other(let text):
+            return text ?? L10n.apiDefaultError
         }
     }
 }
 
 struct ApiError: Error {
-    var type: ApiErrorType?
+    let type: ApiErrorType
 }

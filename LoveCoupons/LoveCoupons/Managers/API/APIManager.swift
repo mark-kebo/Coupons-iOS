@@ -12,73 +12,42 @@ import Combine
 
 protocol APIManagerProtocol {
     var userUid: String? { get }
+    var timeoutDelay: CGFloat { get }
     
-    func login(email: String, password: String) -> AnyPublisher<Bool, Error>
-    func logout() -> AnyPublisher<Bool, Error>
-    func createUser(userInfo: UserInfo, email: String, password: String) -> AnyPublisher<Bool, Error>
-    func resetPassword(email: String) -> AnyPublisher<Bool, Error>
-    func setUserInfo(_ userInfo: UserInfo) -> AnyPublisher<Bool, Error>
-    func getUserInfo() -> AnyPublisher<UserInfo?, Error>
-    func getMyCoupons() -> AnyPublisher<[Coupon]?, Error>
-    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, Error>
-    func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, Error>
-    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, Error>
+    func getPairEmail(pairId: String) -> AnyPublisher<String?, ApiError>
+    func login(email: String, password: String) -> AnyPublisher<Bool, ApiError>
+    func logout() -> AnyPublisher<Bool, ApiError>
+    func createUser(userInfo: UserInfo, email: String, password: String) -> AnyPublisher<Bool, ApiError>
+    func resetPassword(email: String) -> AnyPublisher<Bool, ApiError>
+    func setUserInfo(_ userInfo: UserInfo) -> AnyPublisher<Bool, ApiError>
+    func getUserInfo() -> AnyPublisher<UserInfo?, ApiError>
+    func getMyCoupons() -> AnyPublisher<[Coupon]?, ApiError>
+    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, ApiError>
+    func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, ApiError>
+    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, ApiError>
 }
 
 final class APIManager: APIManagerProtocol {
     
-    private let timeoutDelay: CGFloat = 10
+    let timeoutDelay: CGFloat = 10
     private let database = Database.database().reference()
     private let storage = Storage.storage()
     private let serialQueue: DispatchQueue
-    private let session = URLSession(configuration: URLSessionConfiguration.default)
 
     private let auth: Auth
     
-    private var timeoutDataTask: DispatchWorkItem?
     private var cancellableSet: Set<AnyCancellable> = []
 
     init() {
         serialQueue = DispatchQueue(label: "queue")
         auth = Auth.auth()
     }
-    
-    deinit {
-        stopTimeoutHandler()
-    }
 
-    private func stopTimeoutHandler() {
-        timeoutDataTask?.cancel()
-        timeoutDataTask = nil
-    }
-//TODO: - create timeout for all endpoints
-    private var timeoutHandler: AnyPublisher<ApiError, Never> {
-        stopTimeoutHandler()
-        return Future { [weak self] promise in
-            self?.timeoutDataTask = DispatchWorkItem {
-                promise(.success(ApiError(type: .disconnect)))
-            }
-        }
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
-        if let task = timeoutDataTask {
-            DispatchQueue.main.asyncAfter(deadline: .now() + timeoutDelay, execute: task)
-        }
-    }
-    //            self?.timeoutHandler.sink(receiveCompletion: { error in
-    //                if let error = error as? Error {
-    //                    promise(.failure(error))
-    //                }
-    //            }, receiveValue: { apiError in
-    //                promise(.failure(apiError))
-    //            }).store(in: self?.&cancellableSet)
-
-    
     var userUid: String? {
         auth.currentUser?.uid
     }
     
-    func login(email: String, password: String) -> AnyPublisher<Bool, Error> {
+    func login(email: String, password: String) -> AnyPublisher<Bool, ApiError> {
         guard !email.isEmpty, !password.isEmpty else {
             return Fail(error: ApiError(type: .fields))
                 .receive(on: RunLoop.main)
@@ -88,7 +57,7 @@ final class APIManager: APIManagerProtocol {
             self?.serialQueue.async {
                 self?.auth.signIn(withEmail: email, password: password) { authResult, error in
                     if let error {
-                        promise(.failure(error))
+                        promise(.failure(ApiError(type: .other(error.localizedDescription))))
                     } else {
                         promise(.success(true))
                     }
@@ -99,7 +68,7 @@ final class APIManager: APIManagerProtocol {
         .eraseToAnyPublisher()
     }
     
-    func logout() -> AnyPublisher<Bool, Error> {
+    func logout() -> AnyPublisher<Bool, ApiError> {
         return Future { [weak self] promise in
             do {
                 try self?.auth.signOut()
@@ -112,7 +81,7 @@ final class APIManager: APIManagerProtocol {
         .eraseToAnyPublisher()
     }
     
-    func createUser(userInfo: UserInfo, email: String, password: String) -> AnyPublisher<Bool, Error> {
+    func createUser(userInfo: UserInfo, email: String, password: String) -> AnyPublisher<Bool, ApiError> {
         guard !email.isEmpty, !password.isEmpty, !(userInfo.name?.isEmpty ?? true),
               !(userInfo.pairUniqId?.isEmpty ?? true) else {
             return Fail(error: ApiError(type: .fields))
@@ -123,7 +92,7 @@ final class APIManager: APIManagerProtocol {
             self?.serialQueue.async {
                 self?.auth.createUser(withEmail: email, password: password) { authResult, error in
                     if let error {
-                        promise(.failure(error))
+                        promise(.failure(ApiError(type: .other(error.localizedDescription))))
                     } else {
                         //setUserInfo
                         promise(.success(true))
@@ -135,7 +104,7 @@ final class APIManager: APIManagerProtocol {
         .eraseToAnyPublisher()
     }
     
-    func setUserInfo(_ userInfo: UserInfo) -> AnyPublisher<Bool, Error> {
+    func setUserInfo(_ userInfo: UserInfo) -> AnyPublisher<Bool, ApiError> {
         guard !(userInfo.name?.isEmpty ?? true),
               !(userInfo.pairUniqId?.isEmpty ?? true) else {
             return Fail(error: ApiError(type: .fields))
@@ -151,7 +120,7 @@ final class APIManager: APIManagerProtocol {
             self?.serialQueue.async {
                 self?.database.child(uid).child(Constants.userInfoDirectory).setValue(userInfo.toAnyObject()) { (error, ref) in
                     if let error {
-                        promise(.failure(error))
+                        promise(.failure(ApiError(type: .other(error.localizedDescription))))
                     } else {
                         promise(.success(true))
                     }
@@ -162,7 +131,7 @@ final class APIManager: APIManagerProtocol {
         .eraseToAnyPublisher()
     }
     
-    func resetPassword(email: String) -> AnyPublisher<Bool, Error> {
+    func resetPassword(email: String) -> AnyPublisher<Bool, ApiError> {
         guard !email.isEmpty else {
             return Fail(error: ApiError(type: .fields))
                 .receive(on: RunLoop.main)
@@ -172,7 +141,7 @@ final class APIManager: APIManagerProtocol {
             self?.serialQueue.async {
                 self?.auth.sendPasswordReset(withEmail: email) { error in
                     if let error {
-                        promise(.failure(error))
+                        promise(.failure(ApiError(type: .other(error.localizedDescription))))
                     } else {
                         promise(.success(true))
                     }
@@ -185,7 +154,7 @@ final class APIManager: APIManagerProtocol {
     
     /// get user info
     /// - Returns: UserInfo contain PairEmail
-    func getUserInfo() -> AnyPublisher<UserInfo?, Error> {
+    func getUserInfo() -> AnyPublisher<UserInfo?, ApiError> {
         guard let uid = userUid else {
             return Fail(error: ApiError(type: .defaultMessage))
                 .receive(on: RunLoop.main)
@@ -200,7 +169,7 @@ final class APIManager: APIManagerProtocol {
                         promise(.failure(ApiError(type: .defaultMessage)))
                     }
                 }) { error in
-                    promise(.failure(error))
+                    promise(.failure(ApiError(type: .other(error.localizedDescription))))
                 }
             }
         }
@@ -208,7 +177,7 @@ final class APIManager: APIManagerProtocol {
         .eraseToAnyPublisher()
     }
     
-    func getMyCoupons() -> AnyPublisher<[Coupon]?, Error> {
+    func getMyCoupons() -> AnyPublisher<[Coupon]?, ApiError> {
         guard let uid = userUid else {
             return Fail(error: ApiError(type: .defaultMessage))
                 .receive(on: RunLoop.main)
@@ -217,7 +186,6 @@ final class APIManager: APIManagerProtocol {
         return Future { [weak self] promise in
             self?.serialQueue.async {
                 self?.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
-                    self?.stopTimeoutHandler()
                     if let dict = snapshot.value as? [String : AnyObject] {
                         var coupons: [Coupon] = []
                         dict.forEach {
@@ -232,7 +200,25 @@ final class APIManager: APIManagerProtocol {
                         promise(.failure(ApiError(type: .defaultMessage)))
                     }
                 }) { error in
-                    promise(.failure(error))
+                    promise(.failure(ApiError(type: .other(error.localizedDescription))))
+                }
+            }
+        }
+        .receive(on: RunLoop.main)
+        .eraseToAnyPublisher()
+    }
+    
+    func getPairEmail(pairId: String) -> AnyPublisher<String?, ApiError> {
+        return Future { [weak self] promise in
+            self?.serialQueue.async {
+                self?.database.child(pairId).child(Constants.userInfoDirectory).observe(DataEventType.value, with: { snapshot in
+                    if let postDict = snapshot.value as? [String: Any] {
+                        promise(.success(UserInfo(data: postDict).email))
+                    } else {
+                        promise(.failure(ApiError(type: .defaultMessage)))
+                    }
+                }) { error in
+                    promise(.failure(ApiError(type: .other(error.localizedDescription))))
                 }
             }
         }
@@ -243,7 +229,7 @@ final class APIManager: APIManagerProtocol {
     /// getPairCoupons
     /// - Parameter pairUniqId: from getUserInfo()
     /// - Returns: coupons
-    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, Error> {
+    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, ApiError> {
         guard let pairUniqId else {
             return Fail(error: ApiError(type: .defaultMessage))
                 .receive(on: RunLoop.main)
@@ -265,16 +251,15 @@ final class APIManager: APIManagerProtocol {
                     promise(.failure(ApiError(type: .couponsMessage)))
                 }
             }) { error in
-                promise(.failure(error))
+                promise(.failure(ApiError(type: .other(error.localizedDescription))))
             }
         }
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
     
-    func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, Error> {
+    func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, ApiError> {
         guard !coupon.description.isEmpty,
-              !coupon.description.isEmpty, !coupon.image.isEmpty,
               let data else {
             return Fail(error: ApiError(type: .fields))
                 .receive(on: RunLoop.main)
@@ -300,13 +285,13 @@ final class APIManager: APIManagerProtocol {
                             }
                             ref.updateChildValues(values) { (error, reference) in
                                 if let error {
-                                    promise(.failure(error))
+                                    promise(.failure(ApiError(type: .other(error.localizedDescription))))
                                 } else {
                                     promise(.success(true))
                                 }
                             }
                         } else {
-                            promise(.failure(error ?? ApiError(type: .defaultMessage)))
+                            promise(.failure(ApiError(type: .other(error?.localizedDescription))))
                         }
                     }
                 }
@@ -316,7 +301,7 @@ final class APIManager: APIManagerProtocol {
         .eraseToAnyPublisher()
     }
     
-    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, Error> {
+    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, ApiError> {
         guard let uid = userUid,
               let key = coupon.key else {
             return Fail(error: ApiError(type: .defaultMessage))

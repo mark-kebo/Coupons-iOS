@@ -35,17 +35,6 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
-        prepareErrorPublisher()
-    }
-    
-    private func prepareErrorPublisher() {
-        apiManager.apiErrorPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error in
-                guard let error = error?.description else { return }
-                self?.isShowLoading = false
-                self?.coordinator.showError(error)
-            }.store(in: &cancellables)
     }
 
     deinit {
@@ -55,20 +44,45 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
     func deleteItems(at offsets: IndexSet) {
         guard let first = offsets.first else { return }
         isShowLoading = true
-        apiManager.deleteCoupon(coupons[first]) { [weak self] in
-            self?.isShowLoading = false
-        }
+        apiManager.deleteCoupon(coupons[first])
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] myCoupons in
+                guard let self else { return }
+                self.isShowLoading = false
+                self.getCoupons()
+            }
+            .store(in: &self.cancellables)
     }
     
     func getCoupons() {
         isShowLoading = true
         coupons.removeAll()
-        apiManager.getMyCoupons { [weak self] coupons in
-            self?.isShowLoading = false
-            if let coupons = coupons {
-                self?.coupons = coupons.sorted { $0.description < $1.description }
+        apiManager.getMyCoupons()
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] myCoupons in
+                guard let self else { return }
+                self.isShowLoading = false
+                self.coupons = myCoupons?.sorted { $0.description < $1.description } ?? []
             }
-        }
+            .store(in: &self.cancellables)
     }
     
     func couponSelected(_ coupon: Coupon, id: Int) {

@@ -31,17 +31,6 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
-        prepareErrorPublisher()
-    }
-    
-    private func prepareErrorPublisher() {
-        apiManager.apiErrorPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error in
-                guard let error = error?.description else { return }
-                self?.isShowLoading = false
-                self?.coordinator.showError(error)
-            }.store(in: &cancellables)
     }
 
     deinit {
@@ -51,17 +40,44 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
     func showSendEmailView(coupon: Coupon) {
         if MFMailComposeViewController.canSendMail() {
             self.isShowLoading = true
-            self.apiManager.getPairEmail { [weak self] email in
-                guard let self else { return }
-                self.isShowLoading = false
-                if let email = email {
-                    self.mailDataStore.emailMessage = email
+            self.apiManager.getUserInfo()
+                .timeout(.seconds(self.apiManager.timeoutDelay),
+                         scheduler: DispatchQueue.main, options: nil,
+                         customError: { return ApiError(type: .disconnect) })
+                .sink { [weak self] completion in
+                    self?.isShowLoading = false
+                    switch completion {
+                    case .finished: break
+                    case .failure(let error):
+                        self?.coordinator.showError(error.type.text)
+                    }
+                } receiveValue: { [weak self] userInfo in
+                    guard let self else { return }
+                    self.apiManager.getPairEmail(pairId: userInfo?.pairUniqId ?? "")
+                        .timeout(.seconds(self.apiManager.timeoutDelay),
+                                 scheduler: DispatchQueue.main, options: nil,
+                                 customError: { return ApiError(type: .disconnect) })
+                        .sink { [weak self] completion in
+                            self?.isShowLoading = false
+                            switch completion {
+                            case .finished: break
+                            case .failure(let error):
+                                self?.coordinator.showError(error.type.text)
+                            }
+                        } receiveValue: { [weak self] email in
+                            guard let self else { return }
+                            self.isShowLoading = false
+                            if let email {
+                                self.mailDataStore.emailMessage = email
+                            }
+                            self.mailDataStore.bodyMessage = coupon.description
+                            self.coordinator.showSendMailPicker(result: self.$mailDataStore.result,
+                                                                emailMessage: self.$mailDataStore.emailMessage,
+                                                                bodyMessage: self.$mailDataStore.bodyMessage)
+                        }
+                        .store(in: &self.cancellables)
                 }
-                self.mailDataStore.bodyMessage = coupon.description
-                self.coordinator.showSendMailPicker(result: self.$mailDataStore.result,
-                                                    emailMessage: self.$mailDataStore.emailMessage,
-                                                    bodyMessage: self.$mailDataStore.bodyMessage)
-            }
+                .store(in: &cancellables)
         } else {
             coordinator.showError(L10n.Alert.mail)
         }
@@ -70,11 +86,38 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
     func updateViewData() {
         coupons.removeAll()
         isShowLoading = true
-        apiManager.getPairCoupons { [weak self] coupons in
-             if let coupons = coupons {
-                self?.coupons = coupons.sorted { $0.description < $1.description }
+        self.apiManager.getUserInfo()
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] userInfo in
+                guard let self else { return }
+                self.apiManager.getPairCoupons(pairUniqId: userInfo?.pairUniqId ?? "")
+                    .timeout(.seconds(self.apiManager.timeoutDelay),
+                             scheduler: DispatchQueue.main, options: nil,
+                             customError: { return ApiError(type: .disconnect) })
+                    .sink { [weak self] completion in
+                        self?.isShowLoading = false
+                        switch completion {
+                        case .finished: break
+                        case .failure(let error):
+                            self?.coordinator.showError(error.type.text)
+                        }
+                    } receiveValue: { [weak self] coupons in
+                        if let coupons = coupons {
+                           self?.coupons = coupons.sorted { $0.description < $1.description }
+                       }
+                       self?.isShowLoading = false
+                    }
+                    .store(in: &self.cancellables)
             }
-            self?.isShowLoading = false
-        }
+            .store(in: &cancellables)
     }
 }

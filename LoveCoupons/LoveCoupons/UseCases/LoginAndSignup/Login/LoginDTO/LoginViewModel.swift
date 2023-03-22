@@ -28,17 +28,6 @@ final class LoginViewModel<Coordinator>: LoginViewModelProtocol where Coordinato
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
-        prepareErrorPublisher()
-    }
-    
-    private func prepareErrorPublisher() {
-        apiManager.apiErrorPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error in
-                guard let error = error?.description else { return }
-                self?.isShowLoading = false
-                self?.coordinator.showError(error)
-            }.store(in: &cancellables)
     }
 
     deinit {
@@ -48,10 +37,22 @@ final class LoginViewModel<Coordinator>: LoginViewModelProtocol where Coordinato
     func loginButtonPressed(userLogin: String,
                             userPass: String) {
         isShowLoading = true
-        self.apiManager.login(email: userLogin, password: userPass) { [weak self] in
-            self?.isShowLoading = false
-            self?.coordinator.navigateToTabs()
-        }
+        self.apiManager.login(email: userLogin, password: userPass)
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] isLoggedIn in
+                self?.isShowLoading = false
+                self?.coordinator.navigateToTabs()
+            }
+            .store(in: &cancellables)
     }
     
     func signUpButtonPressed() {

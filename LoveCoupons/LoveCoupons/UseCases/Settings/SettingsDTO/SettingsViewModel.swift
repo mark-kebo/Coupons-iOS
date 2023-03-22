@@ -40,17 +40,6 @@ final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coor
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
-        prepareErrorPublisher()
-    }
-    
-    private func prepareErrorPublisher() {
-        apiManager.apiErrorPublisher
-            .receive(on: RunLoop.main)
-            .sink { [weak self] error in
-                guard let error = error?.description else { return }
-                self?.isShowLoading = false
-                self?.coordinator.showError(error)
-            }.store(in: &cancellables)
     }
 
     deinit {
@@ -59,34 +48,83 @@ final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coor
     
     func getUserInfo() {
         isShowLoading = true
-        apiManager.getUserInfo { [weak self] userInfo in
-            self?.isShowLoading = false
-            self?.name = userInfo?.name ?? ""
-            self?.id = userInfo?.pairUniqId ?? ""
-            self?.email = userInfo?.email ?? ""
-        }
+        
+        apiManager.getUserInfo()
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] userInfo in
+                self?.isShowLoading = false
+                self?.name = userInfo?.name ?? ""
+                self?.id = userInfo?.pairUniqId ?? ""
+                self?.email = userInfo?.email ?? ""
+            }
+            .store(in: &self.cancellables)
     }
     
     func sendButtonPressed(email: String) {
         isShowLoading = true
-        self.apiManager.resetPassword(email: email) { [weak self] in
-            self?.isShowLoading = false
-        }
+        self.apiManager.resetPassword(email: email)
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] _ in
+                self?.isShowLoading = false
+            }
+            .store(in: &self.cancellables)
     }
     
     func logoutButtonPressed() {
         isShowLoading = true
-        self.apiManager.logout { [weak self] in
-            self?.isShowLoading = false
-            self?.coordinator.navigateToLogin()
-        }
+        self.apiManager.logout()
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] _ in
+                self?.isShowLoading = false
+                self?.coordinator.navigateToLogin()
+            }
+            .store(in: &self.cancellables)
     }
     
     func submitButtonPressed() {
         isShowLoading = true
         let userInfoItem = UserInfo(name: self.name, email: self.email, pairUniqId: self.id)
-        self.apiManager.setUserInfo(userInfoItem) { [weak self] in
-            self?.isShowLoading = false
-        }
+        self.apiManager.setUserInfo(userInfoItem)
+            .timeout(.seconds(self.apiManager.timeoutDelay),
+                     scheduler: DispatchQueue.main, options: nil,
+                     customError: { return ApiError(type: .disconnect) })
+            .sink { [weak self] completion in
+                self?.isShowLoading = false
+                switch completion {
+                case .finished: break
+                case .failure(let error):
+                    self?.coordinator.showError(error.type.text)
+                }
+            } receiveValue: { [weak self] _ in
+                self?.isShowLoading = false
+            }
+            .store(in: &self.cancellables)
     }
 }

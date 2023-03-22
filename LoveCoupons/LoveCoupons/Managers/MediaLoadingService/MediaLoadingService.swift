@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 final class MediaLoadingService {
     
@@ -19,30 +20,26 @@ final class MediaLoadingService {
         return cache
     }()
     
-    func getMediaData(_ urlString: String, closure: @escaping ((Result<UIImage, Error>) -> Void)) {
+    func getMediaData(_ urlString: String) -> AnyPublisher<UIImage?, Never> {
         if let cacheImageData = imageCache.object(forKey: urlString as NSString) as Data?,
            let image = UIImage(data: cacheImageData) {
-            closure(.success(image))
-            return
+            return Just(image)
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
         guard let url = URL(string: urlString) else {
-            closure(.failure(NSError()))
-            return
+            return Just(nil)
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
         }
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            
-            guard let data = data , error == nil, let img = UIImage(data: data) else {
-                let errorMessage = "Can't download image data: \(error?.localizedDescription ?? "")"
-                NSLog(errorMessage)
-                if let error {
-                    closure(.failure(error))
+        return
+            URLSession.shared.dataTaskPublisher(for: url)
+                .map {
+                    self.imageCache.setObject($0.data as NSData, forKey: url.absoluteString as NSString)
+                    return UIImage(data: $0.data)
                 }
-                return
-            }
-            self?.imageCache.setObject(data as NSData, forKey: url.absoluteString as NSString)
-            DispatchQueue.main.async {
-                closure(.success(img))
-            }
-        }.resume()
+                .catch { error in Just(nil)}
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
     }
 }

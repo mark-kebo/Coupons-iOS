@@ -7,11 +7,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct CouponView: View {
     @State private var image: UIImage = UIImage(asset: Asset.logo)
     @State private var isShowingImagesLoading: Bool = false
     @State private var color: Color = Color(Constants.redColor)
+    @State private var cancellable: AnyCancellable?
 
     private let imageSize: CGSize = CGSize(width: 130, height: 180)
     var coupon: Coupon
@@ -19,7 +21,7 @@ struct CouponView: View {
     
     var body: some View {
         HStack {
-            if isShowingImagesLoading {
+            if isShowingImagesLoading && image == UIImage(asset: Asset.logo) {
                 ActivityIndicator(isAnimating: $isShowingImagesLoading, style: .large)
                     .frame(width: imageSize.width, height: imageSize.height)
                     .clipped()
@@ -53,15 +55,11 @@ struct CouponView: View {
     
     private func setImage() {
         isShowingImagesLoading = true
-        MediaLoadingService.shared.getMediaData(coupon.image) { result in
-            switch result {
-            case .success(let image):
-                self.image = image
-            case .failure(_):
-                self.image = UIImage(asset: Asset.logo)
-            }
-            isShowingImagesLoading = false
-        }
+        cancellable = MediaLoadingService.shared.getMediaData(coupon.image)
+            .sink(receiveValue: { image in
+                self.image = image ?? UIImage(asset: Asset.logo)
+                isShowingImagesLoading = false
+            })
     }
 }
 
