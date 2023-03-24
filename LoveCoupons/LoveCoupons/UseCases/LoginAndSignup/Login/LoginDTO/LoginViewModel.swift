@@ -38,9 +38,6 @@ final class LoginViewModel<Coordinator>: LoginViewModelProtocol where Coordinato
                             userPass: String) {
         isShowLoading = true
         self.apiManager.login(email: userLogin, password: userPass)
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {

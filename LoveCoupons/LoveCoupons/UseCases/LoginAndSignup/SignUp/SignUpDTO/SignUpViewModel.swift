@@ -38,9 +38,6 @@ final class SignUpViewModel<Coordinator>: SignUpViewModelProtocol where Coordina
         let userInfoItem = UserInfo(name: name, email: email, pairUniqId: pairUniqId)
         isShowLoading = true
         self.apiManager.createUser(userInfo: userInfoItem, email: email, password: password)
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {
@@ -48,10 +45,22 @@ final class SignUpViewModel<Coordinator>: SignUpViewModelProtocol where Coordina
                 case .failure(let error):
                     self?.coordinator.showError(error.type.text)
                 }
-            } receiveValue: { [weak self] _ in
+            } receiveValue: { [weak self] userInfo in
                 guard let self else { return }
-                self.isShowLoading = false
-                self.coordinator.navigateToTabs()
+                self.apiManager.setUserInfo(userInfoItem)
+                    .sink { [weak self] completion in
+                        self?.isShowLoading = false
+                        switch completion {
+                        case .finished: break
+                        case .failure(let error):
+                            self?.coordinator.showError(error.type.text)
+                        }
+                    } receiveValue: { [weak self] userInfo in
+                        guard let self else { return }
+                        self.isShowLoading = false
+                        self.coordinator.navigateToTabs()
+                    }
+                    .store(in: &self.cancellables)
             }
             .store(in: &self.cancellables)
     }

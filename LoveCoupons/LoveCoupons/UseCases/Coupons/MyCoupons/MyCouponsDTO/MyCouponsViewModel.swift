@@ -43,33 +43,14 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
     
     func deleteItems(at offsets: IndexSet) {
         guard let first = offsets.first else { return }
-        isShowLoading = true
         apiManager.deleteCoupon(coupons[first])
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
-            .sink { [weak self] completion in
-                self?.isShowLoading = false
-                switch completion {
-                case .finished: break
-                case .failure(let error):
-                    self?.coordinator.showError(error.type.text)
-                }
-            } receiveValue: { [weak self] myCoupons in
-                guard let self else { return }
-                self.isShowLoading = false
-                self.getCoupons()
-            }
-            .store(in: &self.cancellables)
+        self.getCoupons()
     }
     
     func getCoupons() {
         isShowLoading = true
         coupons.removeAll()
         apiManager.getMyCoupons()
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {

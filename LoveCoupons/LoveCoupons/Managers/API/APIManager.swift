@@ -12,7 +12,6 @@ import Combine
 
 protocol APIManagerProtocol {
     var userUid: String? { get }
-    var timeoutDelay: CGFloat { get }
     
     func getPairEmail(pairId: String) -> AnyPublisher<String?, ApiError>
     func login(email: String, password: String) -> AnyPublisher<Bool, ApiError>
@@ -24,12 +23,12 @@ protocol APIManagerProtocol {
     func getMyCoupons() -> AnyPublisher<[Coupon]?, ApiError>
     func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, ApiError>
     func updateCoupon(_ coupon: Coupon, data: Data?) -> AnyPublisher<Bool, ApiError>
-    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, ApiError>
+    func deleteCoupon(_ coupon: Coupon)
 }
 
 final class APIManager: APIManagerProtocol {
     
-    let timeoutDelay: CGFloat = 10
+    private let timeoutDelay: CGFloat = 10
     private let database = Database.database().reference()
     private let storage = Storage.storage()
     private let serialQueue: DispatchQueue
@@ -64,6 +63,9 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -77,6 +79,9 @@ final class APIManager: APIManagerProtocol {
                 promise(.failure(ApiError(type: .defaultMessage)))
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -94,12 +99,14 @@ final class APIManager: APIManagerProtocol {
                     if let error {
                         promise(.failure(ApiError(type: .other(error.localizedDescription))))
                     } else {
-                        //setUserInfo
                         promise(.success(true))
                     }
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -127,6 +134,9 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -148,6 +158,9 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -173,6 +186,9 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -204,6 +220,9 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -222,6 +241,9 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -254,6 +276,9 @@ final class APIManager: APIManagerProtocol {
                 promise(.failure(ApiError(type: .other(error.localizedDescription))))
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
@@ -297,20 +322,18 @@ final class APIManager: APIManagerProtocol {
                 }
             }
         }
+        .timeout(.seconds(self.timeoutDelay),
+                 scheduler: DispatchQueue.main, options: nil,
+                 customError: { return ApiError(type: .disconnect) })
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
     
-    func deleteCoupon(_ coupon: Coupon) -> AnyPublisher<Bool, ApiError> {
+    func deleteCoupon(_ coupon: Coupon) {
         guard let uid = userUid,
               let key = coupon.key else {
-            return Fail(error: ApiError(type: .defaultMessage))
-                .receive(on: RunLoop.main)
-                .eraseToAnyPublisher()
+            return
         }
         self.database.child(uid).child(Constants.couponsDirectory).child(key).removeValue()
-        return Future { $0(.success(true)) }
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
     }
 }

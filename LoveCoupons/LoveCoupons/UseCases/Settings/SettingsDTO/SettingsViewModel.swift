@@ -50,9 +50,6 @@ final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coor
         isShowLoading = true
         
         apiManager.getUserInfo()
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {
@@ -72,9 +69,6 @@ final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coor
     func sendButtonPressed(email: String) {
         isShowLoading = true
         self.apiManager.resetPassword(email: email)
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {
@@ -91,9 +85,6 @@ final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coor
     func logoutButtonPressed() {
         isShowLoading = true
         self.apiManager.logout()
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {
@@ -112,9 +103,6 @@ final class SettingsViewModel<Coordinator>: SettingsViewModelProtocol where Coor
         isShowLoading = true
         let userInfoItem = UserInfo(name: self.name, email: self.email, pairUniqId: self.id)
         self.apiManager.setUserInfo(userInfoItem)
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {

@@ -41,9 +41,6 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
         if MFMailComposeViewController.canSendMail() {
             self.isShowLoading = true
             self.apiManager.getUserInfo()
-                .timeout(.seconds(self.apiManager.timeoutDelay),
-                         scheduler: DispatchQueue.main, options: nil,
-                         customError: { return ApiError(type: .disconnect) })
                 .sink { [weak self] completion in
                     self?.isShowLoading = false
                     switch completion {
@@ -54,9 +51,6 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
                 } receiveValue: { [weak self] userInfo in
                     guard let self else { return }
                     self.apiManager.getPairEmail(pairId: userInfo?.pairUniqId ?? "")
-                        .timeout(.seconds(self.apiManager.timeoutDelay),
-                                 scheduler: DispatchQueue.main, options: nil,
-                                 customError: { return ApiError(type: .disconnect) })
                         .sink { [weak self] completion in
                             self?.isShowLoading = false
                             switch completion {
@@ -87,9 +81,6 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
         coupons.removeAll()
         isShowLoading = true
         self.apiManager.getUserInfo()
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {
@@ -100,9 +91,6 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
             } receiveValue: { [weak self] userInfo in
                 guard let self else { return }
                 self.apiManager.getPairCoupons(pairUniqId: userInfo?.pairUniqId ?? "")
-                    .timeout(.seconds(self.apiManager.timeoutDelay),
-                             scheduler: DispatchQueue.main, options: nil,
-                             customError: { return ApiError(type: .disconnect) })
                     .sink { [weak self] completion in
                         self?.isShowLoading = false
                         switch completion {

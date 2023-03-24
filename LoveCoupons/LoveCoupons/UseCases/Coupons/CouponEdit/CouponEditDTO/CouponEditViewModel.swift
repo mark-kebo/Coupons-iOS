@@ -57,9 +57,6 @@ final class CouponEditViewModel<Coordinator>: CouponEditViewModelProtocol where 
         isShowLoading = true
         coupon.description = self.text
         apiManager.updateCoupon(coupon, data: image != UIImage(asset: Asset.addImage) ? image?.jpegData(compressionQuality: 0.5) : nil)
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {

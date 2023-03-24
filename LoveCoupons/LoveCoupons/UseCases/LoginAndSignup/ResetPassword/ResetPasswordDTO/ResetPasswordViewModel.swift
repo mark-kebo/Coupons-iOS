@@ -34,9 +34,6 @@ final class ResetPasswordViewModel<Coordinator>: ResetPasswordViewModelProtocol 
     func sendButtonPressed(email: String) {
         isShowLoading = true
         self.apiManager.resetPassword(email: email)
-            .timeout(.seconds(self.apiManager.timeoutDelay),
-                     scheduler: DispatchQueue.main, options: nil,
-                     customError: { return ApiError(type: .disconnect) })
             .sink { [weak self] completion in
                 self?.isShowLoading = false
                 switch completion {
