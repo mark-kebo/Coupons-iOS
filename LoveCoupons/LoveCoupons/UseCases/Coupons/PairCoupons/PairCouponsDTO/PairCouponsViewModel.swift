@@ -44,13 +44,11 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
     
     func showSendEmailView(coupon: Coupon) {
         if MFMailComposeViewController.canSendMail() {
-            self.isShowLoading = true
             self.apiManager.getUserInfo()
                 .sink { [weak self] completion in
                     switch completion {
                     case .finished: break
                     case .failure(let error):
-                        self?.isShowLoading = false
                         self?.coordinator.showError(error.type.text)
                     }
                 } receiveValue: { [weak self] userInfo in
@@ -60,12 +58,10 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
                             switch completion {
                             case .finished: break
                             case .failure(let error):
-                                self?.isShowLoading = false
                                 self?.coordinator.showError(error.type.text)
                             }
                         } receiveValue: { [weak self] email in
                             guard let self else { return }
-                            self.isShowLoading = false
                             if let email {
                                 self.mailDataStore.emailMessage = email
                             }
