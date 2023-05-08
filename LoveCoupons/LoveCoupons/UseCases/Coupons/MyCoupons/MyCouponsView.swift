@@ -18,31 +18,30 @@ struct MyCouponsView<ViewModel>: View where ViewModel: MyCouponsViewModelProtoco
     }
     
     var body: some View {
-        LoadingView(isShowing: $viewModel.isShowLoading) {
-            List {
-                ForEach(Array(viewModel.coupons.enumerated()), id: \.element) { index, coupon in
-                    let id = index + 1
-                    CouponView(coupon: coupon, id: id)
-                        .onTapGesture {
-                            viewModel.couponSelected(coupon, id: id)
-                        }
-                }
-                .onDelete(perform: viewModel.deleteItems)
+        List {
+            ForEach(Array(viewModel.isShowLoading ?
+                          viewModel.viewDataItemsPlaceholder.enumerated() :
+                          viewModel.coupons.enumerated()), id: \.element) { index, coupon in
+                let id = index + 1
+                CouponView(coupon: coupon, id: id, isShowingLoading: viewModel.isShowLoading)
+                    .onTapGesture {
+                        viewModel.couponSelected(coupon, id: id)
+                    }
             }
-            .listStyle(PlainListStyle())
-            .environment(\.defaultMinListRowHeight, defaultMinListRowHeight)
-            .navigationBarTitle(Text(""),displayMode: .inline)
-            .navigationBarItems(leading: Text(L10n.MyCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)),
-                                trailing: PrimaryButton(title: L10n.Button.add, style: .fill) {
-                viewModel.addCouponButtonSelected()
-            })
+            .onDelete(perform: viewModel.deleteItems)
         }
+        .listStyle(PlainListStyle())
+        .environment(\.defaultMinListRowHeight, defaultMinListRowHeight)
+        .navigationBarTitle(Text(""),displayMode: .inline)
+        .navigationBarItems(leading: Text(L10n.MyCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)),
+                            trailing: PrimaryButton(title: L10n.Button.add, style: .fill) {
+            viewModel.addCouponButtonSelected()
+        })
         .onAppear(perform: self.onAppear)
     }
     
     private func onAppear() {
         UITableView.appearance().separatorColor = .clear
-        viewModel.getCoupons()
     }
 }
 

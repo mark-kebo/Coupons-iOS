@@ -21,25 +21,25 @@ struct SignUpView<ViewModel>: View where ViewModel: SignUpViewModelProtocol {
     }
 
     var body: some View {
-        LoadingView(isShowing: $viewModel.isShowLoading) {
-            VStack(alignment: .center, spacing: Constants.stackSpacing) {
-                Text(L10n.LoginSignUp.Button.signUp.uppercased())
-                    .font(.custom(Constants.titleFont, size: 33))
-                VStack {
-                    PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
-                    PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)
-                    PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
-                    PrimaryTextField(title: L10n.LoginSignUp.password, isSecure: true, text: $password)
-                }
-                .padding(.bottom)
-                Spacer()
-                PrimaryButton(title: L10n.LoginSignUp.Button.create, style: .fill) {
-                    viewModel.createUserButtonPressed(name: name, email: email,
-                                                      pairUniqId: id, password: password)
-                }
+        VStack(alignment: .center, spacing: Constants.stackSpacing) {
+            Text(L10n.LoginSignUp.Button.signUp.uppercased())
+                .font(.custom(Constants.titleFont, size: 33))
+            VStack {
+                PrimaryTextField(title: L10n.LoginSignUp.name, text: $name)
+                PrimaryTextField(title: L10n.LoginSignUp.id, text: $id)
+                PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
+                PrimaryTextField(title: L10n.LoginSignUp.password, isSecure: true, text: $password)
             }
-            .padding()
+            .padding(.bottom)
+            Spacer()
+            PrimaryButton(title: L10n.LoginSignUp.Button.create, style: .fill) {
+                viewModel.createUserButtonPressed(name: name, email: email,
+                                                  pairUniqId: id, password: password)
+            }
         }
+        .padding()
+        .redacted(reason: viewModel.isShowLoading ? .placeholder : [])
+        .allowsHitTesting(!viewModel.isShowLoading)
     }
 }
 

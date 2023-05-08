@@ -18,21 +18,21 @@ struct ResetPasswordView<ViewModel>: View where ViewModel: ResetPasswordViewMode
     }
     
     var body: some View {
-        LoadingView(isShowing: $viewModel.isShowLoading) {
-            VStack(alignment: .center, spacing: Constants.stackSpacing) {
-                Text(L10n.LoginSignUp.Button.restPassword.uppercased())
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .font(.custom(Constants.titleFont, size: 33))
-                PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
-                    .padding(.bottom)
-                Spacer()
-                PrimaryButton(title: L10n.LoginSignUp.Button.send, style: .fill) {
-                    viewModel.sendButtonPressed(email: email)
-                }
+        VStack(alignment: .center, spacing: Constants.stackSpacing) {
+            Text(L10n.LoginSignUp.Button.restPassword.uppercased())
+                .multilineTextAlignment(.center)
+                .padding()
+                .font(.custom(Constants.titleFont, size: 33))
+            PrimaryTextField(title: L10n.LoginSignUp.email, keyType: .emailAddress, text: $email)
+                .padding(.bottom)
+            Spacer()
+            PrimaryButton(title: L10n.LoginSignUp.Button.send, style: .fill) {
+                viewModel.sendButtonPressed(email: email)
             }
-            .padding()
         }
+        .padding()
+        .redacted(reason: viewModel.isShowLoading ? .placeholder : [])
+        .allowsHitTesting(!viewModel.isShowLoading)
     }
 }
 

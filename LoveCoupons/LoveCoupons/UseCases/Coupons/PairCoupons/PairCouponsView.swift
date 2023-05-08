@@ -18,27 +18,26 @@ struct PairCouponsView<ViewModel>: View where ViewModel: PairCouponsViewModelPro
     }
     
     var body: some View {
-        LoadingView(isShowing: $viewModel.isShowLoading) {
-            List {
-                ForEach(Array(viewModel.coupons.enumerated()), id: \.element) { index, coupon in
-                    CouponView(coupon: coupon, id: index + 1)
-                        .onTapGesture {
-                            viewModel.showSendEmailView(coupon: coupon)
-                        }
-                }
+        List {
+            ForEach(Array(viewModel.isShowLoading ?
+                            viewModel.viewDataItemsPlaceholder.enumerated() :
+                            viewModel.coupons.enumerated()), id: \.element) { index, coupon in
+                CouponView(coupon: coupon, id: index + 1, isShowingLoading: viewModel.isShowLoading)
+                    .onTapGesture {
+                        viewModel.showSendEmailView(coupon: coupon)
+                    }
             }
-            .environment(\.defaultMinListRowHeight, defaultMinListRowHeight)
-            .listStyle(PlainListStyle())
-            .navigationBarTitle(Text(""),displayMode: .inline)
-            .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)))
         }
+        .environment(\.defaultMinListRowHeight, defaultMinListRowHeight)
+        .listStyle(PlainListStyle())
+        .navigationBarTitle(Text(""),displayMode: .inline)
+        .navigationBarItems(leading: Text(L10n.PairCoupons.title.uppercased()).font(.custom(Constants.titleFont, size: 28)))
         .onAppear(perform: self.onAppear)
     }
     
     private func onAppear() {
         UITableViewCell.appearance().selectionStyle = .none
         UITableView.appearance().separatorStyle = .none
-        viewModel.updateViewData()
     }
 }
 

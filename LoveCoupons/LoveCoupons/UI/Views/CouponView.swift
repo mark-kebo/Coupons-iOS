@@ -18,7 +18,8 @@ struct CouponView: View {
     private let imageSize: CGSize = CGSize(width: 130, height: 180)
     var coupon: Coupon
     var id: Int
-    
+    @State var isShowingLoading: Bool = false
+
     var body: some View {
         HStack {
             if isShowingImagesLoading && image == UIImage(asset: Asset.logo) {
@@ -51,6 +52,8 @@ struct CouponView: View {
         .cornerRadius(20)
         .shadow(color: .gray, radius: 5)
         .onAppear(perform: setImage)
+        .redacted(reason: isShowingLoading ? .placeholder : [])
+        .allowsHitTesting(!isShowingLoading)
     }
     
     private func setImage() {

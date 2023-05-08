@@ -13,9 +13,9 @@ import Combine
 protocol PairCouponsViewModelProtocol: ObservableObject {
     var isShowLoading: Bool { get set }
     var coupons: [Coupon] { get set }
+    var viewDataItemsPlaceholder: [Coupon] { get }
     
     func showSendEmailView(coupon: Coupon)
-    func updateViewData()
 }
 
 final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol where Coordinator: PairCouponsCoordinatorProtocol {
@@ -23,6 +23,10 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var coupons: [Coupon] = []
+    let viewDataItemsPlaceholder: [Coupon] = [Coupon.placeholder, Coupon.placeholder,
+                                              Coupon.placeholder, Coupon.placeholder,
+                                              Coupon.placeholder, Coupon.placeholder,
+                                              Coupon.placeholder, Coupon.placeholder]
     @ObservedObject private var mailDataStore = PairCouponsMailDataStore()
     private var cancellables: Set<AnyCancellable> = []
 
@@ -31,6 +35,7 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        updateViewData()
     }
 
     deinit {
@@ -42,20 +47,20 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
             self.isShowLoading = true
             self.apiManager.getUserInfo()
                 .sink { [weak self] completion in
-                    self?.isShowLoading = false
                     switch completion {
                     case .finished: break
                     case .failure(let error):
+                        self?.isShowLoading = false
                         self?.coordinator.showError(error.type.text)
                     }
                 } receiveValue: { [weak self] userInfo in
                     guard let self else { return }
                     self.apiManager.getPairEmail(pairId: userInfo?.pairUniqId ?? "")
                         .sink { [weak self] completion in
-                            self?.isShowLoading = false
                             switch completion {
                             case .finished: break
                             case .failure(let error):
+                                self?.isShowLoading = false
                                 self?.coordinator.showError(error.type.text)
                             }
                         } receiveValue: { [weak self] email in
@@ -77,32 +82,29 @@ final class PairCouponsViewModel<Coordinator>: PairCouponsViewModelProtocol wher
         }
     }
     
-    func updateViewData() {
-        coupons.removeAll()
+    private func updateViewData() {
         isShowLoading = true
         self.apiManager.getUserInfo()
             .sink { [weak self] completion in
-                self?.isShowLoading = false
                 switch completion {
                 case .finished: break
                 case .failure(let error):
+                    self?.isShowLoading = false
                     self?.coordinator.showError(error.type.text)
                 }
             } receiveValue: { [weak self] userInfo in
                 guard let self else { return }
                 self.apiManager.getPairCoupons(pairUniqId: userInfo?.pairUniqId ?? "")
                     .sink { [weak self] completion in
-                        self?.isShowLoading = false
                         switch completion {
                         case .finished: break
                         case .failure(let error):
+                            self?.isShowLoading = false
                             self?.coordinator.showError(error.type.text)
                         }
                     } receiveValue: { [weak self] coupons in
-                        if let coupons = coupons {
-                           self?.coupons = coupons.sorted { $0.description < $1.description }
-                       }
-                       self?.isShowLoading = false
+                        self?.isShowLoading = false
+                        self?.coupons = coupons?.sorted { $0.description < $1.description } ?? []
                     }
                     .store(in: &self.cancellables)
             }
