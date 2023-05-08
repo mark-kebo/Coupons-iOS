@@ -199,32 +199,69 @@ final class APIManager: APIManagerProtocol {
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
         }
-        return Future { [weak self] promise in
-            self?.serialQueue.async {
-                self?.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
-                    if let dict = snapshot.value as? [String : AnyObject] {
-                        var coupons: [Coupon] = []
-                        dict.forEach {
-                            if let coupon = $0.value as? [String : Any] {
-                                var newCoupon = Coupon(data: coupon)
-                                newCoupon.key = $0.key
-                                coupons.append(newCoupon)
-                            }
+        let subject = CurrentValueSubject<[Coupon]?, ApiError>(nil)
+        self.serialQueue.async {
+            self.database.child(uid).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+                if let dict = snapshot.value as? [String : AnyObject] {
+                    var coupons: [Coupon] = []
+                    dict.forEach {
+                        if let coupon = $0.value as? [String : Any] {
+                            var newCoupon = Coupon(data: coupon)
+                            newCoupon.key = $0.key
+                            coupons.append(newCoupon)
                         }
-                        promise(.success(coupons))
-                    } else {
-                        promise(.failure(ApiError(type: .defaultMessage)))
                     }
-                }) { error in
-                    promise(.failure(ApiError(type: .other(error.localizedDescription))))
+                    subject.send(coupons)
+                } else {
+                    subject.send(completion: .failure(ApiError(type: .defaultMessage)))
                 }
+            }) { error in
+                subject.send(completion: .failure(ApiError(type: .other(error.localizedDescription))))
             }
         }
-        .timeout(.seconds(self.timeoutDelay),
-                 scheduler: DispatchQueue.main, options: nil,
-                 customError: { return ApiError(type: .disconnect) })
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.timeoutDelay) {
+            guard subject.value == nil else { return }
+            subject.send(completion: .failure(ApiError(type: .disconnect)))
+        }
+        return subject
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+    
+    /// getPairCoupons
+    /// - Parameter pairUniqId: from getUserInfo()
+    /// - Returns: coupons
+    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, ApiError> {
+        guard let pairUniqId else {
+            return Fail(error: ApiError(type: .defaultMessage))
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
+        }
+        let subject = CurrentValueSubject<[Coupon]?, ApiError>(nil)
+        self.database.child(pairUniqId).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
+            if let dict = snapshot.value as? [String : AnyObject] {
+                var coupons: [Coupon] = []
+                dict.forEach {
+                    if let coupon = $0.value as? [String : Any] {
+                        var newCoupon = Coupon(data: coupon)
+                        newCoupon.key = $0.key
+                        coupons.append(Coupon(data: coupon))
+                    }
+                }
+                subject.send(coupons)
+            } else {
+                subject.send(completion: .failure(ApiError(type: .couponsMessage)))
+            }
+        }) { error in
+            subject.send(completion: .failure(ApiError(type: .other(error.localizedDescription))))
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.timeoutDelay) {
+            guard subject.value == nil else { return }
+            subject.send(completion: .failure(ApiError(type: .disconnect)))
+        }
+        return subject
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
     }
     
     func getPairEmail(pairId: String) -> AnyPublisher<String?, ApiError> {
@@ -239,41 +276,6 @@ final class APIManager: APIManagerProtocol {
                 }) { error in
                     promise(.failure(ApiError(type: .other(error.localizedDescription))))
                 }
-            }
-        }
-        .timeout(.seconds(self.timeoutDelay),
-                 scheduler: DispatchQueue.main, options: nil,
-                 customError: { return ApiError(type: .disconnect) })
-        .receive(on: RunLoop.main)
-        .eraseToAnyPublisher()
-    }
-    
-    /// getPairCoupons
-    /// - Parameter pairUniqId: from getUserInfo()
-    /// - Returns: coupons
-    func getPairCoupons(pairUniqId: String?) -> AnyPublisher<[Coupon]?, ApiError> {
-        guard let pairUniqId else {
-            return Fail(error: ApiError(type: .defaultMessage))
-                .receive(on: RunLoop.main)
-                .eraseToAnyPublisher()
-        }
-        return Future { [weak self] promise in
-            self?.database.child(pairUniqId).child(Constants.couponsDirectory).observe(DataEventType.value, with: { snapshot in
-                if let dict = snapshot.value as? [String : AnyObject] {
-                    var coupons: [Coupon] = []
-                    dict.forEach {
-                        if let coupon = $0.value as? [String : Any] {
-                            var newCoupon = Coupon(data: coupon)
-                            newCoupon.key = $0.key
-                            coupons.append(Coupon(data: coupon))
-                        }
-                    }
-                    promise(.success(coupons))
-                } else {
-                    promise(.failure(ApiError(type: .couponsMessage)))
-                }
-            }) { error in
-                promise(.failure(ApiError(type: .other(error.localizedDescription))))
             }
         }
         .timeout(.seconds(self.timeoutDelay),
@@ -334,6 +336,7 @@ final class APIManager: APIManagerProtocol {
               let key = coupon.key else {
             return
         }
-        self.database.child(uid).child(Constants.couponsDirectory).child(key).removeValue()
+        let ref = Database.database().reference().child(uid).child(Constants.couponsDirectory).child(key)
+        ref.removeValue()
     }
 }

@@ -12,9 +12,9 @@ import Combine
 protocol MyCouponsViewModelProtocol: ObservableObject {
     var isShowLoading: Bool { get set }
     var coupons: [Coupon] { get set }
-    
+    var viewDataItemsPlaceholder: [Coupon] { get }
+
     func deleteItems(at offsets: IndexSet)
-    func getCoupons()
     func couponSelected(_ coupon: Coupon, id: Int)
     func addCouponButtonSelected()
 }
@@ -24,8 +24,12 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
     private let apiManager: APIManagerProtocol
     @Published var isShowLoading = false
     @Published var coupons: [Coupon] = []
+    let viewDataItemsPlaceholder: [Coupon] = [Coupon.placeholder, Coupon.placeholder,
+                                              Coupon.placeholder, Coupon.placeholder,
+                                              Coupon.placeholder, Coupon.placeholder,
+                                              Coupon.placeholder, Coupon.placeholder]
     private var cancellables: Set<AnyCancellable> = []
-
+    
     var userUid: String {
         apiManager.userUid ?? ""
     }
@@ -35,6 +39,7 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
     ) {
         self.coordinator = coordinator
         self.apiManager = apiManager
+        getCoupons()
     }
 
     deinit {
@@ -44,18 +49,17 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
     func deleteItems(at offsets: IndexSet) {
         guard let first = offsets.first else { return }
         apiManager.deleteCoupon(coupons[first])
-        self.getCoupons()
     }
     
-    func getCoupons() {
+    private func getCoupons() {
         isShowLoading = true
-        coupons.removeAll()
         apiManager.getMyCoupons()
+            .print("debugging")
             .sink { [weak self] completion in
-                self?.isShowLoading = false
                 switch completion {
                 case .finished: break
                 case .failure(let error):
+                    self?.isShowLoading = false
                     self?.coordinator.showError(error.type.text)
                 }
             } receiveValue: { [weak self] myCoupons in
@@ -63,7 +67,7 @@ final class MyCouponsViewModel<Coordinator>: MyCouponsViewModelProtocol where Co
                 self.isShowLoading = false
                 self.coupons = myCoupons?.sorted { $0.description < $1.description } ?? []
             }
-            .store(in: &self.cancellables)
+            .store(in: &cancellables)
     }
     
     func couponSelected(_ coupon: Coupon, id: Int) {

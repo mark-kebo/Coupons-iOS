@@ -14,6 +14,10 @@ struct Coupon: Identifiable, Hashable {
     var description: String
     var image: String
     
+    static var placeholder: Coupon {
+        Coupon(description: UUID().uuidString, image: "")
+    }
+    
     init() {
         description = ""
         image = ""
